@@ -5,7 +5,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 OBJS_DIR = obj
 
 SRCS =	src/main.c \
-	src/parsing.c
+		src/parsing.c src/vector_operation.c src/vector_utils.c
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/12 12:36:50 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/12 16:14:36 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,33 +18,36 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
+# include <math.h>
 # include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
+
+typedef unsigned char t_uint8;
 
 typedef struct s_light
 {
 	double		xyz[3];
 	double		luminosity;
-	u_int8_t	rgb[3];
+	t_uint8	rgb[3];
 }	t_light;
 
 typedef struct s_ambient
 {
 	double		ambient;
-	u_int8_t	rgb[3];
+	t_uint8	rgb[3];
 }	t_ambient;
 
 typedef struct s_camera
 {
 	double		xyz[3];
 	double		vector_xyz[3];
-	u_int8_t	fov;
+	t_uint8	fov;
 }	t_camera;
 
 typedef struct s_shape
 {
 	double		xyz[3];
-	u_int8_t	rgb[3];
+	t_uint8	rgb[3];
 	double		height;
 	double		diameter;
 	double		vector_xyz[3];
@@ -60,6 +63,23 @@ typedef struct s_minirt
 	t_ambient	*ambient;
 }	t_minirt;
 
-int		parsing(int argc, char **argv, char **env);
+typedef struct s_vector
+{
+	double coor[3];
+}	t_vector;
+
+//vector_utils
+t_vector	*create_vector(double x, double y, double z);
+
+//vector_operation
+t_vector	*vec_add_nbr(t_vector *vec, double nbr);
+t_vector	*vec_add_vec(t_vector *vec, t_vector *add);
+t_vector	*vec_sub_vec(t_vector *vec, t_vector *add);
+double		vec_magnitude(t_vector *vec);
+double		dot_product(t_vector *first, t_vector *second, int length);
+t_vector	*vec_normalization(t_vector *vec);
+t_vector	*vec_multiplication(t_vector *vec, double scalar);
+
+int			parsing(int argc, char **argv, char **env);
 
 #endif

@@ -1,37 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   vector_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 12:05:18 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/12 14:59:11 by yrio             ###   ########.fr       */
+/*   Created: 2024/11/12 13:06:21 by yrio              #+#    #+#             */
+/*   Updated: 2024/11/12 16:14:25 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-static int	is_rt(char *map_name)
+t_vector *create_vector(double x, double y, double z)
 {
-	int	i;
+	t_vector *vec;
 
-	i = 0;
-	if (ft_strlen(map_name) < 4)
-		return (0);
-	while (map_name[i])
-		i++;
-	i -= 3;
-	if (ft_strncmp(&map_name[i], ".rt", 3))
-		return (0);
-	return (1);
-}
-
-int	parsing(int argc, char **argv, char **env)
-{
-	if (argc != 2 || !env[0])
-		return (0);
-	if (!is_rt(argv[1]))
-		return (0);
-	return (1);
+	vec = malloc(sizeof(t_vector));
+	if (!vec)
+		return (NULL);
+	vec->coor[0] = x;
+	vec->coor[1] = y;
+	vec->coor[2] = z;
+	return (vec);
 }
