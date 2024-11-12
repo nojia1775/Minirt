@@ -33,12 +33,5 @@ int	parsing(int argc, char **argv, char **env)
 		return (0);
 	if (!is_rt(argv[1]))
 		return (0);
-
-
-
-
-
-
-		
 	return (1);
 }
