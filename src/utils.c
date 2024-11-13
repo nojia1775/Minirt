@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:15:06 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/13 13:56:08 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/13 15:56:36 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,20 @@ char	**tabdup(char **tab)
 		i++;
 	}
 	return (arr);
+}
+
+int	is_not_empty(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (ft_isalnum(str[i]))
+			return (1);
+		if (str[i] == '\n')
+			return (0);
+		i++;
+	}
+	return (0);
 }

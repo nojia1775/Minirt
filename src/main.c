@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/13 15:51:35 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/13 17:06:23 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(int argc, char **argv, char **env)
 	t_minirt	minirt;
 
 	init_minirt(&minirt);
-	if (!parsing(argc, argv, env))
+	if (!parsing(argc, argv, env, &minirt))
 		return (printf("Error\n"), free_minirt(&minirt), 1);
 	return (0);
 }
