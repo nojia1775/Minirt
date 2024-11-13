@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:05:18 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/12 17:33:28 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/13 15:46:20 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	is_not_empty(char *str)
 int	extract_file(char *file, t_file_rt **data)
 {
 	int	fd;
-	char	*line;
+	char	**line;
 	char	*tmp;
 	
 	(void)data;
@@ -61,7 +61,9 @@ int	extract_file(char *file, t_file_rt **data)
  			break ;
 		if (is_not_empty(tmp))
 		{
-			line = ft_strtrim(tmp, " \n\t");
+			line = ft_split(tmp, " \t\n");
+			if (!line)
+				return (free(tmp), free_list(data), 0);
 			add_list(data, line);
 			free(line);
 		}
@@ -70,13 +72,25 @@ int	extract_file(char *file, t_file_rt **data)
 	return (1);
 }
 
-int	parsing(int argc, char **argv, char **env, t_file_rt **data)
+int	parsing(int argc, char **argv, char **env)
 {
+	t_file_rt	*data;
+
+	data = NULL;
 	if (argc != 2 || !env[0])
 		return (0);
 	if (!is_rt(argv[1]))
 		return (0);
-	if (!extract_file(argv[1], data))
+	if (!extract_file(argv[1], &data))
 		return (0);
+	t_file_rt *cur = data;
+	while (cur)
+	{
+		for (int i = 0 ; cur->line[i] ; i++)
+			printf("%s\n", cur->line[i]);
+		printf("---\n");
+		cur = cur->next;
+	}
+	free_list(&data);
 	return (1);
 }

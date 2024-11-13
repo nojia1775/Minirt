@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:15:06 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/12 15:29:59 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/13 13:56:08 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,8 @@ static long	modified_atoi(const char *nptr, int *decimal)
 	while (nptr[i] == ' ' || nptr[i] == '\t' || nptr[i] == '\n'
 		|| nptr[i] == '\v' || nptr[i] == '\f' || nptr[i] == '\r')
 		i++;
-	if (nptr[i] == '-')
-	{
+	if (nptr[i] == '-' && ++i)
 		sign *= -1;
-		i++;
-	}
 	else if (nptr[i] == '+')
 		i++;
 	i--;
@@ -68,4 +65,33 @@ double	atod(char *nptr)
 	if (decimal == 0)
 		return (result);
 	return (result / pow(10, decimal)); 
+}
+
+char	**tabdup(char **tab)
+{
+	int		i;
+	int		tmp;
+	char	**arr;
+	
+	i = 0;
+	while (tab[i])
+		i++;
+	arr = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!arr)
+		return (NULL);
+	arr[i] = NULL;
+	i = 0;
+	tmp = 0;
+	while (tab[i])
+	{
+		arr[i] = ft_strdup(tab[i]);
+		if (arr[i] == NULL)
+		{
+			while (tmp < i)
+				free(arr[tmp]);
+			return (free(arr), NULL);
+		}
+		i++;
+	}
+	return (arr);
 }
