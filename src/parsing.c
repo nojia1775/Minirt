@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:05:18 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/13 17:17:14 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/13 21:37:47 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	extract_file(char *file, t_file_rt **data)
 static int	parse_datas(t_file_rt *data, t_minirt *minirt)
 {
 	t_file_rt	*cur;
+	int			success;
 
 	cur = data;
 	if (!cur)
@@ -51,8 +52,13 @@ static int	parse_datas(t_file_rt *data, t_minirt *minirt)
 	while (cur)
 	{
 		if (!ft_strncmp(cur->line[0], "A", 2))
-			if (!get_ambient(cur->line, minirt))
-				return (0);
+			success = get_ambient(cur->line, minirt);
+		else if (!ft_strncmp(cur->line[0], "C", 2))
+			success = get_camera(cur->line, minirt);
+		else if (!ft_strncmp(cur->line[0], "L", 2))
+			success = get_light(cur->line, minirt);
+		if (!success)
+			return (0);
 		cur = cur->next;
 	}
 	return (1);
@@ -71,7 +77,7 @@ int	parsing(int argc, char **argv, char **env, t_minirt *minirt)
 		return (0);
 	if (!parse_datas(data, minirt))
 		return (free_list(&data), 0);
-	printf("%f %d %d %d\n", minirt->ambient->ambient, minirt->ambient->rgb[0], minirt->ambient->rgb[1], minirt->ambient->rgb[2]);
+	printf("%f %f %f %f %d %d %d\n", minirt->light->xyz[0], minirt->light->xyz[1], minirt->light->xyz[2], minirt->light->luminosity, minirt->light->rgb[0], minirt->light->rgb[1], minirt->light->rgb[2]);
 	free_list(&data);
 	return (1);
 }

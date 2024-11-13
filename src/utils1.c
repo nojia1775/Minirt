@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:57:17 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/13 17:13:21 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/13 21:44:41 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	parse_rgb(char *line)
 	i = -1;
 	while (line[++i])
 		if (line[i] == ',' && ++comma)
-			if (i == 0 || line[i - 1] == ',' || line[i + 1] == ',')
+			if (i == 0 || !ft_isdigit(line[i - 1]) || !ft_isdigit(line[i + 1]))
 				return (0);
 	if (comma != 2)
 		return (0);
@@ -92,7 +92,7 @@ int	parse_range(char *line, double min, double max, int nmemb)
 	i = -1;
 	while (line[++i])
 		if (line[i] == ',' && ++comma)
-			if (i == 0 || line[i - 1] == ',' || line[i + 1] == ',')
+			if (i == 0 || !ft_isdigit(line[i - 1]) || !ft_isdigit(line[i + 1]))
 				return (0);
 	if (comma != nmemb - 1)
 		return (0);

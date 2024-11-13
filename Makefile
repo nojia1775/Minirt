@@ -10,7 +10,8 @@ SRCS =	src/main.c \
 	src/extraction.c \
 	src/utils.c \
 	src/list.c \
-	src/utils1.c
+	src/utils1.c \
+	src/utils2.c
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 
