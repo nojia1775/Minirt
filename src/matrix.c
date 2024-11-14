@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:56:25 by yrio              #+#    #+#             */
-/*   Updated: 2024/11/13 16:37:33 by yrio             ###   ########.fr       */
+/*   Updated: 2024/11/14 15:57:56 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	display_mat2d(t_matrix *mat, int axis_1, int axis_2, int slice_axis_3)
 	int	count2;
 
 	count = 0;
+	printf("in display mat2d %p\n", mat->array);
 	if (axis_1 == 1 && axis_2 == 2)
 	{
 		while (count < mat->shape[0])

@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/13 17:41:04 by yrio             ###   ########.fr       */
+/*   Updated: 2024/11/14 15:42:45 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@ typedef struct s_camera
 	t_uint8	fov;
 }	t_camera;
 
+typedef struct s_matrix
+{
+	int	shape[3];
+	int	***array;
+}	t_matrix;
+
 typedef struct s_shape
 {
 	double		xyz[3];
@@ -51,7 +57,7 @@ typedef struct s_shape
 	double		height;
 	double		diameter;
 	double		vector_xyz[3];
-	t_matrix	*mat;
+	t_matrix 	*mat;
 }	t_shape;
 
 typedef struct s_minirt
@@ -69,12 +75,6 @@ typedef struct s_vector
 	double coor[3];
 }	t_vector;
 
-typedef struct s_matrix
-{
-	int	shape[3];
-	int	***array;
-}	t_matrix;
-
 //vector_utils
 t_vector	*create_vector(double x, double y, double z);
 
@@ -91,6 +91,9 @@ t_vector	*vec_multiplication(t_vector *vec, double scalar);
 t_matrix	*alloc_matrix(t_matrix *mat, int x, int y, int z);
 t_matrix	create_matrix(int x, int y, int z);
 void		display_mat2d(t_matrix *mat, int axis_1, int axis_2, int slice_axis_3);
+
+//sphere
+t_shape		create_sphere(int height);
 
 int			parsing(int argc, char **argv, char **env);
 

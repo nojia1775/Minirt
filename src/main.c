@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/13 16:37:39 by yrio             ###   ########.fr       */
+/*   Updated: 2024/11/14 15:57:38 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,23 @@
 // 	return (1);
 // }
 
+// int main(void)
+// {
+// 	t_matrix mat;
+
+// 	mat = create_matrix(10, 10, 10);
+// 	display_mat2d(&mat, 1, 2, 0);
+// 	return (0);
+// }
+
 int main(void)
 {
-	t_matrix mat;
+	t_shape		sphere;
+	t_matrix	mat;
 
-	mat = create_matrix(10, 10, 10);
-	display_mat2d(&mat, 1, 2, 0);
+	sphere = create_sphere(5);
+	printf("in main %p\n", sphere.mat->array);
+	mat = *sphere.mat;
+	display_mat2d(&mat, 1, 2, 5);
 	return (0);
 }
