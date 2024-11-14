@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:05:18 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/14 17:00:31 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/14 17:07:31 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ int	parsing(int argc, char **argv, char **env, t_minirt *minirt)
 	if (!extract_file(argv[1], &data))
 		return (0);
 	if (!parse_datas(data, minirt))
+		return (free_list_data(&data), 0);
+	if (!minirt->camera || !minirt->ambient || !minirt->light)
 		return (free_list_data(&data), 0);
 	free_list_data(&data);
 	return (1);
