@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:15:06 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/13 15:56:36 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/14 15:57:10 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ size_t	strlen_to_space(char *str)
 	len = 0;
 	while (str[len])
 	{
-		if (str[len] == ' ' || !str[len])
-			return (len - 1);
+		if (str[len] == ' ' || !str[len] || str[len] == ',')
+			return (len);
 		len++;
 	}
 	return (len);

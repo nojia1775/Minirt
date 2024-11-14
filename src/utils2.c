@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:12:35 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/13 21:29:53 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/14 15:02:24 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,33 @@ void	get_three_int(t_uint8 *tab, char *line)
 	while (line[++i] && line[i] != ',')
 		;
 	tab[2] = ft_atoi(line + i + 1);
+}
+
+int	parse_nbr_dot(char *str)
+{
+	int	i;
+	int	dot;
+
+	dot = 0;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '.')
+		{
+			dot++;
+			if (i == 0 || !ft_isdigit(str[i - 1]) || str[i + 1] == '\0'
+				|| !ft_isdigit(str[i + 1]))
+				return (printf("%s %c %c %c\n", str, str[i - 1], str[i], str[i + 1]), 0);
+		}
+		if (str[i] == ',')
+		{
+			if (dot > 1)
+				return (0);
+			dot = 0;
+		}
+		i++;
+	}
+	if (dot > 1)
+		return (0);
+	return (1);
 }

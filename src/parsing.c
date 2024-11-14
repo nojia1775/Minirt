@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:05:18 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/13 21:37:47 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/14 17:00:31 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
+
+static void	free_split(char **split)
+{
+	int	i;
+
+	if (split == NULL)
+		return ;
+	i = 0;
+	while (split[i])
+		free(split[i++]);
+	free(split);
+	split = NULL;
+}
 
 int	extract_file(char *file, t_file_rt **data)
 {
@@ -32,9 +45,9 @@ int	extract_file(char *file, t_file_rt **data)
 		{
 			line = ft_split(tmp, " \t\n");
 			if (!line || char_not_recognized(tmp, "ACLplcys0123456789-., \t\n"))
-				return (free(tmp), free_list(data), 0);
-			add_list(data, line);
-			free(line);
+				return (free(tmp), free_split(line), free_list_data(data), 0);
+			add_list_data(data, line);
+			free_split(line);
 		}
 		free(tmp);
 	}
@@ -57,8 +70,14 @@ static int	parse_datas(t_file_rt *data, t_minirt *minirt)
 			success = get_camera(cur->line, minirt);
 		else if (!ft_strncmp(cur->line[0], "L", 2))
 			success = get_light(cur->line, minirt);
+		else if (!ft_strncmp(cur->line[0], "sp", 3))
+			success = get_sphere(cur->line, minirt);
+		else if (!ft_strncmp(cur->line[0], "pl", 3))
+			success = get_plan(cur->line, minirt);
+		else if  (!ft_strncmp(cur->line[0], "cy", 3))
+			success = get_cylinder(cur->line, minirt);
 		if (!success)
-			return (0);
+			return (free_minirt(minirt), 0);
 		cur = cur->next;
 	}
 	return (1);
@@ -76,8 +95,7 @@ int	parsing(int argc, char **argv, char **env, t_minirt *minirt)
 	if (!extract_file(argv[1], &data))
 		return (0);
 	if (!parse_datas(data, minirt))
-		return (free_list(&data), 0);
-	printf("%f %f %f %f %d %d %d\n", minirt->light->xyz[0], minirt->light->xyz[1], minirt->light->xyz[2], minirt->light->luminosity, minirt->light->rgb[0], minirt->light->rgb[1], minirt->light->rgb[2]);
-	free_list(&data);
+		return (free_list_data(&data), 0);
+	free_list_data(&data);
 	return (1);
 }

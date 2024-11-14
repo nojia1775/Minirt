@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:57:17 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/13 21:44:41 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/14 15:56:00 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	parse_range(char *line, double min, double max, int nmemb)
 	int	comma;
 
 	comma = 0;
-	if (char_not_recognized(line, "0123456789.,-"))
+	if (char_not_recognized(line, "0123456789.,-") || !parse_nbr_dot(line))
 		return (0); 
 	i = -1;
 	while (line[++i])

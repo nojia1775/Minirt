@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 15:44:39 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/13 15:39:15 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/14 13:11:59 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-void	free_list(t_file_rt **list)
+void	free_list_data(t_file_rt **list)
 {
 	t_file_rt	*cur;
 	t_file_rt	*rm;
@@ -34,17 +34,17 @@ void	free_list(t_file_rt **list)
 	*list = NULL;
 }
 
-void	add_list(t_file_rt **data, char **content)
+void	add_list_data(t_file_rt **data, char **content)
 {
 	t_file_rt	*new;
 	t_file_rt	*cur;
 
 	new = (t_file_rt *)malloc(sizeof(t_file_rt));
 	if (!new)
-		return (free_list(data));
+		return (free_list_data(data));
 	new->line = tabdup(content);
 	if (!new->line)
-		return (free_list(data));
+		return (free_list_data(data));
 	new->next = NULL;
 	if (!(*data))
 		*data = new;
@@ -55,4 +55,42 @@ void	add_list(t_file_rt **data, char **content)
 			cur = cur->next;
 		cur->next = new;
 	}
+}
+
+void	add_list_shape(t_shape **shape)
+{
+	t_shape	*cur;
+	t_shape	*new;
+
+	new = (t_shape *)ft_calloc(1, sizeof(t_shape));
+	if (!new)
+		return (free_list_shape(shape));
+	cur = *shape;
+	if (!cur)
+	{
+		new->index = 0;
+		*shape = new;
+		return ;
+	}
+	while (cur->next)
+		cur = cur->next;
+	cur->next = new;
+	new->index = cur->index + 1;
+}
+
+void	free_list_shape(t_shape **shape)
+{
+	t_shape	*cur;
+	t_shape	*rm;
+
+	if (!((*shape)))
+		return ;
+	cur = *shape;
+	while (cur)
+	{
+		rm = cur;
+		cur = cur->next;
+		free(rm);
+	}
+	*shape = NULL;
 }
