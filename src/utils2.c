@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:12:35 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/14 15:02:24 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:04:06 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,16 @@ int	parse_nbr_dot(char *str)
 	if (dot > 1)
 		return (0);
 	return (1);
+}
+
+t_shape	*get_this_shape(t_shape *shape, size_t index)
+{
+	t_shape	*cur;
+
+	cur = shape;
+	while (cur && cur->index != index)
+		cur = cur->next;
+	if (cur == NULL)
+		return (NULL);
+	return (cur);
 }

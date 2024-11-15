@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:57:17 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/14 15:56:00 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:00:44 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ int	parse_range(char *line, double min, double max, int nmemb)
 	i = -1;
 	while (line[++i])
 		if (line[i] == ',' && ++comma)
-			if (i == 0 || !ft_isdigit(line[i - 1]) || !ft_isdigit(line[i + 1]))
+			if (i == 0 || !ft_strchr("0.123456789-", line[i - 1])
+				|| !ft_strchr("0.123456789-", line[i - 1]))
 				return (0);
 	if (comma != nmemb - 1)
 		return (0);

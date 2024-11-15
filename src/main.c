@@ -6,11 +6,21 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/15 10:12:20 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:18:41 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
+
+static int	close_win(void *param)
+{
+	t_minirt	*minirt;
+	
+	minirt = (t_minirt *)param;
+	free_minirt(minirt);
+	exit(0);
+	return (1);
+}
 
 void	init_minirt(t_minirt *minirt)
 {
@@ -20,6 +30,8 @@ void	init_minirt(t_minirt *minirt)
 	minirt->light = NULL;
 	minirt->plan = NULL;
 	minirt->sphere = NULL;
+	minirt->mlx = NULL;
+	minirt->win = NULL;
 }
 
 int	main(int argc, char **argv, char **env)
@@ -29,6 +41,10 @@ int	main(int argc, char **argv, char **env)
 	init_minirt(&minirt);
 	if (!parsing(argc, argv, env, &minirt))
 		return (free_minirt(&minirt), 1);
+	my_mlx_init(&minirt);
+	my_mlx_new_window(&minirt, WIDTH, HEIGHT, "MINIRT");
+	mlx_hook(minirt.win, 17, 0, close_win, &minirt);
+	mlx_loop(minirt.mlx);
 	free_minirt(&minirt);
 	return (0);
 }

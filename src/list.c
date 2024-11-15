@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 15:44:39 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/14 13:11:59 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/15 13:45:09 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	add_list_shape(t_shape **shape)
 	new = (t_shape *)ft_calloc(1, sizeof(t_shape));
 	if (!new)
 		return (free_list_shape(shape));
+	new->next = NULL;
 	cur = *shape;
 	if (!cur)
 	{
@@ -76,6 +77,7 @@ void	add_list_shape(t_shape **shape)
 		cur = cur->next;
 	cur->next = new;
 	new->index = cur->index + 1;
+
 }
 
 void	free_list_shape(t_shape **shape)
@@ -83,7 +85,7 @@ void	free_list_shape(t_shape **shape)
 	t_shape	*cur;
 	t_shape	*rm;
 
-	if (!((*shape)))
+	if (!(*shape))
 		return ;
 	cur = *shape;
 	while (cur)

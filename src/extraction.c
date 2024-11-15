@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:12:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/15 10:36:24 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/15 12:45:18 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	get_camera(char **datas, t_minirt *minirt)
 
 int	get_light(char **datas, t_minirt *minirt)
 {
+
 	if (minirt->light != NULL)
 		return (printf("Error : light : defined more than 1 time\n"), 0);
 	if (size_double_tab(datas) != 4)

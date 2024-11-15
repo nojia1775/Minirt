@@ -6,13 +6,16 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/14 16:13:14 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:12:58 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 
 # define MINIRT_H
+
+# define WIDTH 500
+# define HEIGHT 500
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -58,6 +61,8 @@ typedef struct s_shape
 
 typedef struct s_minirt
 {
+	void	*mlx;
+	void	*win;
 	t_shape		*sphere;
 	t_shape		*plan;
 	t_shape		*cylinder;
@@ -97,5 +102,8 @@ int		get_sphere(char **datas, t_minirt *minirt);
 int		parse_nbr_dot(char *str);
 int		get_plan(char **datas, t_minirt *minirt);
 int		get_cylinder(char **datas, t_minirt *minirt);
+t_shape	*get_this_shape(t_shape *shape, size_t index);
+void	my_mlx_init(t_minirt *minirt);
+void	my_mlx_new_window(t_minirt *minirt, int width, int height, char *title);
 
 #endif

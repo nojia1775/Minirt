@@ -12,7 +12,8 @@ SRCS =	src/main.c \
 	src/list.c \
 	src/utils1.c \
 	src/utils2.c \
-	src/extraction2.c
+	src/extraction2.c \
+	src/my_mlx_func.c
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 
