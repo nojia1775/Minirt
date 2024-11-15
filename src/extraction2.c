@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 16:04:38 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/14 16:39:52 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/15 10:44:34 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,21 @@
 int	get_cylinder(char **datas, t_minirt *minirt)
 {
 	t_shape	*cur;
-	
+
 	if (size_double_tab(datas) != 6
 		|| !parse_range(datas[1], -DBL_MAX, DBL_MAX, 3))
-		return (0);
+		return (printf("Error : cylinder : number or coordinates\n"), 0);
 	if (!parse_range(datas[2], -1.0, 1.0, 3))
-		return (0);
+		return (printf("Error : cylinder : in vectors\n"), 0);
 	if (!parse_range(datas[3], 0, DBL_MAX, 1))
-		return (0);
+		return (printf("Error : cylinder : in diameter\n"), 0);
 	if (!parse_range(datas[4], 0, DBL_MAX, 1))
-		return (0);
+		return (printf("Error : cylinder : in height\n"), 0);
 	if (!parse_rgb(datas[5]))
-		return (0);
+		return (printf("Error : cylinder : in color\n"), 0);
 	add_list_shape(&minirt->cylinder);
 	if (minirt->cylinder == NULL)
-		return (0);
+		return (printf("Error : cylinder : alloc failed\n"), 0);
 	cur = minirt->cylinder;
 	while (cur->next)
 		cur = cur->next;
