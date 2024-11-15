@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/15 11:18:41 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/15 15:59:31 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,16 @@ static int	close_win(void *param)
 	minirt = (t_minirt *)param;
 	free_minirt(minirt);
 	exit(0);
+	return (1);
+}
+
+static int	key_pressed(int key, void *param)
+{
+	t_minirt	*minirt;
+
+	minirt = (t_minirt *)param;
+	if (key == ESC)
+		close_win(minirt);
 	return (1);
 }
 
@@ -44,6 +54,8 @@ int	main(int argc, char **argv, char **env)
 	my_mlx_init(&minirt);
 	my_mlx_new_window(&minirt, WIDTH, HEIGHT, "MINIRT");
 	mlx_hook(minirt.win, 17, 0, close_win, &minirt);
+	mlx_key_hook(minirt.win, key_pressed, &minirt);
+	display(&minirt);
 	mlx_loop(minirt.mlx);
 	free_minirt(&minirt);
 	return (0);

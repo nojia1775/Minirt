@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:12:35 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/15 11:04:06 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/15 16:35:27 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,9 @@ t_shape	*get_this_shape(t_shape *shape, size_t index)
 	if (cur == NULL)
 		return (NULL);
 	return (cur);
+}
+
+int	convert_rgb(t_uint8 rgb[3])
+{
+	return (0 << 24 | rgb[0] << 16 | rgb[1] << 8 | rgb[2]);
 }

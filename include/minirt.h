@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/15 11:12:58 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/15 16:34:57 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 # define WIDTH 500
 # define HEIGHT 500
+
+# define ESC 65307
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -105,5 +107,7 @@ int		get_cylinder(char **datas, t_minirt *minirt);
 t_shape	*get_this_shape(t_shape *shape, size_t index);
 void	my_mlx_init(t_minirt *minirt);
 void	my_mlx_new_window(t_minirt *minirt, int width, int height, char *title);
+void	display(t_minirt *minirt);
+int		convert_rgb(t_uint8 rgb[3]);
 
 #endif
