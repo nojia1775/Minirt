@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/16 22:47:31 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/16 23:16:52 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 # include <math.h>
 # include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
-# include <float.h>
 
 typedef unsigned char	t_uint8;
 
@@ -53,6 +52,12 @@ typedef struct s_camera
 	double	fov_y;
 }	t_camera;
 
+typedef struct s_matrix
+{
+	int	shape[3];
+	int	***array;
+}	t_matrix;
+
 typedef struct s_shape
 {
 	size_t	index;
@@ -61,7 +66,7 @@ typedef struct s_shape
 	double		height;
 	double		diameter;
 	double		vector_xyz[3];
-	struct s_shape	*next;
+	t_matrix	*mat;
 }	t_shape;
 
 typedef struct s_minirt
@@ -82,6 +87,32 @@ typedef struct s_file_rt
 	struct s_file_rt	*next;
 }	t_file_rt;
 
+typedef struct s_vector
+{
+	double coor[3];
+}	t_vector;
+
+// yann
+t_vector	*create_vector(double x, double y, double z);
+
+//vector_operation
+t_vector	*vec_add_nbr(t_vector *vec, double nbr);
+t_vector	*vec_add_vec(t_vector *vec, t_vector *add);
+t_vector	*vec_sub_vec(t_vector *vec, t_vector *add);
+double		vec_magnitude(t_vector *vec);
+double		dot_product(t_vector *first, t_vector *second, int length);
+t_vector	*vec_normalization(t_vector *vec);
+t_vector	*vec_multiplication(t_vector *vec, double scalar);
+
+//matrix
+t_matrix	*alloc_matrix(t_matrix *mat, int x, int y, int z);
+t_matrix	create_matrix(int x, int y, int z);
+void		display_mat2d(t_matrix *mat, int axis_1, int axis_2, int slice_axis_3);
+
+//sphere
+t_shape		create_sphere(int height);
+
+// noah
 int		parsing(int argc, char **argv, char **env, t_minirt *minirt);
 void	free_minirt(t_minirt *minirt);
 size_t	strlen_to_space(char *str);

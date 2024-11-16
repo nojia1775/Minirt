@@ -6,6 +6,10 @@ OBJS_DIR = obj
 
 SRCS =	src/main.c \
 	src/parsing.c \
+	src/vector_operation.c \
+	src/vector_utils.c \
+	src/matrix.c \
+	src/sphere.c \
 	src/free.c \
 	src/extraction.c \
 	src/utils.c \
@@ -16,6 +20,7 @@ SRCS =	src/main.c \
 	src/my_mlx_func.c \
 	src/display.c \
 	src/utils3.c
+
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 
