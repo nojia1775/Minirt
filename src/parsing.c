@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:05:18 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/15 13:44:29 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/16 22:23:59 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,9 @@ static int	create_data(char *tmp, t_file_rt **data)
 int	extract_file(char *file, t_file_rt **data)
 {
 	int	fd;
-	char	**line;
 	char	*tmp;
 	
 	(void)data;
-	line = NULL;
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 		return (printf("Error : can't open file\n"), 0);
@@ -117,6 +115,7 @@ int	parsing(int argc, char **argv, char **env, t_minirt *minirt)
 	if (!minirt->camera || !minirt->ambient || !minirt->light)
 		return (printf("Error : need camera, ambient and light\n"),
 			free_list_data(&data), 0);
+	printf("%f %f\n", minirt->camera->fov_x, minirt->camera->fov_y);
 	free_list_data(&data);
 	return (1);
 }

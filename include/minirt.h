@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/15 16:34:57 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/16 22:47:31 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 # define MINIRT_H
 
 # define WIDTH 500
-# define HEIGHT 500
+# define HEIGHT 200
 
 # define ESC 65307
+
+# define PI 3.14159265358979323846
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -47,7 +49,8 @@ typedef struct s_camera
 {
 	double	xyz[3];
 	double	vector_xyz[3];
-	double	fov;
+	double	fov_x;
+	double	fov_y;
 }	t_camera;
 
 typedef struct s_shape
@@ -109,5 +112,7 @@ void	my_mlx_init(t_minirt *minirt);
 void	my_mlx_new_window(t_minirt *minirt, int width, int height, char *title);
 void	display(t_minirt *minirt);
 int		convert_rgb(t_uint8 rgb[3]);
+double	convert_rad(double deg);
+double	convert_deg(double rad);
 
 #endif

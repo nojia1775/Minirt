@@ -1,35 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   display.c                                          :+:      :+:    :+:   */
+/*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/16 23:08:30 by nojia            ###   ########.fr       */
+/*   Created: 2024/11/16 22:32:29 by nojia             #+#    #+#             */
+/*   Updated: 2024/11/16 22:47:03 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-void	display(t_minirt *minirt)
+double	convert_rad(double deg)
 {
-	int	i;
-	int	j;
-	int	x;
-	int	y;
-	double	delta_angle_x = minirt->camera->fov_x / WIDTH;
-	double	delta_angle_y = minirt->camera->fov_y / HEIGHT;
-	double	vector[3] = {0};
+	return (deg * PI / 180);
+}
 
-	i = 0;
-	while (i < HEIGHT)
-	{
-		j = 0;
-		while (j < WIDTH)
-		{
-			x = j - WIDTH / 2;
-			y = i - HEIGHT / 2;
-		}
-	}
+double	convert_deg(double rad)
+{
+	return (rad * 180 / PI);
 }

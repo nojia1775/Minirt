@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extraction.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:12:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/15 12:45:18 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/16 22:46:17 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ int	get_ambient(char **datas, t_minirt *minirt)
 
 int	get_camera(char **datas, t_minirt *minirt)
 {
+	double	rad_fov_x;
+	double	ratio;
+	
 	if (minirt->camera != NULL)
 		return (printf("Error : camera : defined more than 1 time\n"), 0);
 	if (size_double_tab(datas) != 4)
@@ -47,7 +50,11 @@ int	get_camera(char **datas, t_minirt *minirt)
 		return (printf("Error : camera : alloc failed\n"), 0);
 	get_three_double(minirt->camera->xyz, datas[1]);
 	get_three_double(minirt->camera->vector_xyz, datas[2]);
-	minirt->camera->fov = atod(datas[3]);
+	minirt->camera->fov_x = atod(datas[3]);
+	rad_fov_x = convert_rad(minirt->camera->fov_x);
+	ratio = WIDTH / HEIGHT;
+	minirt->camera->fov_y = 2 * atan((tan(rad_fov_x / 2) / ratio));
+	minirt->camera->fov_y = minirt->camera->fov_y * 180 / PI;
 	return (1);
 }
 
