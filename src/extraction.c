@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:12:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/16 22:46:17 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/17 00:33:38 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ int	get_camera(char **datas, t_minirt *minirt)
 	minirt->camera = (t_camera *)ft_calloc(1, sizeof(t_camera));
 	if (!minirt->camera)
 		return (printf("Error : camera : alloc failed\n"), 0);
-	get_three_double(minirt->camera->xyz, datas[1]);
-	get_three_double(minirt->camera->vector_xyz, datas[2]);
+	get_three_double(minirt->camera->xyz.coor, datas[1]);
+	get_three_double(minirt->camera->vector_xyz.coor, datas[2]);
 	minirt->camera->fov_x = atod(datas[3]);
 	rad_fov_x = convert_rad(minirt->camera->fov_x);
 	ratio = WIDTH / HEIGHT;

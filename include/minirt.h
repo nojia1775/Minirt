@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/16 23:16:52 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/17 15:08:18 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # define MINIRT_H
 
 # define WIDTH 500
-# define HEIGHT 200
+# define HEIGHT 500
 
 # define ESC 65307
 
@@ -26,10 +26,21 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <math.h>
+# include <float.h>
 # include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
 
 typedef unsigned char	t_uint8;
+
+typedef struct s_point
+{
+	double	coor[3];
+}	t_point;
+
+typedef struct s_vector
+{
+	double coor[3];
+}	t_vector;
 
 typedef struct s_light
 {
@@ -46,8 +57,8 @@ typedef struct s_ambient
 
 typedef struct s_camera
 {
-	double	xyz[3];
-	double	vector_xyz[3];
+	t_point	xyz;
+	t_vector	vector_xyz;
 	double	fov_x;
 	double	fov_y;
 }	t_camera;
@@ -67,6 +78,7 @@ typedef struct s_shape
 	double		diameter;
 	double		vector_xyz[3];
 	t_matrix	*mat;
+	struct s_shape	*next;
 }	t_shape;
 
 typedef struct s_minirt
@@ -86,11 +98,6 @@ typedef struct s_file_rt
 	char	**line; 
 	struct s_file_rt	*next;
 }	t_file_rt;
-
-typedef struct s_vector
-{
-	double coor[3];
-}	t_vector;
 
 // yann
 t_vector	*create_vector(double x, double y, double z);
@@ -145,5 +152,11 @@ void	display(t_minirt *minirt);
 int		convert_rgb(t_uint8 rgb[3]);
 double	convert_rad(double deg);
 double	convert_deg(double rad);
+t_vector vec_add_vec2(t_vector vec, t_vector add);
+t_point	apply_vec_to_nbr(t_vector vec, t_point point);
+t_vector vec_multiplication2(t_vector vec, double nbr);
+t_vector	vec_normalization2(t_vector vec);
+t_vector	vec_cross(t_vector a, t_vector b);
+double	double_abs(double x);
 
 #endif
