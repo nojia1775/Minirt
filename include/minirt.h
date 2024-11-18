@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/14 17:08:51 by yrio             ###   ########.fr       */
+/*   Updated: 2024/11/18 15:50:29 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,33 @@
 
 # define MINIRT_H
 
+# define WIDTH 500
+# define HEIGHT 500
+
+# define ESC 65307
+
+# define PI 3.14159265358979323846
+
 # include <stdio.h>
 # include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <math.h>
+# include <float.h>
 # include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
 
-typedef unsigned char t_uint8;
+typedef unsigned char	t_uint8;
+
+typedef struct s_point
+{
+	double	coor[3];
+}	t_point;
+
+typedef struct s_vector
+{
+	double coor[3];
+}	t_vector;
 
 typedef struct s_light
 {
@@ -39,9 +57,10 @@ typedef struct s_ambient
 
 typedef struct s_camera
 {
-	double		xyz[3];
-	double		vector_xyz[3];
-	t_uint8	fov;
+	t_point	xyz;
+	t_vector	vector_xyz;
+	double	fov_x;
+	double	fov_y;
 }	t_camera;
 
 typedef struct s_matrix
@@ -52,16 +71,20 @@ typedef struct s_matrix
 
 typedef struct s_shape
 {
+	size_t	index;
 	double		xyz[3];
 	t_uint8	rgb[3];
 	double		height;
 	double		diameter;
 	double		vector_xyz[3];
-	t_matrix 	*mat;
+	t_matrix	*mat;
+	struct s_shape	*next;
 }	t_shape;
 
 typedef struct s_minirt
 {
+	void	*mlx;
+	void	*win;
 	t_shape		*sphere;
 	t_shape		*plan;
 	t_shape		*cylinder;
@@ -77,6 +100,14 @@ typedef struct s_tuple
 
 //vector_utils
 t_tuple	*create_tuple(double x, double y, double z, int w);
+typedef struct s_file_rt
+{
+	char	**line; 
+	struct s_file_rt	*next;
+}	t_file_rt;
+
+// yann
+t_vector	*create_vector(double x, double y, double z);
 
 //tuple_operation
 t_tuple	*vec_add_nbr(t_tuple *vec, double nbr);
@@ -95,6 +126,44 @@ void		display_mat2d(t_matrix *mat, int axis_1, int axis_2, int slice_axis_3);
 //sphere
 t_shape		create_sphere(int height);
 
-int			parsing(int argc, char **argv, char **env);
+// noah
+int		parsing(int argc, char **argv, char **env, t_minirt *minirt);
+void	free_minirt(t_minirt *minirt);
+size_t	strlen_to_space(char *str);
+double	atod(char *nptr);
+void	add_list_data(t_file_rt **list, char **content);
+void	free_list_data(t_file_rt **list);
+int		extract_file(char *file, t_file_rt **data);
+char	**tabdup(char **tab);
+int		is_not_empty(char *str);
+int		is_rt(char *map_name);
+int		char_not_recognized(char *str, char *set);
+size_t	size_double_tab(char **tab);
+int		parse_rgb(char *line);
+int		parse_range(char *line, double min, double max, int nmemb);
+int		get_ambient(char **datas, t_minirt *minirt);
+void	get_three_double(double *tab, char *line);
+void	get_three_int(t_uint8 *tab, char *line);
+int	get_camera(char **datas, t_minirt *minirt);
+int		get_light(char **datas, t_minirt *minirt);
+void	add_list_shape(t_shape **shape);
+void	free_list_shape(t_shape **shape);
+int		get_sphere(char **datas, t_minirt *minirt);
+int		parse_nbr_dot(char *str);
+int		get_plan(char **datas, t_minirt *minirt);
+int		get_cylinder(char **datas, t_minirt *minirt);
+t_shape	*get_this_shape(t_shape *shape, size_t index);
+void	my_mlx_init(t_minirt *minirt);
+void	my_mlx_new_window(t_minirt *minirt, int width, int height, char *title);
+void	display(t_minirt *minirt);
+int		convert_rgb(t_uint8 rgb[3]);
+double	convert_rad(double deg);
+double	convert_deg(double rad);
+t_vector vec_add_vec2(t_vector vec, t_vector add);
+t_point	apply_vec_to_nbr(t_vector vec, t_point point);
+t_vector vec_multiplication2(t_vector vec, double nbr);
+t_vector	vec_normalization2(t_vector vec);
+t_vector	vec_cross(t_vector a, t_vector b);
+double	double_abs(double x);
 
 #endif
