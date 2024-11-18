@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/14 15:42:45 by yrio             ###   ########.fr       */
+/*   Updated: 2024/11/14 17:08:51 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,22 +70,22 @@ typedef struct s_minirt
 	t_ambient	*ambient;
 }	t_minirt;
 
-typedef struct s_vector
+typedef struct s_tuple
 {
-	double coor[3];
-}	t_vector;
+	double coor[4];
+}	t_tuple;
 
 //vector_utils
-t_vector	*create_vector(double x, double y, double z);
+t_tuple	*create_tuple(double x, double y, double z, int w);
 
-//vector_operation
-t_vector	*vec_add_nbr(t_vector *vec, double nbr);
-t_vector	*vec_add_vec(t_vector *vec, t_vector *add);
-t_vector	*vec_sub_vec(t_vector *vec, t_vector *add);
-double		vec_magnitude(t_vector *vec);
-double		dot_product(t_vector *first, t_vector *second, int length);
-t_vector	*vec_normalization(t_vector *vec);
-t_vector	*vec_multiplication(t_vector *vec, double scalar);
+//tuple_operation
+t_tuple	*vec_add_nbr(t_tuple *vec, double nbr);
+t_tuple	*vec_add_vec(t_tuple *vec, t_tuple *add);
+t_tuple	*vec_sub_vec(t_tuple *vec, t_tuple *add);
+double		vec_magnitude(t_tuple *vec);
+double		dot_product(t_tuple *first, t_tuple *second, int length);
+t_tuple	*vec_normalization(t_tuple *vec);
+t_tuple	*vec_multiplication(t_tuple *vec, double scalar);
 
 //matrix
 t_matrix	*alloc_matrix(t_matrix *mat, int x, int y, int z);
