@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/18 15:50:29 by yrio             ###   ########.fr       */
+/*   Updated: 2024/11/18 20:02:46 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ typedef struct s_vector
 	double coor[3];
 }	t_vector;
 
+typedef struct s_tuple
+{
+	double coor[4];
+}	t_tuple;
+
 typedef struct s_light
 {
 	double		xyz[3];
@@ -58,10 +63,16 @@ typedef struct s_ambient
 typedef struct s_camera
 {
 	t_point	xyz;
-	t_vector	vector_xyz;
+	t_tuple	vector_xyz;
 	double	fov_x;
 	double	fov_y;
 }	t_camera;
+
+typedef struct s_canva
+{
+	int	shape[2];
+	int	**array;
+}	t_canva;
 
 typedef struct s_matrix
 {
@@ -93,10 +104,18 @@ typedef struct s_minirt
 	t_ambient	*ambient;
 }	t_minirt;
 
-typedef struct s_tuple
+typedef	struct s_projectile
 {
-	double coor[4];
-}	t_tuple;
+	t_tuple	*position;
+	t_tuple *velocity;
+}	t_projectile;
+
+typedef	struct s_environment
+{
+	t_tuple	*gravity;
+	t_tuple *wind;
+}	t_environment;
+
 
 //vector_utils
 t_tuple	*create_tuple(double x, double y, double z, int w);
@@ -105,6 +124,13 @@ typedef struct s_file_rt
 	char	**line; 
 	struct s_file_rt	*next;
 }	t_file_rt;
+
+//color utils
+int	create_trgb(int t, int r, int g, int b);
+int	get_t(int trgb);
+int	get_r(int trgb);
+int	get_g(int trgb);
+int	get_b(int trgb);
 
 // yann
 t_vector	*create_vector(double x, double y, double z);
@@ -117,6 +143,16 @@ double		vec_magnitude(t_tuple *vec);
 double		dot_product(t_tuple *first, t_tuple *second, int length);
 t_tuple	*vec_normalization(t_tuple *vec);
 t_tuple	*vec_multiplication(t_tuple *vec, double scalar);
+
+//projectile
+t_projectile	*create_projectile(t_tuple *position, t_tuple *velocity);
+t_environment	*create_environment(t_tuple *gravity, t_tuple *wind);
+t_projectile	*tick(t_environment *env, t_projectile *proj);
+
+//canva
+t_canva		*alloc_canva(t_canva *can, int x, int y);
+t_canva		create_canva(int x, int y);
+void		display_canva(t_canva *can);
 
 //matrix
 t_matrix	*alloc_matrix(t_matrix *mat, int x, int y, int z);
@@ -155,15 +191,19 @@ int		get_cylinder(char **datas, t_minirt *minirt);
 t_shape	*get_this_shape(t_shape *shape, size_t index);
 void	my_mlx_init(t_minirt *minirt);
 void	my_mlx_new_window(t_minirt *minirt, int width, int height, char *title);
+
+// display
 void	display(t_minirt *minirt);
+int		put_one_color(t_minirt *minirt, int r, int g, int b);
+
 int		convert_rgb(t_uint8 rgb[3]);
 double	convert_rad(double deg);
 double	convert_deg(double rad);
 t_vector vec_add_vec2(t_vector vec, t_vector add);
 t_point	apply_vec_to_nbr(t_vector vec, t_point point);
-t_vector vec_multiplication2(t_vector vec, double nbr);
-t_vector	vec_normalization2(t_vector vec);
-t_vector	vec_cross(t_vector a, t_vector b);
+t_vector	vec_multiplication2(t_vector vec, double nbr);
+t_tuple	vec_normalization2(t_tuple vec);
+t_tuple	vec_cross(t_tuple a, t_tuple b);
 double	double_abs(double x);
 
 #endif

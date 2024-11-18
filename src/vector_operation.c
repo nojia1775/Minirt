@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:27:13 by yrio              #+#    #+#             */
-/*   Updated: 2024/11/18 15:50:54 by yrio             ###   ########.fr       */
+/*   Updated: 2024/11/18 17:34:46 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_point	apply_vec_to_nbr(t_vector vec, t_point point)
 	return (result);
 }
 
-t_vector *vec_add_vec(t_vector *vec, t_vector *add)
+t_tuple *vec_add_vec(t_tuple *vec, t_tuple *add)
 {
 	if (!vec || !add)
 		return (NULL);
@@ -52,7 +52,7 @@ t_vector vec_add_vec2(t_vector vec, t_vector add)
 	return (result);
 }
 
-t_vector *vec_sub_vec(t_vector *vec, t_vector *add)
+t_tuple *vec_sub_vec(t_tuple *vec, t_tuple *add)
 {
 	if (!vec || !add)
 		return (NULL);
@@ -98,9 +98,9 @@ t_tuple *vec_normalization(t_tuple *vec)
 	return (vec);
 }
 
-t_vector	vec_normalization2(t_vector vec)
+t_tuple	vec_normalization2(t_tuple vec)
 {
-	t_vector	normal;
+	t_tuple	normal;
 	double	length;
 
 	length = vec_magnitude(&vec);
@@ -110,7 +110,7 @@ t_vector	vec_normalization2(t_vector vec)
 	return (normal);
 }
 
-t_vector *vec_multiplication(t_vector *vec, double scalar)
+t_tuple *vec_multiplication(t_tuple *vec, double scalar)
 {
 	int count;
 
@@ -137,12 +137,35 @@ t_vector vec_multiplication2(t_vector vec, double nbr)
 	return (result);
 }
 
-t_vector	vec_cross(t_vector a, t_vector b)
+t_vector *vec_division(t_vector *vec, double nbr)
 {
-	t_vector	result;
+	int count;
+	t_vector	*result;
+
+	count = 0;
+	result = NULL;
+	while (count < 3)
+	{
+		result->coor[count] = vec->coor[count] / nbr;
+		count++;
+	}
+	return (result);
+}
+
+t_tuple	vec_cross(t_tuple a, t_tuple b)
+{
+	t_tuple	result;
 
 	result.coor[0] = a.coor[1] * b.coor[2] - a.coor[2] * b.coor[1];
 	result.coor[1] = a.coor[2] * b.coor[0] - a.coor[0] * b.coor[2];
 	result.coor[2] = a.coor[0] * b.coor[1] - a.coor[1] * b.coor[0];
 	return (result);
+}
+
+t_tuple	negate_tuple(t_tuple tuple)
+{
+	tuple.coor[0] = -tuple.coor[0];
+	tuple.coor[1] = -tuple.coor[1];
+	tuple.coor[2] = -tuple.coor[2];
+	return (tuple);
 }

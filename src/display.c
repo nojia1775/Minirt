@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/17 15:52:50 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/18 19:52:23 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void	display(t_minirt *minirt)
 {	
 	double focal_lenght = (WIDTH / 2) / tan(convert_rad(minirt->camera->fov_x / 2));
-	t_vector v_cam_dir = vec_normalization2(minirt->camera->vector_xyz);
+	t_tuple v_cam_dir = vec_normalization2(minirt->camera->vector_xyz);
 	
-	t_vector U, V, ref;
+	t_tuple U, V, ref;
 
 	ref.coor[0] = 0;
 	ref.coor[1] = 1;
@@ -33,8 +33,8 @@ void	display(t_minirt *minirt)
 	U = vec_normalization2(vec_cross(ref, v_cam_dir));
 	V = vec_normalization2(vec_cross(v_cam_dir, U));
 	
-	t_vector pixel;
-	t_vector pixel_dir;
+	t_tuple pixel;
+	t_tuple pixel_dir;
 
 	int y = 0;
 	while (y < HEIGHT)
@@ -59,4 +59,22 @@ void	display(t_minirt *minirt)
 
 
 	printf("%f, %f, %f\n", pixel_dir.coor[0], pixel_dir.coor[1], pixel_dir.coor[2]);
+}
+
+int	put_one_color(t_minirt *minirt, int r, int g, int b)
+{
+	int count = 0;
+	int	count2 = 0;
+	int	value = create_trgb(0, r, g, b);
+	while (count < 500)
+	{
+		count2 = 0;
+		while (count2 < 500)
+		{
+			mlx_pixel_put(minirt->mlx, minirt->win, count, count2, value);
+			count2++;
+		}
+		count++;
+	}
+	return (1);
 }

@@ -1,36 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   my_mlx_func.c                                      :+:      :+:    :+:   */
+/*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/15 11:04:41 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/18 18:31:54 by yrio             ###   ########.fr       */
+/*   Created: 2024/11/18 19:22:37 by yrio              #+#    #+#             */
+/*   Updated: 2024/11/18 19:23:44 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-void	my_mlx_init(t_minirt *minirt)
+int	create_trgb(int t, int r, int g, int b)
 {
-	minirt->mlx = mlx_init();
-	if (!minirt->mlx)
-	{
-		printf("Error : mlx_init() failed\n");
-		free_minirt(minirt);
-		exit(1);
-	}
+	return (t << 24 | r << 16 | g << 8 | b);
 }
 
-void	my_mlx_new_window(t_minirt *minirt, int width, int height, char *title)
+int	get_t(int trgb)
 {
-	minirt->win = mlx_new_window(minirt->mlx, width, height, title);
-	if (!minirt->win)
-	{
-		printf("Error : mlx_new_window() failed\n");
-		mlx_destroy_display(minirt->mlx);
-		free_minirt(minirt);
-		exit(1);
-	}
+	return ((trgb >> 24) & 0xFF);
+}
+
+int	get_r(int trgb)
+{
+	return ((trgb >> 16) & 0xFF);
+}
+
+int	get_g(int trgb)
+{
+	return ((trgb >> 8) & 0xFF);
+}
+
+int	get_b(int trgb)
+{
+	return (trgb & 0xFF);
 }
