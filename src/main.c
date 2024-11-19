@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/17 00:34:40 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/19 17:33:08 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,42 @@ static int	key_pressed(int key, void *param)
 	minirt = (t_minirt *)param;
 	if (key == ESC)
 		close_win(minirt);
+	else if (key == RIGHT)
+	{
+		mlx_clear_window(minirt->mlx, minirt->win);
+		minirt->camera->xyz.coor[0] += 5;
+		display(minirt);
+	}
+	else if (key == LEFT)
+	{
+		mlx_clear_window(minirt->mlx, minirt->win);
+		minirt->camera->xyz.coor[0] -= 5;
+		display(minirt);
+	}
+	else if (key == UP)
+	{
+		mlx_clear_window(minirt->mlx, minirt->win);
+		minirt->camera->xyz.coor[1] += 5;
+		display(minirt);
+	}
+	else if (key == DOWN)
+	{
+		mlx_clear_window(minirt->mlx, minirt->win);
+		minirt->camera->xyz.coor[1] -= 5;
+		display(minirt);
+	}
+	else if (key == FRONT)
+	{
+		mlx_clear_window(minirt->mlx, minirt->win);
+		minirt->camera->xyz.coor[2] += 5;
+		display(minirt);
+	}
+	else if (key == BACK)
+	{
+		mlx_clear_window(minirt->mlx, minirt->win);
+		minirt->camera->xyz.coor[2] -= 5;
+		display(minirt);
+	}
 	return (1);
 }
 

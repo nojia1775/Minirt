@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:12:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/17 00:33:38 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/19 17:38:16 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	get_camera(char **datas, t_minirt *minirt)
 	ratio = WIDTH / HEIGHT;
 	minirt->camera->fov_y = 2 * atan((tan(rad_fov_x / 2) / ratio));
 	minirt->camera->fov_y = minirt->camera->fov_y * 180 / PI;
+	minirt->camera->focal_length = (WIDTH / 2) / tan(convert_rad(minirt->camera->fov_x / 2));
 	return (1);
 }
 
@@ -98,7 +99,7 @@ int	get_sphere(char **datas, t_minirt *minirt)
 	cur = minirt->sphere;
 	while (cur->next)
 		cur = cur->next;
-	get_three_double(cur->xyz, datas[1]);
+	get_three_double(cur->xyz.coor, datas[1]);
 	cur->diameter = atod(datas[2]);
 	get_three_int(cur->rgb, datas[3]);
 	return (1);
@@ -122,7 +123,7 @@ int	get_plan(char **datas, t_minirt *minirt)
 	cur = minirt->plan;
 	while (cur->next)
 		cur = cur->next;
-	get_three_double(cur->xyz, datas[1]);
+	get_three_double(cur->xyz.coor, datas[1]);
 	get_three_double(cur->vector_xyz, datas[2]);
 	get_three_int(cur->rgb, datas[3]);
 	return (1);

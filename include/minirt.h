@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/17 15:08:18 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/19 18:50:39 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@
 # define HEIGHT 500
 
 # define ESC 65307
+# define RIGHT 65363
+# define UP 65362
+# define LEFT 65361
+# define DOWN 65364
+# define FRONT 122
+# define BACK 115
+# define TURN_LEFT 113
+# define TURN_RIGHT 100
 
 # define PI 3.14159265358979323846
 
@@ -61,6 +69,7 @@ typedef struct s_camera
 	t_vector	vector_xyz;
 	double	fov_x;
 	double	fov_y;
+	double	focal_length;
 }	t_camera;
 
 typedef struct s_matrix
@@ -72,7 +81,7 @@ typedef struct s_matrix
 typedef struct s_shape
 {
 	size_t	index;
-	double		xyz[3];
+	t_point	xyz;
 	t_uint8	rgb[3];
 	double		height;
 	double		diameter;
@@ -158,5 +167,10 @@ t_vector vec_multiplication2(t_vector vec, double nbr);
 t_vector	vec_normalization2(t_vector vec);
 t_vector	vec_cross(t_vector a, t_vector b);
 double	double_abs(double x);
+t_vector	create_vector2(double x, double y, double z);
+t_vector	get_pixel_vector(t_minirt *minirt, int x, int y);
+double	intersec_sphere(t_minirt *minirt, t_vector pixel, t_shape sphere);
+double	get_min(double a, double b);
+double	get_max(double a, double b);
 
 #endif

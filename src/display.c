@@ -6,57 +6,71 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/17 15:52:50 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/19 19:02:35 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
+
+static void	print_pixel(t_minirt *minirt, t_shape shape, int x, int y)
+{
+	int	i;
+	int	j;
+
+	i = y - 2;
+	while (i < 5 + y - 2)
+	{
+		j = x - 2;
+		while (j < 5 + x - 2)
+		{
+			mlx_pixel_put(minirt->mlx, minirt->win, j, i, convert_rgb(shape.rgb));
+			j++;
+		}
+		i++;
+	}
+}
+
+t_shape	*closest_shape(t_minirt *minirt, t_vector pixel)
+{
+	t_shape	*tmp;
+	t_shape	*shape;
+	double	min;
+	double	distance;
+	
+	shape = NULL;
+	min = 1e10;
+	tmp = minirt->sphere;
+	while (tmp)
+	{
+		distance = intersec_sphere(minirt, pixel, *tmp);
+		if (distance != -1 && distance < min)
+		{
+			shape = tmp;
+			min = distance;
+		}
+		tmp = tmp->next;
+	}
+	return (shape);
+}
  
 void	display(t_minirt *minirt)
-{	
-	double focal_lenght = (WIDTH / 2) / tan(convert_rad(minirt->camera->fov_x / 2));
-	t_vector v_cam_dir = vec_normalization2(minirt->camera->vector_xyz);
-	
-	t_vector U, V, ref;
+{
+	t_vector	pixel;
+	t_shape	*sphere;
 
-	ref.coor[0] = 0;
-	ref.coor[1] = 1;
-	ref.coor[2] = 0;
-
-	if (double_abs(minirt->camera->vector_xyz.coor[1]) > 0.99f)
-	{
-		ref.coor[0] = 1;
-		ref.coor[1] = 0;
-		ref.coor[2] = 0;
-	}
-
-	U = vec_normalization2(vec_cross(ref, v_cam_dir));
-	V = vec_normalization2(vec_cross(v_cam_dir, U));
-	
-	t_vector pixel;
-	t_vector pixel_dir;
-
-	int y = 0;
+	int y = 2;
 	while (y < HEIGHT)
 	{
-		int x = 0;
+		int x = 2;
 		while (x < WIDTH)
 		{
-			double u = ((double)x / WIDTH - 0.5) * WIDTH;
-			double v = (0.5 - (double)y / HEIGHT) * HEIGHT;
-			
-			pixel.coor[0] = v_cam_dir.coor[0] * focal_lenght + U.coor[0] * u + V.coor[0] * v;
-			pixel.coor[1] = v_cam_dir.coor[1] * focal_lenght + U.coor[1] * u + V.coor[1] * v;
-			pixel.coor[2] = v_cam_dir.coor[2] * focal_lenght + U.coor[2] * u + V.coor[2] * v;
-
-			pixel_dir = vec_normalization2(pixel);
-		
-			/*RAJOUTER L'EQUATION DU 2ND DEGRES POUR TROUVER INTERSECTION AVEC CERCLE*/
+			sphere = NULL;
+			pixel = get_pixel_vector(minirt, x, y);
+			sphere = closest_shape(minirt, pixel);
+			if (sphere)
+				print_pixel(minirt, *sphere, x, y);
+			x += 5;
 		}
+		y += 5;
 	}
-	
-
-
-
-	printf("%f, %f, %f\n", pixel_dir.coor[0], pixel_dir.coor[1], pixel_dir.coor[2]);
 }
