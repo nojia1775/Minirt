@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:27:13 by yrio              #+#    #+#             */
-/*   Updated: 2024/11/17 14:50:16 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/19 19:31:40 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,16 @@ t_vector *vec_sub_vec(t_vector *vec, t_vector *add)
 	return (vec);
 }
 
+t_vector	vec_sub_vec2(t_vector a, t_vector b)
+{
+	t_vector	result;
+
+	result.coor[0] = a.coor[0] - b.coor[0];
+	result.coor[1] = a.coor[1] - b.coor[1];
+	result.coor[2] = a.coor[2] - b.coor[2];
+	return (result);
+}
+
 double	vec_magnitude(t_vector *vec)
 {
 	if (!vec)
@@ -81,6 +91,12 @@ double dot_product(t_vector *first, t_vector *second, int length)
 		count++;
 	}
 	return (result);
+}
+
+double	dot_product2(t_vector a, t_vector b)
+{
+	return (a.coor[0] * b.coor[0] + a.coor[1] * b.coor[1]
+		+ a.coor[2] * b.coor[2]);
 }
 
 t_vector *vec_normalization(t_vector *vec)

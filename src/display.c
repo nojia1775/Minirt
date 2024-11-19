@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/19 19:02:35 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/19 20:02:00 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,33 +30,69 @@ static void	print_pixel(t_minirt *minirt, t_shape shape, int x, int y)
 	}
 }
 
-t_shape	*closest_shape(t_minirt *minirt, t_vector pixel)
+t_shape	*closest_sphere(t_minirt *minirt, t_vector pixel, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
-	double	min;
 	double	distance;
 	
 	shape = NULL;
-	min = 1e10;
 	tmp = minirt->sphere;
 	while (tmp)
 	{
 		distance = intersec_sphere(minirt, pixel, *tmp);
-		if (distance != -1 && distance < min)
+		if (distance > 0 && distance < *min)
 		{
 			shape = tmp;
-			min = distance;
+			*min = distance;
 		}
 		tmp = tmp->next;
 	}
+	return (shape);
+}
+
+t_shape	*closest_plan(t_minirt *minirt, t_vector pixel, double *min)
+{
+	t_shape	*tmp;
+	t_shape	*shape;
+	double	distance;
+	
+	shape = NULL;
+	tmp = minirt->plan;
+	while (tmp)
+	{
+		distance = intersec_plan(minirt, pixel, *tmp);
+		if (distance > 0 && distance < *min)
+		{
+			shape = tmp;
+			*min = distance;
+		}
+		tmp = tmp->next;
+	}
+	return (shape);
+}
+
+t_shape	*closest_shape(t_minirt *minirt, t_vector pixel)
+{
+	double	min;
+	t_shape	*shape;
+	t_shape	*tmp;
+
+	shape = NULL;
+	min = 1000;
+	tmp = closest_sphere(minirt, pixel, &min);
+	if (tmp)
+		shape = tmp;
+	tmp = closest_plan(minirt, pixel, &min);
+	if (tmp)
+		shape = tmp;
 	return (shape);
 }
  
 void	display(t_minirt *minirt)
 {
 	t_vector	pixel;
-	t_shape	*sphere;
+	t_shape	*shape;
 
 	int y = 2;
 	while (y < HEIGHT)
@@ -64,13 +100,35 @@ void	display(t_minirt *minirt)
 		int x = 2;
 		while (x < WIDTH)
 		{
-			sphere = NULL;
+			shape = NULL;
 			pixel = get_pixel_vector(minirt, x, y);
-			sphere = closest_shape(minirt, pixel);
-			if (sphere)
-				print_pixel(minirt, *sphere, x, y);
+			shape = closest_shape(minirt, pixel);
+			if (shape)
+				print_pixel(minirt, *shape, x, y);
 			x += 5;
 		}
 		y += 5;
+	}
+}
+
+void	display_precision(t_minirt *minirt)
+{
+	t_vector	pixel;
+	t_shape	*shape;
+
+	int y = 0;
+	while (y < HEIGHT)
+	{
+		int x = 0;
+		while (x < WIDTH)
+		{
+			shape = NULL;
+			pixel = get_pixel_vector(minirt, x, y);
+			shape = closest_shape(minirt, pixel);
+			if (shape)
+				mlx_pixel_put(minirt->mlx, minirt->win, x, y, convert_rgb(shape->rgb));
+			x++;
+		}
+		y++;
 	}
 }

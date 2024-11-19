@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/19 18:50:39 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/19 19:49:29 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define BACK 115
 # define TURN_LEFT 113
 # define TURN_RIGHT 100
+# define ENTER 65293
 
 # define PI 3.14159265358979323846
 
@@ -85,7 +86,7 @@ typedef struct s_shape
 	t_uint8	rgb[3];
 	double		height;
 	double		diameter;
-	double		vector_xyz[3];
+	t_vector		vector_xyz;
 	t_matrix	*mat;
 	struct s_shape	*next;
 }	t_shape;
@@ -172,5 +173,9 @@ t_vector	get_pixel_vector(t_minirt *minirt, int x, int y);
 double	intersec_sphere(t_minirt *minirt, t_vector pixel, t_shape sphere);
 double	get_min(double a, double b);
 double	get_max(double a, double b);
+void	display_precision(t_minirt *minirt);
+double	dot_product2(t_vector a, t_vector b);
+t_vector	vec_sub_vec2(t_vector a, t_vector b);
+double	intersec_plan(t_minirt *minirt, t_vector pixel, t_shape plan);
 
 #endif

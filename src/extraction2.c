@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 16:04:38 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/19 15:58:11 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/19 19:30:00 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	get_cylinder(char **datas, t_minirt *minirt)
 	while (cur->next)
 		cur = cur->next;
 	get_three_double(cur->xyz.coor, datas[1]);
-	get_three_double(cur->vector_xyz, datas[2]);
+	get_three_double(cur->vector_xyz.coor, datas[2]);
 	cur->diameter = atod(datas[3]);
 	cur->height = atod(datas[4]);
 	get_three_int(cur->rgb, datas[5]);

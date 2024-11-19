@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/19 17:33:08 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/19 19:14:25 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,11 @@ static int	key_pressed(int key, void *param)
 		mlx_clear_window(minirt->mlx, minirt->win);
 		minirt->camera->xyz.coor[2] -= 5;
 		display(minirt);
+	}
+	else if (key == ENTER)
+	{
+		mlx_clear_window(minirt->mlx, minirt->win);
+		display_precision(minirt);
 	}
 	return (1);
 }
