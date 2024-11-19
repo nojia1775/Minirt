@@ -69,3 +69,24 @@ void	display_canva(t_canva *can)
 		count++;
 	}
 }
+
+int	compare_2Dmatrix(t_canva *can1, t_canva *can2)
+{
+	int	count;
+	int	count2;
+
+	count = 0;
+	count2 = 0;
+	while (count < can1->shape[0])
+	{
+		count2 = 0;
+		while (count2 < can2->shape[1])
+		{
+			if (can1->array[count][count2] != can2->array[count][count2])
+				return (0);
+			count2++;
+		}
+		count++;
+	}
+	return (1);
+}

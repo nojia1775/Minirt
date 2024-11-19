@@ -79,16 +79,20 @@ void	init_minirt(t_minirt *minirt)
 // int	main(int argc, char **argv, char **env)
 // {
 // 	t_minirt	minirt;
+// 	int			width;
+// 	int			height;
 
+// 	width = 900;
+// 	height = 550;
 // 	init_minirt(&minirt);
 // 	if (!parsing(argc, argv, env, &minirt))
 // 		return (free_minirt(&minirt), 1);
 // 	my_mlx_init(&minirt);
-// 	my_mlx_new_window(&minirt, WIDTH, HEIGHT, "MINIRT");
+// 	my_mlx_new_window(&minirt, width, height, "MINIRT");
 // 	mlx_hook(minirt.win, 17, 0, close_win, &minirt);
 // 	mlx_key_hook(minirt.win, key_pressed, &minirt);
-// 	//display(&minirt);
-// 	put_one_color(&minirt, 45, 23, 210);
+// 	put_pixel_projectile(&minirt, height, 45, 23, 210);
+// 	// put_one_color(&minirt, 45, 23, 210);
 // 	mlx_loop(minirt.mlx);
 // 	free_minirt(&minirt);
 // 	return (0);
@@ -97,13 +101,16 @@ void	init_minirt(t_minirt *minirt)
 int	main(void)
 {
 	t_canva	can;
-	t_tuple	*pixel;
 
-	can = create_canva(10, 20);
-	can.array[3][12] = 23;
-	display_canva(&can);
-	pixel = create_tuple(220, 23, 15, 2);
-	printf("width : %d, height : %d\n", can.shape[0], can.shape[1]);
+	can = create_canva(2, 2);
+	can.array[0][0] = 1;
+	can.array[0][1] = 5;
+	can.array[1][0] = -3;
+	can.array[1][1] = 2;
+
+	printf("determinant : %d\n", get_determinant_2X2_matrix(can));
+	//pixel = create_tuple(220, 23, 15, 2);
+	//printf("width : %d, height : %d\n", can.shape[0], can.shape[1]);
 	return (0);
 }
 

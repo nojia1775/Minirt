@@ -17,7 +17,7 @@ t_projectile	*create_projectile(t_tuple *position, t_tuple *velocity)
 	t_projectile	*projectile;
 
 	projectile = NULL;
-	projectile = malloc(sizeof(projectile));
+	projectile = malloc(2 * sizeof(t_projectile));
 	projectile->position = position;
 	projectile->velocity = velocity;
 	return (projectile);
@@ -28,7 +28,7 @@ t_environment	*create_environment(t_tuple *gravity, t_tuple *wind)
 	t_environment	*environment;
 
 	environment = NULL;
-	environment = malloc(sizeof(environment));
+	environment = malloc(sizeof(t_environment));
 	environment->gravity = gravity;
 	environment->wind = wind;
 	return (environment);

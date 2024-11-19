@@ -153,11 +153,18 @@ t_projectile	*tick(t_environment *env, t_projectile *proj);
 t_canva		*alloc_canva(t_canva *can, int x, int y);
 t_canva		create_canva(int x, int y);
 void		display_canva(t_canva *can);
+int			compare_2Dmatrix(t_canva *can1, t_canva *can2);
 
 //matrix
 t_matrix	*alloc_matrix(t_matrix *mat, int x, int y, int z);
 t_matrix	create_matrix(int x, int y, int z);
 void		display_mat2d(t_matrix *mat, int axis_1, int axis_2, int slice_axis_3);
+
+//matrix_utils
+t_canva    multiplying_4X4_matrix(t_canva *mat1, t_canva *mat2);
+t_tuple		*multiplying_matrix_tuple(t_canva *mat, t_tuple tup);
+t_canva		transpose_4X4_matrix(t_canva mat);
+int			get_determinant_2X2_matrix(t_canva mat);
 
 //sphere
 t_shape		create_sphere(int height);
@@ -195,6 +202,7 @@ void	my_mlx_new_window(t_minirt *minirt, int width, int height, char *title);
 // display
 void	display(t_minirt *minirt);
 int		put_one_color(t_minirt *minirt, int r, int g, int b);
+void	put_pixel_projectile(t_minirt *minirt, int height, int r, int g, int b);
 
 int		convert_rgb(t_uint8 rgb[3]);
 double	convert_rad(double deg);

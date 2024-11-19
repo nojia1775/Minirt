@@ -78,3 +78,37 @@ int	put_one_color(t_minirt *minirt, int r, int g, int b)
 	}
 	return (1);
 }
+
+void	put_pixel_projectile(t_minirt *minirt, int height, int r, int g, int b)
+{
+	int count = 0;
+	int	count2 = 0;
+	int	value = create_trgb(0, r, g, b);
+	t_tuple			*position;
+	t_tuple			*velocity;
+	t_tuple			*gravity;
+	t_tuple			*wind;
+	t_projectile	*proj;
+	t_environment	*env;
+	position = create_tuple(0, 1, 0, 1);
+	velocity = vec_multiplication(vec_normalization(create_tuple(1, 1.8, 0, 0)), 11.25);
+	proj = create_projectile(position, velocity);
+	gravity = create_tuple(0, -0.1, 0, 0);
+	wind = create_tuple(-0.01, 0, 0, 0);
+	env = create_environment(gravity, wind);
+	while (count < 500)
+	{
+		count2 = 0;
+		printf("projectile position : %f , %f , %f | velocity : %f , %f , %f\n", 
+			proj->position->coor[0], proj->position->coor[1], 
+			proj->position->coor[2], proj->velocity->coor[0],
+			proj->velocity->coor[1], proj->velocity->coor[2]);
+		proj = tick(env, proj);
+		while (count2 < 500)
+		{
+			mlx_pixel_put(minirt->mlx, minirt->win, count, height - proj->position->coor[1], value);
+			count2++;
+		}
+		count++;
+	}
+}
