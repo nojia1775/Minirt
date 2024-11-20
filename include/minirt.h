@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/18 20:02:46 by yrio             ###   ########.fr       */
+/*   Updated: 2024/11/20 18:37:35 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,10 +161,17 @@ t_matrix	create_matrix(int x, int y, int z);
 void		display_mat2d(t_matrix *mat, int axis_1, int axis_2, int slice_axis_3);
 
 //matrix_utils
-t_canva    multiplying_4X4_matrix(t_canva *mat1, t_canva *mat2);
+t_canva    	multiplying_4X4_matrix(t_canva *mat1, t_canva *mat2);
 t_tuple		*multiplying_matrix_tuple(t_canva *mat, t_tuple tup);
 t_canva		transpose_4X4_matrix(t_canva mat);
 int			get_determinant_2X2_matrix(t_canva mat);
+t_canva		get_submatrix(t_canva matrix, int row, int column);
+int			get_minor_3X3_matrix(t_canva mat, int row, int column);
+int			get_cofactor_3X3_matrix(t_canva mat, int row, int column);
+int			get_determinant_3X3_matrix(t_canva mat, int row);
+int			get_minor_4X4_matrix(t_canva mat, int row, int columns);
+int			get_cofactor_4X4_matrix(t_canva mat, int row, int column);
+int			get_determinant_4X4_matrix(t_canva mat, int row);
 
 //sphere
 t_shape		create_sphere(int height);
