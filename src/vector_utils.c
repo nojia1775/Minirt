@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:06:21 by yrio              #+#    #+#             */
-/*   Updated: 2024/11/19 18:47:25 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/21 14:52:25 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,13 @@ t_vector	get_pixel_vector(t_minirt *minirt, int x, int y)
 	t_vector	pixel;
 	double		x_screen;
 	double		y_screen;
-	
+
 	normal_v_cam = vec_normalization2(minirt->camera->vector_xyz);
-	U = vec_normalization2(vec_cross(create_vector2(0, 1, 0), normal_v_cam));
+	if (double_abs(normal_v_cam.coor[0]) <= 0.1
+		&& double_abs(normal_v_cam.coor[1]) >= 0.9 && double_abs(normal_v_cam.coor[2]) <= 0.1)
+		U = vec_normalization2(vec_cross(create_vector2(0, 0, 1), normal_v_cam));
+	else
+		U = vec_normalization2(vec_cross(create_vector2(0, 1, 0), normal_v_cam));
 	V = vec_normalization2(vec_cross(normal_v_cam, U));
 	x_screen = ((double)x / WIDTH - 0.5) * WIDTH;
 	y_screen = (0.5 - (double)y / HEIGHT) * HEIGHT;

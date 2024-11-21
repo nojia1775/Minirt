@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/19 19:49:29 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/21 16:24:10 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@
 # define UP 65362
 # define LEFT 65361
 # define DOWN 65364
-# define FRONT 122
-# define BACK 115
-# define TURN_LEFT 113
-# define TURN_RIGHT 100
+# define Z 122
+# define S 115
+# define Q 113
+# define D 100
 # define ENTER 65293
+# define SPACE 32
+# define SHIFT 65505
 
 # define PI 3.14159265358979323846
 
@@ -177,5 +179,10 @@ void	display_precision(t_minirt *minirt);
 double	dot_product2(t_vector a, t_vector b);
 t_vector	vec_sub_vec2(t_vector a, t_vector b);
 double	intersec_plan(t_minirt *minirt, t_vector pixel, t_shape plan);
+void	cam_around_y(t_minirt *minirt, double angle);
+void	cam_look_updown(t_minirt *minirt, double angle);
+void	cam_go_front(t_minirt *minirt);
+void	cam_go_back(t_minirt *minirt);
+void	print_coor(void *coor);
 
 #endif

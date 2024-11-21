@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/19 19:14:25 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/21 16:19:17 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,29 +42,17 @@ static int	key_pressed(int key, void *param)
 		display(minirt);
 	}
 	else if (key == UP)
-	{
-		mlx_clear_window(minirt->mlx, minirt->win);
-		minirt->camera->xyz.coor[1] += 5;
-		display(minirt);
-	}
+		cam_go_front(minirt);
 	else if (key == DOWN)
-	{
-		mlx_clear_window(minirt->mlx, minirt->win);
-		minirt->camera->xyz.coor[1] -= 5;
-		display(minirt);
-	}
-	else if (key == FRONT)
-	{
-		mlx_clear_window(minirt->mlx, minirt->win);
-		minirt->camera->xyz.coor[2] += 5;
-		display(minirt);
-	}
-	else if (key == BACK)
-	{
-		mlx_clear_window(minirt->mlx, minirt->win);
-		minirt->camera->xyz.coor[2] -= 5;
-		display(minirt);
-	}
+		cam_go_back(minirt);
+	else if (key == Z)
+		cam_look_updown(minirt, PI / 8.0);
+	else if (key == S)
+		cam_look_updown(minirt, -PI / 8.0);
+	else if (key == Q)
+		cam_around_y(minirt, -PI / 8.0);
+	else if (key == D)
+		cam_around_y(minirt, PI / 8.0);
 	else if (key == ENTER)
 	{
 		mlx_clear_window(minirt->mlx, minirt->win);
