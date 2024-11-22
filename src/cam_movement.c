@@ -6,17 +6,17 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 12:16:41 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/21 16:37:45 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/22 15:06:12 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-void	cam_around_y(t_minirt *minirt, double angle)
+void	cam_look_leftright(t_minirt *minirt, double angle)
 {
 	double	x;
 	double	z;
-
+	
 	x = minirt->camera->vector_xyz.coor[0];
 	z = minirt->camera->vector_xyz.coor[2];
 	minirt->camera->vector_xyz.coor[0] = x * cos(angle) + z * sin(angle);
@@ -27,45 +27,76 @@ void	cam_around_y(t_minirt *minirt, double angle)
 
 void	cam_look_updown(t_minirt *minirt, double angle)
 {
-	t_vector	right;
+	t_vector	old_cam;
 	t_vector	up;
-	t_vector	tmp_cam;
 
-	if (minirt->camera->vector_xyz.coor[1] >= 0.9 && angle > 0)
+	if ((minirt->camera->vector_xyz.coor[1] >= 0.9 && angle < 0)
+		|| (minirt->camera->vector_xyz.coor[1] <= -0.9 && angle > 0))
 		return ;
-	else if (minirt->camera->vector_xyz.coor[1] <= -0.9 && angle < 0)
-		return ;
-	tmp_cam = vec_normalization2(minirt->camera->vector_xyz);
-	if (double_abs(tmp_cam.coor[0]) == 1 && double_abs(tmp_cam.coor[1]) == 0
-		&& double_abs(tmp_cam.coor[2]) == 0)
-		up = vec_cross(tmp_cam, create_vector2(0, 0, 1));
+	old_cam = vec_normalization2(minirt->camera->vector_xyz);
+	if (double_abs(old_cam.coor[0]) == 0 && double_abs(old_cam.coor[1]) == 1
+		&& double_abs(old_cam.coor[2]) == 0)
+		up = create_vector2(-1, 0, 0);
 	else
-		up = vec_cross(tmp_cam, create_vector2(1, 0, 0));
-	right = vec_cross(up, tmp_cam);
-	print_coor(&right); 
-	minirt->camera->vector_xyz = vec_add_vec2(vec_add_vec2	
-		(vec_multiplication2(tmp_cam, cos(angle)), vec_multiplication2
-		(vec_cross(right, tmp_cam), sin(angle))), vec_multiplication2
-		(right, dot_product2(right, tmp_cam) * (1.0 - cos(angle))));
+		up = create_vector2(0, 1, 0);
+	up = vec_cross(vec_cross(up, old_cam), old_cam);
+	up = vec_normalization2(up);
+	minirt->camera->vector_xyz.coor[0] = old_cam.coor[0] * cos(angle)
+		+ up.coor[0] * sin(angle);
+	minirt->camera->vector_xyz.coor[1] = old_cam.coor[1] * cos(angle)
+		+ up.coor[1] * sin(angle);
+	minirt->camera->vector_xyz.coor[2] = old_cam.coor[2] * cos(angle)
+		+ up.coor[2] * sin(angle);
+	minirt->camera->vector_xyz = vec_normalization2(minirt->camera->vector_xyz);
 	mlx_clear_window(minirt->mlx, minirt->win);
 	display(minirt);
 }
 
-void	cam_go_front(t_minirt *minirt)
+void	cam_go_frontback(t_minirt *minirt, int dir)
 {
 	minirt->camera->xyz = apply_vec_to_nbr(vec_multiplication2(
-		vec_normalization2(minirt->camera->vector_xyz), 5),
+		vec_normalization2(minirt->camera->vector_xyz), 5 * dir),
 		minirt->camera->xyz);
 	mlx_clear_window(minirt->mlx, minirt->win);
 	display(minirt);
 }
 
-void	cam_go_back(t_minirt *minirt)
+void	cam_go_leftright(t_minirt *minirt, int left_right)
 {
-	minirt->camera->xyz = apply_vec_to_nbr(
-		vec_multiplication2(
-		vec_normalization2(minirt->camera->vector_xyz), -5),
-		minirt->camera->xyz);
+	t_vector	right;
+	t_vector	up;
+
+	if (double_abs(minirt->camera->vector_xyz.coor[0] == 0
+		&& double_abs(minirt->camera->vector_xyz.coor[1] == 1
+		&& double_abs(minirt->camera->vector_xyz.coor[2] == 0))))
+		up = create_vector2(-1, 0, 0);
+	else
+		up = create_vector2(0, -1, 0);
+	up = vec_cross(vec_cross(up, minirt->camera->vector_xyz),
+		minirt->camera->vector_xyz);
+	right = vec_cross(up, minirt->camera->vector_xyz);
+	right = vec_multiplication2(right, left_right * 5);
+	minirt->camera->xyz = apply_vec_to_nbr(right, minirt->camera->xyz);
+	mlx_clear_window(minirt->mlx, minirt->win);
+	display(minirt);
+}
+
+void	cam_go_updown(t_minirt *minirt, int up_down)
+{
+	t_vector	right;
+	t_vector	up;
+
+	if (double_abs(minirt->camera->vector_xyz.coor[0] == 0
+		&& double_abs(minirt->camera->vector_xyz.coor[1] == 1
+		&& double_abs(minirt->camera->vector_xyz.coor[2] == 0))))
+		right = create_vector2(0, -1, 0);
+	else
+		right = create_vector2(-1, 0, 0);
+	right = vec_cross(vec_cross(right, minirt->camera->vector_xyz),
+		minirt->camera->vector_xyz);
+	up = vec_cross(right, minirt->camera->vector_xyz);
+	up = vec_multiplication2(up, up_down * 5);
+	minirt->camera->xyz = apply_vec_to_nbr(up, minirt->camera->xyz);
 	mlx_clear_window(minirt->mlx, minirt->win);
 	display(minirt);
 }

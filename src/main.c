@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/21 16:19:17 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/22 15:06:35 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,29 +30,25 @@ static int	key_pressed(int key, void *param)
 	if (key == ESC)
 		close_win(minirt);
 	else if (key == RIGHT)
-	{
-		mlx_clear_window(minirt->mlx, minirt->win);
-		minirt->camera->xyz.coor[0] += 5;
-		display(minirt);
-	}
+		cam_go_leftright(minirt, 1);
 	else if (key == LEFT)
-	{
-		mlx_clear_window(minirt->mlx, minirt->win);
-		minirt->camera->xyz.coor[0] -= 5;
-		display(minirt);
-	}
+		cam_go_leftright(minirt, -1);
 	else if (key == UP)
-		cam_go_front(minirt);
+		cam_go_frontback(minirt, 1);
 	else if (key == DOWN)
-		cam_go_back(minirt);
+		cam_go_frontback(minirt, -1);
 	else if (key == Z)
-		cam_look_updown(minirt, PI / 8.0);
-	else if (key == S)
 		cam_look_updown(minirt, -PI / 8.0);
+	else if (key == S)
+		cam_look_updown(minirt, PI / 8.0);
 	else if (key == Q)
-		cam_around_y(minirt, -PI / 8.0);
+		cam_look_leftright(minirt, -PI / 8.0);
 	else if (key == D)
-		cam_around_y(minirt, PI / 8.0);
+		cam_look_leftright(minirt, PI / 8.0);
+	else if (key == TAB)
+		cam_go_updown(minirt, 1);
+	else if (key == SPACE)
+		cam_go_updown(minirt, -1);
 	else if (key == ENTER)
 	{
 		mlx_clear_window(minirt->mlx, minirt->win);
