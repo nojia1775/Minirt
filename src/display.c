@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/19 20:02:00 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/23 13:03:46 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	print_pixel(t_minirt *minirt, t_shape shape, int x, int y)
 	}
 }
 
-t_shape	*closest_sphere(t_minirt *minirt, t_vector pixel, double *min)
+static t_shape	*closest_sphere(t_minirt *minirt, t_vector pixel, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -51,7 +51,7 @@ t_shape	*closest_sphere(t_minirt *minirt, t_vector pixel, double *min)
 	return (shape);
 }
 
-t_shape	*closest_plan(t_minirt *minirt, t_vector pixel, double *min)
+static t_shape	*closest_plan(t_minirt *minirt, t_vector pixel, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -62,6 +62,28 @@ t_shape	*closest_plan(t_minirt *minirt, t_vector pixel, double *min)
 	while (tmp)
 	{
 		distance = intersec_plan(minirt, pixel, *tmp);
+		if (distance > 0 && distance < *min)
+		{
+			shape = tmp;
+			*min = distance;
+		}
+		tmp = tmp->next;
+	}
+	return (shape);
+}
+
+static t_shape	*closest_cylinder(t_minirt *minirt, t_vector pixel, double *min)
+{
+	t_shape	*tmp;
+	t_shape	*shape;
+	double	distance;
+	
+	shape = NULL;
+	tmp = minirt->cylinder;
+	while (tmp)
+	{
+		distance = intersec_cylinder(minirt, pixel, *tmp);
+		printf("distance = %f\n", distance);
 		if (distance > 0 && distance < *min)
 		{
 			shape = tmp;
@@ -84,6 +106,9 @@ t_shape	*closest_shape(t_minirt *minirt, t_vector pixel)
 	if (tmp)
 		shape = tmp;
 	tmp = closest_plan(minirt, pixel, &min);
+	if (tmp)
+		shape = tmp;
+	tmp = closest_cylinder(minirt, pixel, &min);
 	if (tmp)
 		shape = tmp;
 	return (shape);

@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:27:13 by yrio              #+#    #+#             */
-/*   Updated: 2024/11/19 19:31:40 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/23 12:25:38 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,11 @@ double	vec_magnitude(t_vector *vec)
 	if (!vec)
 		return (-1);
 	return (sqrt(pow(vec->coor[0], 2) + pow(vec->coor[1], 2) + pow(vec->coor[2], 2)));
+}
+
+double	vec_magnitude2(t_vector vec)
+{
+	return (sqrt(pow(vec.coor[0], 2) + pow(vec.coor[1], 2) + pow(vec.coor[2], 2)));
 }
 
 double dot_product(t_vector *first, t_vector *second, int length)

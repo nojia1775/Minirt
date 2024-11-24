@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/22 15:03:12 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/24 17:54:17 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 # define MINIRT_H
 
-# define WIDTH 500
-# define HEIGHT 500
+# define WIDTH 1000
+# define HEIGHT 700
 
 # define ESC 65307
 # define RIGHT 65363
@@ -185,5 +185,7 @@ void	cam_go_frontback(t_minirt *minirt, int dir);
 void	print_coor(void *coor);
 void	cam_go_leftright(t_minirt *minirt, int left_right);
 void	cam_go_updown(t_minirt *minirt, int up_down);
+double	intersec_cylinder(t_minirt *minirt, t_vector pixel, t_shape cylinder);
+double	vec_magnitude2(t_vector vec);
 
 #endif
