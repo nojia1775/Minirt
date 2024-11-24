@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/23 13:58:16 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/24 20:45:10 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,9 @@ double	intersec_cylinder(t_minirt *minirt, t_vector pixel, t_shape cy)
 	double	b;
 	double	c;
 	double	delta;
-
+	t_point	intersec;
+	t_vector	intersec_proj;
+	
 	pixel = vec_normalization2(pixel);
 	a = pow(vec_magnitude2(vec_sub_vec2(pixel, vec_multiplication2(
 		cy.vector_xyz, dot_product2(pixel, cy.vector_xyz)))), 2);
@@ -76,5 +78,23 @@ double	intersec_cylinder(t_minirt *minirt, t_vector pixel, t_shape cy)
 	printf("a = %f b = %f c = %f delta = %f\n", a, b, c, delta);
 	if (delta < 0)
 		return (-1);
-	return (get_min((-b + sqrt(delta)) / (2 * a), (-b - sqrt(delta)) / (2 * a)));
+	intersec = apply_vec_to_nbr(vec_multiplication2(pixel, get_min(
+		(-b + sqrt(delta)) / (2 * a), (-b - sqrt(delta)) / (2 * a))),
+		minirt->camera->xyz);
+	intersec_proj = vec_add_vec2(*(t_vector *)&cy.xyz, vec_multiplication2(
+		cy.vector_xyz, dot_product2(create_vector2(
+		intersec.coor[0] - cy.xyz.coor[0],
+		intersec.coor[1] - cy.xyz.coor[1],
+		intersec.coor[2] - cy.xyz.coor[2]), cy.vector_xyz)));
+	if (dot_product2(create_vector2(intersec_proj.coor[0] - cy.xyz.coor[0],
+		intersec_proj.coor[1] - cy.xyz.coor[1],
+		intersec_proj.coor[2] - cy.xyz.coor[2]), cy.vector_xyz) < 0)
+		return (-1);
+	if (vec_magnitude2(create_vector2(
+		intersec_proj.coor[0] - cy.xyz.coor[0],
+		intersec_proj.coor[1] - cy.xyz.coor[1],
+		intersec_proj.coor[2] - cy.xyz.coor[2])) > cy.height)
+		return (-1);
+	return (get_min((-b + sqrt(delta)) / (2 * a),
+		(-b - sqrt(delta)) / (2 * a)));
 }

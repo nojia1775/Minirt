@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/23 13:03:46 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/24 18:06:43 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ static t_shape	*closest_cylinder(t_minirt *minirt, t_vector pixel, double *min)
 	while (tmp)
 	{
 		distance = intersec_cylinder(minirt, pixel, *tmp);
-		printf("distance = %f\n", distance);
 		if (distance > 0 && distance < *min)
 		{
 			shape = tmp;
