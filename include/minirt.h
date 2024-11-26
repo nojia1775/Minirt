@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/20 18:37:35 by yrio             ###   ########.fr       */
+/*   Updated: 2024/11/26 18:09:36 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,8 @@ int			get_determinant_3X3_matrix(t_canva mat, int row);
 int			get_minor_4X4_matrix(t_canva mat, int row, int columns);
 int			get_cofactor_4X4_matrix(t_canva mat, int row, int column);
 int			get_determinant_4X4_matrix(t_canva mat, int row);
+int			matrix_4X4_isinvertible(t_canva mat);
+t_canva		inverse_matrix_4X4(t_canva mat);
 
 //sphere
 t_shape		create_sphere(int height);

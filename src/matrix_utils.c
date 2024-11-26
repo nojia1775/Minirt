@@ -96,13 +96,13 @@ t_canva get_submatrix(t_canva matrix, int row, int column)
     count4 = 0;
     while (count < matrix.shape[0])
     {
-        if (count != row && count3 < submatrix.shape[0])
+        if (count != row)
         {
             count2 = 0;
             count4 = 0;
             while (count2 < matrix.shape[1])
             {
-                if (count2 != column && count4 < submatrix.shape[1])
+                if (count2 != column && count3 < submatrix.shape[0] && count4 < submatrix.shape[1])
                 {
                     submatrix.array[count3][count4] = matrix.array[count][count2];
                     count4++;
@@ -144,6 +144,8 @@ int get_determinant_3X3_matrix(t_canva mat, int row)
     cofactor1 = get_cofactor_3X3_matrix(mat, row, 0);
     cofactor2 = get_cofactor_3X3_matrix(mat, row, 1);
     cofactor3 = get_cofactor_3X3_matrix(mat, row, 2);
+    if (row >= 3)
+        row = 2;
     return (mat.array[row][0] * cofactor1 +
             mat.array[row][1] * cofactor2 +
             mat.array[row][2] * cofactor3);
@@ -160,7 +162,6 @@ int get_minor_4X4_matrix(t_canva mat, int row, int column)
 int get_cofactor_4X4_matrix(t_canva mat, int row, int column)
 {
     int minor;
-
     minor = get_minor_4X4_matrix(mat, row, column);
     if ((row + column) % 2)
         return (-minor);
@@ -175,6 +176,8 @@ int get_determinant_4X4_matrix(t_canva mat, int row)
     int cofactor3;
     int cofactor4;
 
+    if (row >= 3)
+        row = 2;
     cofactor1 = get_cofactor_4X4_matrix(mat, row, 0);
     cofactor2 = get_cofactor_4X4_matrix(mat, row, 1);
     cofactor3 = get_cofactor_4X4_matrix(mat, row, 2);
@@ -183,4 +186,38 @@ int get_determinant_4X4_matrix(t_canva mat, int row)
             mat.array[row][1] * cofactor2 +
             mat.array[row][2] * cofactor3 +
             mat.array[row][3] * cofactor4);
+}
+
+int matrix_4X4_isinvertible(t_canva mat)
+{
+    int determinant;
+
+    determinant = get_determinant_4X4_matrix(mat, 0);
+    if (determinant == 0)
+        return (0);
+    else
+        return (1);
+}
+
+t_canva inverse_matrix_4X4(t_canva mat)
+{
+    t_canva result;
+    int     count;
+    int     count2;
+
+    result = create_canva(4, 4);
+    count = 0;
+    count2 = 0;
+    while (count < 4)
+    {
+        count2 = 0;
+        while (count2 < 4)
+        {
+            result.array[count][count2] = get_cofactor_4X4_matrix(mat, count, count2);
+            count2++;
+        }
+        count++;
+    }
+    display_canva(&result);
+    return (result);
 }
