@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cam_movement.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 12:16:41 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/23 14:04:15 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/26 16:22:42 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,20 +83,13 @@ void	cam_go_leftright(t_minirt *minirt, int left_right)
 
 void	cam_go_updown(t_minirt *minirt, int up_down)
 {
-	t_vector	right;
 	t_vector	up;
 
-	if (double_abs(minirt->camera->vector_xyz.coor[0] == 0
-		&& double_abs(minirt->camera->vector_xyz.coor[1] == 1
-		&& double_abs(minirt->camera->vector_xyz.coor[2] == 0))))
-		right = create_vector2(0, -1, 0);
-	else
-		right = create_vector2(-1, 0, 0);
-	right = vec_cross(vec_cross(right, minirt->camera->vector_xyz),
-		minirt->camera->vector_xyz);
-	up = vec_cross(right, minirt->camera->vector_xyz);
-	up = vec_multiplication2(up, up_down * 5);
-	minirt->camera->xyz = apply_vec_to_nbr(up, minirt->camera->xyz);
+	up.coor[0] = 0;
+	up.coor[1] = 5;
+	up.coor[2] = 0;
+	minirt->camera->xyz = apply_vec_to_nbr(vec_multiplication2(up, up_down),
+		minirt->camera->xyz);
 	mlx_clear_window(minirt->mlx, minirt->win);
 	display(minirt);
 }

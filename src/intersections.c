@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/24 20:45:10 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/26 16:14:38 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,10 @@ double	intersec_plan(t_minirt *minirt, t_vector pixel, t_shape plan)
 		/ dot_product2(plan.vector_xyz, pixel));
 }
 
+// double	intersec_cylinder(t_minirt *minirt, t_vector pixel, t_shape cy)
+// {
+	
+// }
 double	intersec_cylinder(t_minirt *minirt, t_vector pixel, t_shape cy)
 {
 	double	a;
@@ -75,7 +79,6 @@ double	intersec_cylinder(t_minirt *minirt, t_vector pixel, t_shape cy)
 		*(t_vector *)&minirt->camera->xyz, *(t_vector *)&cy.xyz)))))),
 		2) - pow(cy.diameter / 2, 2);
 	delta = pow(b, 2) - 4 * a * c;
-	printf("a = %f b = %f c = %f delta = %f\n", a, b, c, delta);
 	if (delta < 0)
 		return (-1);
 	intersec = apply_vec_to_nbr(vec_multiplication2(pixel, get_min(

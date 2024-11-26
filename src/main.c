@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/24 20:39:06 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/26 18:04:23 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,26 @@ static int	key_pressed(int key, void *param)
 	minirt = (t_minirt *)param;
 	if (key == ESC)
 		close_win(minirt);
-	else if (key == RIGHT)
+	else if (key == A_RIGHT)
 		cam_go_leftright(minirt, 1);
-	else if (key == LEFT)
+	else if (key == A_LEFT)
 		cam_go_leftright(minirt, -1);
-	else if (key == UP)
+	else if (key == A_UP)
 		cam_go_frontback(minirt, 1);
-	else if (key == DOWN)
+	else if (key == A_DOWN)
 		cam_go_frontback(minirt, -1);
-	else if (key == Z)
+	else if (key == UP)
 		cam_look_updown(minirt, -PI / 8.0);
-	else if (key == S)
+	else if (key == DOWN)
 		cam_look_updown(minirt, PI / 8.0);
-	else if (key == Q)
+	else if (key == LEFT)
 		cam_look_leftright(minirt, -PI / 8.0);
-	else if (key == D)
+	else if (key == RIGHT)
 		cam_look_leftright(minirt, PI / 8.0);
 	else if (key == TAB)
-		cam_go_updown(minirt, 1);
-	else if (key == SPACE)
 		cam_go_updown(minirt, -1);
+	else if (key == SPACE)
+		cam_go_updown(minirt, 1);
 	else if (key == ENTER)
 	{
 		mlx_clear_window(minirt->mlx, minirt->win);
@@ -67,6 +67,10 @@ void	init_minirt(t_minirt *minirt)
 	minirt->sphere = NULL;
 	minirt->mlx = NULL;
 	minirt->win = NULL;
+	minirt->addr_img = NULL;
+	minirt->img = NULL;
+	minirt->bits = 0;
+	minirt->size_line = 0;
 }
 
 int	main(int argc, char **argv, char **env)
