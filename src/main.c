@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/26 18:36:08 by yrio             ###   ########.fr       */
+/*   Updated: 2024/11/27 18:03:57 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,26 +101,58 @@ void	init_minirt(t_minirt *minirt)
 int	main(void)
 {
 	t_canva	can;
+	t_canva	can2;
+
+	test_multiply_matrix();
+	test_multiply_matrix_4X4_by_tuple();
+	transposing_matrix_4X4();
+	test_determinant_2X2_matrix();
+	test_submatrix_of_3X3_matrix();
+	test_submatrix_of_4X4_matrix();
+	test_minor_3X3_matrix();
+	test_cofactor_3X3_matrix();
+	test_determinant_3X3_matrix();
+	test_determinant_of_4X4_matrix();
+	test1_invert_4X4_matrix();
+	test_multiply_product_by_inverse();
 
 	can = create_canva(4, 4);
-	can.array[0][0] = -5;
-	can.array[0][1] = 2;
-	can.array[0][2] = 6;
-	can.array[0][3] = -8;
-	can.array[1][0] = 1;
-	can.array[1][1] = -5;
-	can.array[1][2] = 1;
-	can.array[1][3] = 8;
-	can.array[2][0] = 7;
-	can.array[2][1] = 7;
-	can.array[2][2] = -6;
-	can.array[2][3] = -7;
-	can.array[3][0] = 1;
-	can.array[3][1] = -3;
-	can.array[3][2] = 7;
-	can.array[3][3] = 4;
+	can.array[0][0] = -5.0;
+	can.array[0][1] = 2.0;
+	can.array[0][2] = 6.0;
+	can.array[0][3] = -8.0;
+	can.array[1][0] = 1.0;
+	can.array[1][1] = -5.0;
+	can.array[1][2] = 1.0;
+	can.array[1][3] = 8.0;
+	can.array[2][0] = 7.0;
+	can.array[2][1] = 7.0;
+	can.array[2][2] = -6.0;
+	can.array[2][3] = -7.0;
+	can.array[3][0] = 1.0;
+	can.array[3][1] = -3.0;
+	can.array[3][2] = 7.0;
+	can.array[3][3] = 4.0;
 
-	printf("cofactor : %d\n", get_cofactor_4X4_matrix(can, 0, 0));
+	can2 = create_canva(4, 4);
+	can2.array[0][0] = -2;
+	can2.array[0][1] = -8;
+	can2.array[0][2] = 3;
+	can2.array[0][3] = 5;
+	can2.array[1][0] = -3;
+	can2.array[1][1] = 1;
+	can2.array[1][2] = 7;
+	can2.array[1][3] = 3;
+	can2.array[2][0] = 1;
+	can2.array[2][1] = 2;
+	can2.array[2][2] = -9;
+	can2.array[2][3] = 6;
+	can2.array[3][0] = -6;
+	can2.array[3][1] = 7;
+	can2.array[3][2] = 7;
+	can2.array[3][3] = -9;
+
+	inverse_matrix_4X4(can);
 	//pixel = create_tuple(220, 23, 15, 2);
 	//printf("width : %d, height : %d\n", can.shape[0], can.shape[1]);
 	return (0);

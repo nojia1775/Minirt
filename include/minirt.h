@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/26 18:09:36 by yrio             ###   ########.fr       */
+/*   Updated: 2024/11/27 18:04:06 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ typedef struct s_camera
 
 typedef struct s_canva
 {
-	int	shape[2];
-	int	**array;
+	int		shape[2];
+	double	**array;
 }	t_canva;
 
 typedef struct s_matrix
@@ -168,12 +168,27 @@ int			get_determinant_2X2_matrix(t_canva mat);
 t_canva		get_submatrix(t_canva matrix, int row, int column);
 int			get_minor_3X3_matrix(t_canva mat, int row, int column);
 int			get_cofactor_3X3_matrix(t_canva mat, int row, int column);
-int			get_determinant_3X3_matrix(t_canva mat, int row);
+int			get_determinant_3X3_matrix(t_canva mat, int row, int column);
 int			get_minor_4X4_matrix(t_canva mat, int row, int columns);
 int			get_cofactor_4X4_matrix(t_canva mat, int row, int column);
 int			get_determinant_4X4_matrix(t_canva mat, int row);
 int			matrix_4X4_isinvertible(t_canva mat);
 t_canva		inverse_matrix_4X4(t_canva mat);
+
+//test
+void		test_multiply_matrix(void);
+void		test_multiply_matrix_4X4_by_tuple(void);
+void		transposing_matrix_4X4(void);
+void		test_determinant_2X2_matrix(void);
+void		test_submatrix_of_3X3_matrix(void);
+void		test_submatrix_of_4X4_matrix(void);
+void		test_minor_3X3_matrix(void);
+void		test_cofactor_3X3_matrix(void);
+void		test_determinant_3X3_matrix(void);
+void		test_determinant_of_4X4_matrix(void);
+void		test1_invert_4X4_matrix(void);
+void		test2_invert_4X4_matrix(void);
+void		test_multiply_product_by_inverse(void);
 
 //sphere
 t_shape		create_sphere(int height);

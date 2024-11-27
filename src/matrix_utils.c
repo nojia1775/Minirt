@@ -135,12 +135,14 @@ int get_cofactor_3X3_matrix(t_canva mat, int row, int column)
         return (minor);
 }
 
-int get_determinant_3X3_matrix(t_canva mat, int row)
+int get_determinant_3X3_matrix(t_canva mat, int row, int column)
 {
     int cofactor1;
     int cofactor2;
     int cofactor3;
 
+    if (row >= 3 && column % 2)
+        row = 2;
     cofactor1 = get_cofactor_3X3_matrix(mat, row, 0);
     cofactor2 = get_cofactor_3X3_matrix(mat, row, 1);
     cofactor3 = get_cofactor_3X3_matrix(mat, row, 2);
@@ -156,13 +158,15 @@ int get_minor_4X4_matrix(t_canva mat, int row, int column)
     t_canva submatrix;
 
     submatrix = get_submatrix(mat, row, column);
-    return (get_determinant_3X3_matrix(submatrix, row));
+    return (get_determinant_3X3_matrix(submatrix, row, column));
 }
 
 int get_cofactor_4X4_matrix(t_canva mat, int row, int column)
 {
     int minor;
     minor = get_minor_4X4_matrix(mat, row, column);
+    if (row == 3)
+        return (minor);
     if ((row + column) % 2)
         return (-minor);
     else
@@ -202,12 +206,13 @@ int matrix_4X4_isinvertible(t_canva mat)
 t_canva inverse_matrix_4X4(t_canva mat)
 {
     t_canva result;
+    t_canva result_transpose;
     int     count;
     int     count2;
+    int     determinant;
 
     result = create_canva(4, 4);
     count = 0;
-    count2 = 0;
     while (count < 4)
     {
         count2 = 0;
@@ -218,6 +223,19 @@ t_canva inverse_matrix_4X4(t_canva mat)
         }
         count++;
     }
-    display_canva(&result);
-    return (result);
+    result_transpose = transpose_4X4_matrix(result);
+    determinant = get_determinant_4X4_matrix(mat, 3);
+    count = 0;
+    count2 = 0;
+    while (count < 4)
+    {
+        count2 = 0;
+        while (count2 < 4)
+        {
+            result_transpose.array[count][count2] = result_transpose.array[count][count2] / (double)determinant;
+            count2++;
+        }
+        count++;
+    }
+    return (result_transpose);
 }

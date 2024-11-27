@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:55:35 by yrio              #+#    #+#             */
-/*   Updated: 2024/11/18 20:09:13 by yrio             ###   ########.fr       */
+/*   Updated: 2024/11/27 18:11:50 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ t_canva *alloc_canva(t_canva *can, int x, int y)
 	can = malloc(sizeof(t_canva));
 	can->shape[0] = x;
 	can->shape[1] = y;
-	can->array = (int **)malloc((can->shape[0] + 1) * sizeof(int *));
+	can->array = (double **)malloc((can->shape[0] + 1) * sizeof(double *));
 	count = 0;
 	while (count < can->shape[0])
 	{
-		can->array[count] = (int *)malloc((can->shape[1] + 1) * sizeof(int));
+		can->array[count] = (double *)malloc((can->shape[1] + 1) * sizeof(double));
 		count++;
 	}
 	return (can);
@@ -62,7 +62,7 @@ void	display_canva(t_canva *can)
 		count2 = 0;
 		while (count2 < can->shape[1])
 		{
-			printf("%d", can->array[count][count2]);
+			printf("%f", can->array[count][count2]);
 			count2++;
 		}
 		printf("\n");
@@ -82,6 +82,7 @@ int	compare_2Dmatrix(t_canva *can1, t_canva *can2)
 		count2 = 0;
 		while (count2 < can2->shape[1])
 		{
+			printf("value 1 : %f, value 2 : %f, test : %d\n", can1->array[count][count2], can2->array[count][count2], can1->array[count][count2] != can2->array[count][count2]);
 			if (can1->array[count][count2] != can2->array[count][count2])
 				return (0);
 			count2++;
