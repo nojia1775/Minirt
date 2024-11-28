@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/28 15:42:46 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/28 16:41:03 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ double	intersec_plan(t_minirt *minirt, t_vector pixel, t_shape plan)
 		vec_sub_vec2(p, o)))
 		/ dot_product2(plan.vector_xyz, pixel));
 }
-
 static int	point_in_cylinder(t_shape cy, t_point intersec)
 {
 	t_vector	intersec_proj;
@@ -76,13 +75,30 @@ static int	point_in_cylinder(t_shape cy, t_point intersec)
 	return (1);
 }
 
+// static void	get_bases_cy(t_shape cy, t_shape *base1, t_shape *base2)
+// {
+// 	base1->xyz.coor[0] = cy.xyz.coor[0];
+// 	base1->xyz.coor[1] = cy.xyz.coor[1];
+// 	base1->xyz.coor[2] = cy.xyz.coor[2];
+// 	base1->vector_xyz = cy.vector_xyz;
+// 	cy.xyz = apply_vec_to_nbr(vec_multiplication2(cy.vector_xyz, cy.height), cy.xyz);
+// 	base2->xyz.coor[0] = cy.xyz.coor[0];
+// 	base2->xyz.coor[1] = cy.xyz.coor[1];
+// 	base2->xyz.coor[2] = cy.xyz.coor[2];
+// 	base2->vector_xyz = cy.vector_xyz;
+// }
+
 double	intersec_cylinder(t_minirt *minirt, t_vector pixel, t_shape cy)
 {
 	double	quadratic[3];
 	double	delta;
 	t_point	intersec;
 	t_vector	oc;
-	
+	// t_shape	base1;
+	// t_shape	base2;
+	// double	b1;
+	// double	b2;
+
 	oc = vec_sub_vec2(*(t_vector *)&minirt->camera->xyz,
 		*(t_vector *)&cy.xyz);
 	pixel = vec_normalization2(pixel);
@@ -100,7 +116,14 @@ double	intersec_cylinder(t_minirt *minirt, t_vector pixel, t_shape cy)
 		minirt->camera->xyz);
 	if (!point_in_cylinder(cy, intersec))
 		return (-1);
-	return (get_min((-quadratic[1] + sqrt(delta)) / (2 * quadratic[0]),
-		(-quadratic[1] - sqrt(delta)) / (2 * quadratic[0])));
+	// get_bases_cy(cy, &base1, &base2);
+	// b1 = intersec_plan(minirt, pixel, base1);
+	// b2 = intersec_plan(minirt, pixel, base2);
+	// if (b1 < 0)
+	// 	b1 = 1e10;
+	// if (b2 < 0)
+	// 	b2 = 1e10;
+	return (/*get_min(b2, get_min(b1, */get_min((-quadratic[1] + sqrt(delta)) / (2 * quadratic[0]),
+		(-quadratic[1] - sqrt(delta)) / (2 * quadratic[0])))/*))*/;
 }
 
