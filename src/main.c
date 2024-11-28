@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/26 18:04:23 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/28 10:46:00 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int	main(int argc, char **argv, char **env)
 	my_mlx_new_window(&minirt, WIDTH, HEIGHT, "MINIRT");
 	mlx_hook(minirt.win, 17, 0, close_win, &minirt);
 	mlx_key_hook(minirt.win, key_pressed, &minirt);
+	my_mlx_new_img(&minirt);
 	display(&minirt);
 	mlx_loop(minirt.mlx);
 	free_minirt(&minirt);

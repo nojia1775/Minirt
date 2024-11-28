@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector_operation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:27:13 by yrio              #+#    #+#             */
-/*   Updated: 2024/11/23 12:25:38 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/28 09:55:21 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_vector *vec_add_vec(t_vector *vec, t_vector *add)
 t_vector vec_add_vec2(t_vector vec, t_vector add)
 {
 	t_vector	result;
+
 	result.coor[0] = vec.coor[0] + add.coor[0];
 	result.coor[1] = vec.coor[1] + add.coor[1];
 	result.coor[2] = vec.coor[2] + add.coor[2];

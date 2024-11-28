@@ -6,20 +6,23 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/26 18:18:35 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/11/28 10:49:01 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-static void	print_image(t_minirt *minirt, t_shape shape, int x, int y)
+static void	print_image(t_minirt *minirt, t_shape *shape, int x, int y)
 {
 	int	i;
 	int	j;
 	int	color;
 	int	pixel_offset;
 
-	color = convert_rgb(shape.rgb);
+	if (shape)
+		color = convert_rgb(shape->rgb);
+	else
+		color = 0x000000;
 	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
 	if (!minirt->img)
 	{
@@ -40,12 +43,15 @@ static void	print_image(t_minirt *minirt, t_shape shape, int x, int y)
 	}
 }
 
-static void	print_image_precision(t_minirt *minirt, t_shape shape, int x, int y)
+static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y)
 {
 	int	color;
 	int	pixel_offset;
 
-	color = convert_rgb(shape.rgb);
+	if (shape)
+		color = convert_rgb(shape->rgb);
+	else
+		color = 0x000000;
 	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
 	pixel_offset = y * minirt->size_line + x * (minirt->bits / 8);
 	*(int *)(minirt->img + pixel_offset) = color;
@@ -139,9 +145,6 @@ void	display(t_minirt *minirt)
 	t_vector	pixel;
 	t_shape	*shape;
 
-	if (minirt->addr_img)
-		mlx_destroy_image(minirt->mlx, minirt->addr_img);
-	my_mlx_new_img(minirt);
 	int y = 2;
 	while (y < HEIGHT)
 	{
@@ -151,8 +154,7 @@ void	display(t_minirt *minirt)
 			shape = NULL;
 			pixel = get_pixel_vector(minirt, x, y);
 			shape = closest_shape(minirt, pixel);
-			if (shape)
-				print_image(minirt, *shape, x, y);
+			print_image(minirt, shape, x, y);
 			x += 5;
 		}
 		y += 5;
@@ -174,8 +176,7 @@ void	display_precision(t_minirt *minirt)
 			shape = NULL;
 			pixel = get_pixel_vector(minirt, x, y);
 			shape = closest_shape(minirt, pixel);
-			if (shape)
-				print_image_precision(minirt, *shape, x, y);
+			print_image_precision(minirt, shape, x, y);
 			x++;
 		}
 		y++;
