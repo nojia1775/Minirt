@@ -24,7 +24,8 @@ SRCS =	src/main.c \
 	src/color_utils.c \
 	src/canva.c \
 	src/matrix_utils.c \
-	src/test_matrix.c
+	src/test_matrix.c \
+	src/matrix_transformation.c
 
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)

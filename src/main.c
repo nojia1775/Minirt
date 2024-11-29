@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/27 18:03:57 by yrio             ###   ########.fr       */
+/*   Updated: 2024/11/29 19:17:20 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,11 @@ int	main(void)
 	test_determinant_of_4X4_matrix();
 	test1_invert_4X4_matrix();
 	test_multiply_product_by_inverse();
+	test_translation_matrix();
+	test_scaling_matrix();
+	test_rotation_matrix();
+	test_shearing_matrix();
+	test_chaining_matrix();
 
 	can = create_canva(4, 4);
 	can.array[0][0] = -5.0;
@@ -135,26 +140,23 @@ int	main(void)
 	can.array[3][3] = 4.0;
 
 	can2 = create_canva(4, 4);
-	can2.array[0][0] = -2;
-	can2.array[0][1] = -8;
-	can2.array[0][2] = 3;
-	can2.array[0][3] = 5;
-	can2.array[1][0] = -3;
+	can2.array[0][0] = 1;
+	can2.array[0][1] = 0;
+	can2.array[0][2] = 0;
+	can2.array[0][3] = 0;
+	can2.array[1][0] = 0;
 	can2.array[1][1] = 1;
-	can2.array[1][2] = 7;
-	can2.array[1][3] = 3;
-	can2.array[2][0] = 1;
-	can2.array[2][1] = 2;
-	can2.array[2][2] = -9;
-	can2.array[2][3] = 6;
-	can2.array[3][0] = -6;
-	can2.array[3][1] = 7;
-	can2.array[3][2] = 7;
-	can2.array[3][3] = -9;
+	can2.array[1][2] = 0;
+	can2.array[1][3] = 0;
+	can2.array[2][0] = 0;
+	can2.array[2][1] = 0;
+	can2.array[2][2] = 1;
+	can2.array[2][3] = 0;
+	can2.array[3][0] = 5;
+	can2.array[3][1] = -3;
+	can2.array[3][2] = 2;
+	can2.array[3][3] = 1;
 
-	inverse_matrix_4X4(can);
-	//pixel = create_tuple(220, 23, 15, 2);
-	//printf("width : %d, height : %d\n", can.shape[0], can.shape[1]);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 12:24:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/11/27 18:12:54 by yrio             ###   ########.fr       */
+/*   Updated: 2024/11/29 19:20:27 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -463,11 +463,189 @@ void	test_multiply_product_by_inverse(void)
 	can3 = multiplying_4X4_matrix(&can, &can2);
 	invert_can2 = inverse_matrix_4X4(can2);
 	can4 = multiplying_4X4_matrix(&can3, &invert_can2);
-	// display_canva(&can);
-	// display_canva(&can4);
 	if (compare_2Dmatrix(&can4, &can))
 		printf("[OK] multiply a product by inverse function\n");
 	else
 		printf("[KO] multiply a product by inverse function\n");
 }
 
+void	test_translation_matrix(void)
+{
+	t_tuple *tup;
+	t_tuple	*tup2;
+	t_tuple	*tup3;
+	t_tuple	*vec;
+	t_tuple	*vec2;
+	t_canva can3;
+	t_canva	can4;
+	
+	can3 = translation(5.0, -3.0, 2.0);
+	tup = create_tuple(-3.0, 4.0, 5.0, 1);
+	vec = create_tuple(-3.0, 4.0, 5.0, 0);
+	tup2 = multiplying_matrix_tuple(&can3, *tup);
+	can4 = inverse_matrix_4X4(can3);
+	tup3 = multiplying_matrix_tuple(&can4, *tup);
+	vec2 = multiplying_matrix_tuple(&can3, *vec);
+	if (tup2->coor[0] != 2.0 || tup2->coor[1] != 1.0 || tup2->coor[2] != 7.0)
+		printf("[KO] translation test 1\n");
+	else if (tup3->coor[0] != -8.0 || tup3->coor[1] != 7.0 || tup3->coor[2] != 3.0)
+		printf("[KO] translation test 2\n");
+	else if (vec2->coor[0] != -3.0 || vec2->coor[1] != 4.0 || vec2->coor[2] != 5.0)
+		printf("[KO] translation test 3\n");
+	else
+		printf("[OK] translation test 1, 2, 3\n");
+}
+
+void	test_scaling_matrix(void)
+{
+	t_canva	can;
+	t_canva	can2;
+	t_canva	can3;
+	t_tuple	*tup;
+	t_tuple	*tup2;
+	t_tuple	*tup3;
+	t_tuple	*tup4;
+	t_tuple	*tup5;
+	t_tuple	*tup6;
+	t_tuple	*tup7;
+
+	can = scaling(2.0, 3.0, 4.0);
+	tup = create_tuple(-4.0, 6.0, 8.0, 1.0);
+	tup3 = create_tuple(-4.0, 6.0, 8.0, 0.0);
+	tup2 = multiplying_matrix_tuple(&can, *tup);
+	tup4 = multiplying_matrix_tuple(&can, *tup3);
+	can2 = inverse_matrix_4X4(can);
+	tup5 = multiplying_matrix_tuple(&can2, *tup3);
+	can3 = scaling(-1.0, 1.0, 1.0);
+	tup6 = create_tuple(2.0, 3.0, 4.0, 1);
+	tup7 = multiplying_matrix_tuple(&can3, *tup6);
+	if (tup2->coor[0] != -8.0 || tup2->coor[1] != 18.0 || tup2->coor[2] != 32.0)
+		printf("[KO] scaling test 1\n");
+	else if (tup4->coor[0] != -8.0 || tup4->coor[1] != 18.0 || tup4->coor[2] != 32.0)
+		printf("[KO] scaling test 2\n");
+	else if (tup5->coor[0] != -2.0 || tup5->coor[1] != 2.0 || tup5->coor[2] != 2.0)
+		printf("[KO] scaling test 3\n");
+	else if (tup7->coor[0] != -2.0 || tup7->coor[1] != 3.0 || tup7->coor[2] != 4.0)
+		printf("[KO] scaling test 4\n");
+	else
+		printf("[OK] scaling test 1, 2, 3, 4\n");
+
+}
+
+void	test_rotation_matrix(void)
+{
+	t_tuple	*tup;
+	t_tuple	*tup2;
+	t_tuple	*tup3;
+	t_canva	full_quarter_x;
+	t_canva	inv;
+	t_tuple	*tup4;
+	t_tuple	*tup5;
+	t_canva	full_quarter_y;
+	t_tuple	*tup6;
+	t_tuple	*tup7;
+	t_canva	full_quarter_z;
+
+	tup = create_tuple(0.0, 1.0, 0.0, 1.0);
+	full_quarter_x = rotation_x(PI / 2);
+	tup2 = multiplying_matrix_tuple(&full_quarter_x, *tup);
+	inv = inverse_matrix_4X4(full_quarter_x);
+	tup3 = multiplying_matrix_tuple(&inv, *tup);
+	tup4 = create_tuple(0.0, 0.0, 1.0, 1);
+	full_quarter_y = rotation_y(PI / 2);
+	tup5 = multiplying_matrix_tuple(&full_quarter_y, *tup4);
+	tup6 = create_tuple(0.0, 1.0, 0.0, 1);
+	full_quarter_z = rotation_z(PI / 2);
+	tup7 = multiplying_matrix_tuple(&full_quarter_z, *tup6);
+	if ((int)(tup2->coor[0] + 0.5) != 0.0 || (int)(tup2->coor[1] + 0.5) != 0.0 || (int)(tup2->coor[2] + 0.5) != 1.0)
+		printf("[KO] rotation test 1\n");
+	else if ((tup3->coor[0]) != 0.0 || (tup3->coor[1]) != 0.0 || (tup3->coor[2]) != -1.0)
+		printf("[KO] rotation  test 2\n");
+	else if ((int)(tup5->coor[0] + 0.5) != 1.0 || (int)(tup5->coor[1] + 0.5) != 0.0 || (int)(tup5->coor[2] + 0.5) != 0.0)
+		printf("[KO] rotation test 3\n");
+	else if ((int)(tup7->coor[0]) != -1.0 || (int)(tup7->coor[1]) != 0.0 || (int)(tup7->coor[2]) != 0.0)
+		printf("[KO] rotation test 4\n");
+	else
+		printf("[OK] rotation test 1, 2, 3, 4\n");
+}
+
+void	test_shearing_matrix(void)
+{
+	t_canva	can;
+	t_canva	can2;
+	t_canva	can3;
+	t_canva	can4;
+	t_canva	can5;
+	t_canva	can6;
+	t_tuple	*tup;
+	t_tuple	*tup2;
+	t_tuple	*tup3;
+	t_tuple	*tup4;
+	t_tuple	*tup5;
+	t_tuple	*tup6;
+	t_tuple	*tup7;
+
+	can = shearing(1.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	tup = create_tuple(2.0, 3.0, 4.0, 1);
+	tup2 = multiplying_matrix_tuple(&can, *tup);
+	can2 = shearing(0.0, 1.0, 0.0, 0.0, 0.0, 0.0);
+	tup3 = multiplying_matrix_tuple(&can2, *tup);
+	can3 = shearing(0.0, 0.0, 1.0, 0.0, 0.0, 0.0);
+	tup4 = multiplying_matrix_tuple(&can3, *tup);
+	can4 = shearing(0.0, 0.0, 0.0, 1.0, 0.0, 0.0);
+	tup5 = multiplying_matrix_tuple(&can4, *tup);
+	can5 = shearing(0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+	tup6 = multiplying_matrix_tuple(&can5, *tup);
+	can6 = shearing(0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+	tup7 = multiplying_matrix_tuple(&can6, *tup);
+	if (tup2->coor[0] != 5.0 || tup2->coor[1] != 3.0 || tup2->coor[2] != 4.0)
+		printf("[KO] shearing test 1\n");
+	else if (tup3->coor[0] != 6.0 || tup3->coor[1] != 3.0 || tup3->coor[2] != 4.0)
+		printf("[KO] shearing test 2\n");
+	else if (tup4->coor[0] != 2.0 || tup4->coor[1] != 5.0 || tup4->coor[2] != 4.0)
+		printf("[KO] shearing test 3\n");
+	else if (tup5->coor[0] != 2.0 || tup5->coor[1] != 7.0 || tup5->coor[2] != 4.0)
+		printf("[KO] shearing test 4\n");
+	else if (tup6->coor[0] != 2.0 || tup6->coor[1] != 3.0 || tup6->coor[2] != 6.0)
+		printf("[KO] shearing test 5\n");
+	else if (tup7->coor[0] != 2.0 || tup7->coor[1] != 3.0 || tup7->coor[2] != 7.0)
+		printf("[KO] shearing test 6\n");
+	else
+		printf("[OK] shearing test 1, 2, 3, 4, 5, 6\n");
+}
+
+void	test_chaining_matrix(void)
+{
+	t_tuple	*tup;
+	t_tuple	*tup2;
+	t_tuple *tup3;
+	t_tuple	*tup4;
+	t_tuple	*tup5;
+	t_canva	can;
+	t_canva	can2;
+	t_canva	can3;
+	t_canva	can4;
+	t_canva	can5;
+
+	tup = create_tuple(1.0, 0.0, 1.0, 1);
+	can = rotation_x(PI / 2);
+	can2 = scaling(5.0, 5.0, 5.0);
+	can3 = translation(10.0, 5.0, 7.0);
+	tup2 = multiplying_matrix_tuple(&can, *tup);
+	tup3 = multiplying_matrix_tuple(&can2, *tup2);
+	tup4 = multiplying_matrix_tuple(&can3, *tup3);
+	can4 = multiplying_4X4_matrix(&can3, &can2);
+	can5 = multiplying_4X4_matrix(&can4, &can);
+	tup5 = multiplying_matrix_tuple(&can5, *tup);
+	printf("x : %f, y : %f, z : %f\n", tup5->coor[0], tup5->coor[1], tup5->coor[2]);
+	if ((int)tup2->coor[0] != 1.0 || (int)tup2->coor[1] != -1.0 || (int)tup2->coor[2] != 0.0)
+		printf("[KO] chaining matrix test 1\n");
+	else if ((int)tup3->coor[0] != 5.0 || (int)tup3->coor[1] != -5.0 || (int)tup3->coor[2] != 0.0)
+		printf("[KO] chaining matrix test 2\n");
+	else if ((int)tup4->coor[0] != 15.0 || (int)tup4->coor[1] != 0.0 || (int)tup4->coor[2] != 7.0)
+		printf("[KO] chaining matrix test 3\n");
+	else if ((int)tup5->coor[0] != 15.0 || (int)tup5->coor[1] != 0.0 || (int)tup5->coor[2] != 7.0)
+		printf("[KO] chaining matrix test 4\n");
+	else
+		printf("[OK] chaining matrix test 1, 2, 3, 4\n");
+}

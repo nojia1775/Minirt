@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/27 18:04:06 by yrio             ###   ########.fr       */
+/*   Updated: 2024/11/29 19:17:06 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,13 +136,23 @@ int	get_b(int trgb);
 t_vector	*create_vector(double x, double y, double z);
 
 //tuple_operation
-t_tuple	*vec_add_nbr(t_tuple *vec, double nbr);
-t_tuple	*vec_add_vec(t_tuple *vec, t_tuple *add);
-t_tuple	*vec_sub_vec(t_tuple *vec, t_tuple *add);
+t_tuple		*vec_add_nbr(t_tuple *vec, double nbr);
+t_tuple		*vec_add_vec(t_tuple *vec, t_tuple *add);
+t_tuple		*vec_sub_vec(t_tuple *vec, t_tuple *add);
 double		vec_magnitude(t_tuple *vec);
 double		dot_product(t_tuple *first, t_tuple *second, int length);
-t_tuple	*vec_normalization(t_tuple *vec);
-t_tuple	*vec_multiplication(t_tuple *vec, double scalar);
+t_tuple		*vec_normalization(t_tuple *vec);
+t_tuple		*vec_multiplication(t_tuple *vec, double scalar);
+t_tuple		negate_tuple(t_tuple tuple);
+
+//matrix transformation
+t_canva		translation(double x, double y, double z);
+t_canva		scaling(double x, double y, double z);
+t_canva		rotation_x(double radian);
+t_canva		rotation_y(double radian);
+t_canva		rotation_z(double radian);
+t_canva	shearing(double x_y, double x_z, double y_x, double y_z, double z_x, double z_y);
+
 
 //projectile
 t_projectile	*create_projectile(t_tuple *position, t_tuple *velocity);
@@ -187,8 +197,14 @@ void		test_cofactor_3X3_matrix(void);
 void		test_determinant_3X3_matrix(void);
 void		test_determinant_of_4X4_matrix(void);
 void		test1_invert_4X4_matrix(void);
-void		test2_invert_4X4_matrix(void);
+// void		test2_invert_4X4_matrix(void);
 void		test_multiply_product_by_inverse(void);
+void		test_translation_matrix(void);
+void		test_scaling_matrix(void);
+void		test_rotation_matrix(void);
+void		test_shearing_matrix(void);
+void		test_chaining_matrix(void);
+
 
 //sphere
 t_shape		create_sphere(int height);

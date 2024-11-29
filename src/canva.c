@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:55:35 by yrio              #+#    #+#             */
-/*   Updated: 2024/11/27 18:11:50 by yrio             ###   ########.fr       */
+/*   Updated: 2024/11/29 15:22:28 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,7 @@ int	compare_2Dmatrix(t_canva *can1, t_canva *can2)
 		count2 = 0;
 		while (count2 < can2->shape[1])
 		{
-			printf("value 1 : %f, value 2 : %f, test : %d\n", can1->array[count][count2], can2->array[count][count2], can1->array[count][count2] != can2->array[count][count2]);
-			if (can1->array[count][count2] != can2->array[count][count2])
+			if ((int)(can1->array[count][count2] + 0.5) != (int)(can2->array[count][count2] + 0.5))
 				return (0);
 			count2++;
 		}
