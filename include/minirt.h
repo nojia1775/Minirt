@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/02 15:37:16 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/02 16:54:41 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,12 @@ typedef struct s_tuple
 	double coor[4];
 }	t_tuple;
 
+// typedef	struct s_ray
+// {
+// 	t_tuple	*origin;
+// 	t_tuple	*direction;
+// }	t_ray;
+
 typedef struct s_light
 {
 	double		xyz[3];
@@ -105,11 +111,11 @@ typedef struct s_matrix
 typedef struct s_shape
 {
 	size_t	index;
-	double		xyz[3];
+	t_point	xyz;
 	t_uint8	rgb[3];
 	double		height;
 	double		diameter;
-	double		vector_xyz[3];
+	t_tuple		vector_xyz;
 	t_matrix	*mat;
 	struct s_shape	*next;
 }	t_shape;
@@ -131,12 +137,6 @@ typedef struct s_minirt
 	t_ambient	*ambient;
 }	t_minirt;
 
-typedef struct s_file_rt
-{
-	char	**line; 
-	struct s_file_rt	*next;
-}	t_file_rt;
-
 typedef	struct s_projectile
 {
 	t_tuple	*position;
@@ -152,6 +152,7 @@ typedef	struct s_environment
 
 //vector_utils
 t_tuple	*create_tuple(double x, double y, double z, int w);
+
 typedef struct s_file_rt
 {
 	char	**line; 
@@ -164,9 +165,6 @@ int	get_t(int trgb);
 int	get_r(int trgb);
 int	get_g(int trgb);
 int	get_b(int trgb);
-
-// yann
-t_vector	*create_vector(double x, double y, double z);
 
 //tuple_operation
 t_tuple		*vec_add_nbr(t_tuple *vec, double nbr);
@@ -275,29 +273,29 @@ void	display(t_minirt *minirt);
 int		convert_rgb(t_uint8 rgb[3]);
 double	convert_rad(double deg);
 double	convert_deg(double rad);
-t_vector vec_add_vec2(t_vector vec, t_vector add);
-t_point	apply_vec_to_nbr(t_vector vec, t_point point);
-t_vector vec_multiplication2(t_vector vec, double nbr);
+t_tuple vec_add_vec2(t_tuple vec, t_tuple add);
+t_point	apply_vec_to_nbr(t_tuple vec, t_point point);
+t_tuple vec_multiplication2(t_tuple vec, double nbr);
 t_tuple	vec_normalization2(t_tuple vec);
 t_tuple	vec_cross(t_tuple a, t_tuple b);
 double	double_abs(double x);
-t_vector	create_vector2(double x, double y, double z);
-t_vector	get_pixel_vector(t_minirt *minirt, int x, int y);
-double	intersec_sphere(t_minirt *minirt, t_vector pixel, t_shape sphere);
+t_tuple	create_vector2(double x, double y, double z);
+t_tuple	get_pixel_vector(t_minirt *minirt, int x, int y);
+double	intersec_sphere(t_minirt *minirt, t_tuple pixel, t_shape sphere);
 double	get_min(double a, double b);
 double	get_max(double a, double b);
 void	display_precision(t_minirt *minirt);
-double	dot_product2(t_vector a, t_vector b);
-t_vector	vec_sub_vec2(t_vector a, t_vector b);
-double	intersec_plan(t_minirt *minirt, t_vector pixel, t_shape plan);
+double	dot_product2(t_tuple a, t_tuple b);
+t_tuple	vec_sub_vec2(t_tuple a, t_tuple b);
+double	intersec_plan(t_minirt *minirt, t_tuple pixel, t_shape plan);
 void	cam_look_leftright(t_minirt *minirt, double angle);
 void	cam_look_updown(t_minirt *minirt, double angle);
 void	cam_go_frontback(t_minirt *minirt, int dir);
 void	print_coor(void *coor);
 void	cam_go_leftright(t_minirt *minirt, int left_right);
 void	cam_go_updown(t_minirt *minirt, int up_down);
-double	intersec_cylinder(t_minirt *minirt, t_vector pixel, t_shape cylinder);
-double	vec_magnitude2(t_vector vec);
+double	intersec_cylinder(t_minirt *minirt, t_tuple pixel, t_shape cylinder);
+double	vec_magnitude2(t_tuple vec);
 void	my_mlx_new_img(t_minirt *minirt);
 
 // display
@@ -308,9 +306,9 @@ void	put_pixel_projectile(t_minirt *minirt, int height, int r, int g, int b);
 int		convert_rgb(t_uint8 rgb[3]);
 double	convert_rad(double deg);
 double	convert_deg(double rad);
-t_vector vec_add_vec2(t_vector vec, t_vector add);
-t_point	apply_vec_to_nbr(t_vector vec, t_point point);
-t_vector	vec_multiplication2(t_vector vec, double nbr);
+t_tuple vec_add_vec2(t_tuple vec, t_tuple add);
+t_point	apply_vec_to_nbr(t_tuple vec, t_point point);
+t_tuple	vec_multiplication2(t_tuple vec, double nbr);
 t_tuple	vec_normalization2(t_tuple vec);
 t_tuple	vec_cross(t_tuple a, t_tuple b);
 double	double_abs(double x);

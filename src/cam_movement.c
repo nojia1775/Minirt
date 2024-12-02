@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cam_movement.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 12:16:41 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/26 16:22:42 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:04:06 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	cam_look_leftright(t_minirt *minirt, double angle)
 
 void	cam_look_updown(t_minirt *minirt, double angle)
 {
-	t_vector	old_cam;
-	t_vector	up;
+	t_tuple	old_cam;
+	t_tuple	up;
 
 	if ((minirt->camera->vector_xyz.coor[1] >= 0.9 && angle < 0)
 		|| (minirt->camera->vector_xyz.coor[1] <= -0.9 && angle > 0))
@@ -63,8 +63,8 @@ void	cam_go_frontback(t_minirt *minirt, int dir)
 
 void	cam_go_leftright(t_minirt *minirt, int left_right)
 {
-	t_vector	right;
-	t_vector	up;
+	t_tuple	right;
+	t_tuple	up;
 
 	if (double_abs(minirt->camera->vector_xyz.coor[0] == 0
 		&& double_abs(minirt->camera->vector_xyz.coor[1] == 1
@@ -83,7 +83,7 @@ void	cam_go_leftright(t_minirt *minirt, int left_right)
 
 void	cam_go_updown(t_minirt *minirt, int up_down)
 {
-	t_vector	up;
+	t_tuple	up;
 
 	up.coor[0] = 0;
 	up.coor[1] = 5;

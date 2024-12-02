@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/02 15:33:54 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/02 15:58:03 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y
 	*(int *)(minirt->img + pixel_offset) = color;
 }
 
-static t_shape	*closest_sphere(t_minirt *minirt, t_vector pixel, double *min)
+static t_shape	*closest_sphere(t_minirt *minirt, t_tuple pixel, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -78,7 +78,7 @@ static t_shape	*closest_sphere(t_minirt *minirt, t_vector pixel, double *min)
 	return (shape);
 }
 
-static t_shape	*closest_plan(t_minirt *minirt, t_vector pixel, double *min)
+static t_shape	*closest_plan(t_minirt *minirt, t_tuple pixel, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -99,7 +99,7 @@ static t_shape	*closest_plan(t_minirt *minirt, t_vector pixel, double *min)
 	return (shape);
 }
 
-static t_shape	*closest_cylinder(t_minirt *minirt, t_vector pixel, double *min)
+static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple pixel, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -120,7 +120,7 @@ static t_shape	*closest_cylinder(t_minirt *minirt, t_vector pixel, double *min)
 	return (shape);
 }
 
-t_shape	*closest_shape(t_minirt *minirt, t_vector pixel)
+t_shape	*closest_shape(t_minirt *minirt, t_tuple pixel)
 {
 	double	min;
 	t_shape	*shape;
@@ -142,7 +142,7 @@ t_shape	*closest_shape(t_minirt *minirt, t_vector pixel)
  
 void	display(t_minirt *minirt)
 {
-	t_vector	pixel;
+	t_tuple	pixel;
 	t_shape	*shape;
 
 	int y = 2;
@@ -164,7 +164,7 @@ void	display(t_minirt *minirt)
 
 void	display_precision(t_minirt *minirt)
 {
-	t_vector	pixel;
+	t_tuple	pixel;
 	t_shape	*shape;
 
 	int y = 0;

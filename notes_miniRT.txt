@@ -9,3 +9,10 @@ seulement un int avec la couleur.
 
 Dans la structure des tuples, lorsque la 4e coordonne correspond a un 1
 c'est un point et lorsqu'elle correspond a un vecteur c'est 0.
+
+
+
+
+Comment assembler nos deux codes ?
+
+En parler ensemble.

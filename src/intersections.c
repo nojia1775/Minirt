@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/28 16:41:03 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:03:15 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-double	intersec_sphere(t_minirt *minirt, t_vector pixel, t_shape sphere)
+double	intersec_sphere(t_minirt *minirt, t_tuple pixel, t_shape sphere)
 {
 	double	b;
 	double	c;
@@ -38,10 +38,10 @@ double	intersec_sphere(t_minirt *minirt, t_vector pixel, t_shape sphere)
 		/ 2));
 }
 
-double	intersec_plan(t_minirt *minirt, t_vector pixel, t_shape plan)
+double	intersec_plan(t_minirt *minirt, t_tuple pixel, t_shape plan)
 {
-	t_vector	p;
-	t_vector	o;
+	t_tuple	p;
+	t_tuple	o;
 
 	p = create_vector2(plan.xyz.coor[0], plan.xyz.coor[1],
 		plan.xyz.coor[2]);
@@ -56,9 +56,9 @@ double	intersec_plan(t_minirt *minirt, t_vector pixel, t_shape plan)
 }
 static int	point_in_cylinder(t_shape cy, t_point intersec)
 {
-	t_vector	intersec_proj;
+	t_tuple	intersec_proj;
 
-	intersec_proj = vec_add_vec2(*(t_vector *)&cy.xyz, vec_multiplication2(
+	intersec_proj = vec_add_vec2(*(t_tuple *)&cy.xyz, vec_multiplication2(
 		cy.vector_xyz, dot_product2(create_vector2(
 		intersec.coor[0] - cy.xyz.coor[0],
 		intersec.coor[1] - cy.xyz.coor[1],
@@ -88,19 +88,19 @@ static int	point_in_cylinder(t_shape cy, t_point intersec)
 // 	base2->vector_xyz = cy.vector_xyz;
 // }
 
-double	intersec_cylinder(t_minirt *minirt, t_vector pixel, t_shape cy)
+double	intersec_cylinder(t_minirt *minirt, t_tuple pixel, t_shape cy)
 {
 	double	quadratic[3];
 	double	delta;
 	t_point	intersec;
-	t_vector	oc;
+	t_tuple	oc;
 	// t_shape	base1;
 	// t_shape	base2;
 	// double	b1;
 	// double	b2;
 
-	oc = vec_sub_vec2(*(t_vector *)&minirt->camera->xyz,
-		*(t_vector *)&cy.xyz);
+	oc = vec_sub_vec2(*(t_tuple *)&minirt->camera->xyz,
+		*(t_tuple *)&cy.xyz);
 	pixel = vec_normalization2(pixel);
 	quadratic[0] = dot_product2(pixel, pixel) - pow(dot_product2(pixel,
 		vec_normalization2(cy.vector_xyz)), 2);
