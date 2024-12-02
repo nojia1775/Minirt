@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/29 19:17:20 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/02 15:22:34 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,10 @@ void	init_minirt(t_minirt *minirt)
 	minirt->sphere = NULL;
 	minirt->mlx = NULL;
 	minirt->win = NULL;
+	minirt->addr_img = NULL;
+	minirt->img = NULL;
+	minirt->bits = 0;
+	minirt->size_line = 0;
 }
 
 // int	main(int argc, char **argv, char **env)

@@ -6,35 +6,166 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/18 19:52:23 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/02 15:33:54 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
+
+static void	print_image(t_minirt *minirt, t_shape *shape, int x, int y)
+{
+	int	i;
+	int	j;
+	int	color;
+	int	pixel_offset;
+
+	if (shape)
+		color = convert_rgb(shape->rgb);
+	else
+		color = 0x000000;
+	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
+	if (!minirt->img)
+	{
+		free_minirt(minirt);
+		exit(1);
+	}
+	i = y - 2;
+	while (i < 5 + y - 2)
+	{
+		j = x - 2;
+		while (j < 5 + x - 2)
+		{
+			pixel_offset = i * minirt->size_line + j * (minirt->bits / 8);
+			*(int *)(minirt->img + pixel_offset) = color;
+			j++;
+		}
+		i++;
+	}
+}
+
+static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y)
+{
+	int	color;
+	int	pixel_offset;
+
+	if (shape)
+		color = convert_rgb(shape->rgb);
+	else
+		color = 0x000000;
+	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
+	pixel_offset = y * minirt->size_line + x * (minirt->bits / 8);
+	*(int *)(minirt->img + pixel_offset) = color;
+}
+
+static t_shape	*closest_sphere(t_minirt *minirt, t_vector pixel, double *min)
+{
+	t_shape	*tmp;
+	t_shape	*shape;
+	double	distance;
+	
+	shape = NULL;
+	tmp = minirt->sphere;
+	while (tmp)
+	{
+		distance = intersec_sphere(minirt, pixel, *tmp);
+		if (distance > 0 && distance < *min)
+		{
+			shape = tmp;
+			*min = distance;
+		}
+		tmp = tmp->next;
+	}
+	return (shape);
+}
+
+static t_shape	*closest_plan(t_minirt *minirt, t_vector pixel, double *min)
+{
+	t_shape	*tmp;
+	t_shape	*shape;
+	double	distance;
+	
+	shape = NULL;
+	tmp = minirt->plan;
+	while (tmp)
+	{
+		distance = intersec_plan(minirt, pixel, *tmp);
+		if (distance > 0 && distance < *min)
+		{
+			shape = tmp;
+			*min = distance;
+		}
+		tmp = tmp->next;
+	}
+	return (shape);
+}
+
+static t_shape	*closest_cylinder(t_minirt *minirt, t_vector pixel, double *min)
+{
+	t_shape	*tmp;
+	t_shape	*shape;
+	double	distance;
+	
+	shape = NULL;
+	tmp = minirt->cylinder;
+	while (tmp)
+	{
+		distance = intersec_cylinder(minirt, pixel, *tmp);
+		if (distance > 0 && distance < *min)
+		{
+			shape = tmp;
+			*min = distance;
+		}
+		tmp = tmp->next;
+	}
+	return (shape);
+}
+
+t_shape	*closest_shape(t_minirt *minirt, t_vector pixel)
+{
+	double	min;
+	t_shape	*shape;
+	t_shape	*tmp;
+
+	shape = NULL;
+	min = 1000;
+	tmp = closest_sphere(minirt, pixel, &min);
+	if (tmp)
+		shape = tmp;
+	tmp = closest_plan(minirt, pixel, &min);
+	if (tmp)
+		shape = tmp;
+	tmp = closest_cylinder(minirt, pixel, &min);
+	if (tmp)
+		shape = tmp;
+	return (shape);
+}
  
 void	display(t_minirt *minirt)
-{	
-	double focal_lenght = (WIDTH / 2) / tan(convert_rad(minirt->camera->fov_x / 2));
-	t_tuple v_cam_dir = vec_normalization2(minirt->camera->vector_xyz);
-	
-	t_tuple U, V, ref;
+{
+	t_vector	pixel;
+	t_shape	*shape;
 
-	ref.coor[0] = 0;
-	ref.coor[1] = 1;
-	ref.coor[2] = 0;
-
-	if (double_abs(minirt->camera->vector_xyz.coor[1]) > 0.99f)
+	int y = 2;
+	while (y < HEIGHT)
 	{
-		ref.coor[0] = 1;
-		ref.coor[1] = 0;
-		ref.coor[2] = 0;
+		int x = 2;
+		while (x < WIDTH)
+		{
+			shape = NULL;
+			pixel = get_pixel_vector(minirt, x, y);
+			shape = closest_shape(minirt, pixel);
+			print_image(minirt, shape, x, y);
+			x += 5;
+		}
+		y += 5;
 	}
+	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
+}
 
-	U = vec_normalization2(vec_cross(ref, v_cam_dir));
-	V = vec_normalization2(vec_cross(v_cam_dir, U));
-	
-	t_tuple pixel;
-	t_tuple pixel_dir;
+void	display_precision(t_minirt *minirt)
+{
+	t_vector	pixel;
+	t_shape	*shape;
 
 	int y = 0;
 	while (y < HEIGHT)
@@ -42,23 +173,15 @@ void	display(t_minirt *minirt)
 		int x = 0;
 		while (x < WIDTH)
 		{
-			double u = ((double)x / WIDTH - 0.5) * WIDTH;
-			double v = (0.5 - (double)y / HEIGHT) * HEIGHT;
-			
-			pixel.coor[0] = v_cam_dir.coor[0] * focal_lenght + U.coor[0] * u + V.coor[0] * v;
-			pixel.coor[1] = v_cam_dir.coor[1] * focal_lenght + U.coor[1] * u + V.coor[1] * v;
-			pixel.coor[2] = v_cam_dir.coor[2] * focal_lenght + U.coor[2] * u + V.coor[2] * v;
-
-			pixel_dir = vec_normalization2(pixel);
-		
-			/*RAJOUTER L'EQUATION DU 2ND DEGRES POUR TROUVER INTERSECTION AVEC CERCLE*/
+			shape = NULL;
+			pixel = get_pixel_vector(minirt, x, y);
+			shape = closest_shape(minirt, pixel);
+			print_image_precision(minirt, shape, x, y);
+			x++;
 		}
+		y++;
 	}
-	
-
-
-
-	printf("%f, %f, %f\n", pixel_dir.coor[0], pixel_dir.coor[1], pixel_dir.coor[2]);
+	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
 }
 
 int	put_one_color(t_minirt *minirt, int r, int g, int b)

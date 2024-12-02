@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:27:13 by yrio              #+#    #+#             */
-/*   Updated: 2024/11/18 17:34:46 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/02 15:34:52 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ t_tuple *vec_add_vec(t_tuple *vec, t_tuple *add)
 t_vector vec_add_vec2(t_vector vec, t_vector add)
 {
 	t_vector	result;
+
 	result.coor[0] = vec.coor[0] + add.coor[0];
 	result.coor[1] = vec.coor[1] + add.coor[1];
 	result.coor[2] = vec.coor[2] + add.coor[2];
@@ -63,14 +64,29 @@ t_tuple *vec_sub_vec(t_tuple *vec, t_tuple *add)
 	return (vec);
 }
 
-double	vec_magnitude(t_tuple *vec)
+t_vector	vec_sub_vec2(t_vector a, t_vector b)
+{
+	t_vector	result;
+
+	result.coor[0] = a.coor[0] - b.coor[0];
+	result.coor[1] = a.coor[1] - b.coor[1];
+	result.coor[2] = a.coor[2] - b.coor[2];
+	return (result);
+}
+
+double	vec_magnitude(t_vector *vec)
 {
 	if (!vec)
 		return (-1);
 	return (sqrt(pow(vec->coor[0], 2) + pow(vec->coor[1], 2) + pow(vec->coor[2], 2)));
 }
 
-double dot_product(t_tuple *first, t_tuple *second, int length)
+double	vec_magnitude2(t_vector vec)
+{
+	return (sqrt(pow(vec.coor[0], 2) + pow(vec.coor[1], 2) + pow(vec.coor[2], 2)));
+}
+
+double dot_product(t_vector *first, t_vector *second, int length)
 {
 	double	result;
 	int		count;
@@ -85,7 +101,13 @@ double dot_product(t_tuple *first, t_tuple *second, int length)
 	return (result);
 }
 
-t_tuple *vec_normalization(t_tuple *vec)
+double	dot_product2(t_vector a, t_vector b)
+{
+	return (a.coor[0] * b.coor[0] + a.coor[1] * b.coor[1]
+		+ a.coor[2] * b.coor[2]);
+}
+
+t_vector *vec_normalization(t_vector *vec)
 {
 	double	magnitude;
 

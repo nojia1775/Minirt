@@ -25,7 +25,10 @@ SRCS =	src/main.c \
 	src/canva.c \
 	src/matrix_utils.c \
 	src/test_matrix.c \
-	src/matrix_transformation.c
+	src/matrix_transformation.c \
+	src/intersections.c \
+	src/cam_movement.c \
+	src/utils4.c
 
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)

@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:05:18 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/18 15:50:38 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/02 15:29:24 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ int	parsing(int argc, char **argv, char **env, t_minirt *minirt)
 	if (!minirt->camera || !minirt->ambient || !minirt->light)
 		return (printf("Error : need camera, ambient and light\n"),
 			free_list_data(&data), 0);
-	printf("%f %f\n", minirt->camera->fov_x, minirt->camera->fov_y);
 	free_list_data(&data);
 	return (1);
 }

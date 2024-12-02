@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/29 19:17:06 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/02 15:37:16 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,31 @@
 
 # define MINIRT_H
 
-# define WIDTH 500
-# define HEIGHT 500
+# define WIDTH 1000
+# define HEIGHT 700
+
+# define AZERTY 0
+# define QWERTY 1
 
 # define ESC 65307
+# define A_RIGHT 65363
+# define A_UP 65362
+# define A_LEFT 65361
+# define A_DOWN 65364
+# if AZERTY
+#  define UP 122
+#  define DOWN 115
+#  define LEFT 113
+#  define RIGHT 100
+# elif QWERTY
+#  define UP 119
+#  define DOWN 115
+#  define LEFT 97
+#  define RIGHT 100
+# endif
+# define ENTER 65293
+# define SPACE 32
+# define TAB 65289
 
 # define PI 3.14159265358979323846
 
@@ -66,6 +87,7 @@ typedef struct s_camera
 	t_tuple	vector_xyz;
 	double	fov_x;
 	double	fov_y;
+	double	focal_length;
 }	t_camera;
 
 typedef struct s_canva
@@ -96,6 +118,11 @@ typedef struct s_minirt
 {
 	void	*mlx;
 	void	*win;
+	void	*addr_img;
+	char	*img;
+	int		bits;
+	int		size_line;
+	int		endian;
 	t_shape		*sphere;
 	t_shape		*plan;
 	t_shape		*cylinder;
@@ -103,6 +130,12 @@ typedef struct s_minirt
 	t_light		*light;
 	t_ambient	*ambient;
 }	t_minirt;
+
+typedef struct s_file_rt
+{
+	char	**line; 
+	struct s_file_rt	*next;
+}	t_file_rt;
 
 typedef	struct s_projectile
 {
@@ -238,6 +271,34 @@ int		get_cylinder(char **datas, t_minirt *minirt);
 t_shape	*get_this_shape(t_shape *shape, size_t index);
 void	my_mlx_init(t_minirt *minirt);
 void	my_mlx_new_window(t_minirt *minirt, int width, int height, char *title);
+void	display(t_minirt *minirt);
+int		convert_rgb(t_uint8 rgb[3]);
+double	convert_rad(double deg);
+double	convert_deg(double rad);
+t_vector vec_add_vec2(t_vector vec, t_vector add);
+t_point	apply_vec_to_nbr(t_vector vec, t_point point);
+t_vector vec_multiplication2(t_vector vec, double nbr);
+t_tuple	vec_normalization2(t_tuple vec);
+t_tuple	vec_cross(t_tuple a, t_tuple b);
+double	double_abs(double x);
+t_vector	create_vector2(double x, double y, double z);
+t_vector	get_pixel_vector(t_minirt *minirt, int x, int y);
+double	intersec_sphere(t_minirt *minirt, t_vector pixel, t_shape sphere);
+double	get_min(double a, double b);
+double	get_max(double a, double b);
+void	display_precision(t_minirt *minirt);
+double	dot_product2(t_vector a, t_vector b);
+t_vector	vec_sub_vec2(t_vector a, t_vector b);
+double	intersec_plan(t_minirt *minirt, t_vector pixel, t_shape plan);
+void	cam_look_leftright(t_minirt *minirt, double angle);
+void	cam_look_updown(t_minirt *minirt, double angle);
+void	cam_go_frontback(t_minirt *minirt, int dir);
+void	print_coor(void *coor);
+void	cam_go_leftright(t_minirt *minirt, int left_right);
+void	cam_go_updown(t_minirt *minirt, int up_down);
+double	intersec_cylinder(t_minirt *minirt, t_vector pixel, t_shape cylinder);
+double	vec_magnitude2(t_vector vec);
+void	my_mlx_new_img(t_minirt *minirt);
 
 // display
 void	display(t_minirt *minirt);

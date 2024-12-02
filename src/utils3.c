@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 22:32:29 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/17 15:08:11 by nojia            ###   ########.fr       */
+/*   Updated: 2024/11/19 18:51:02 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,18 @@ double	double_abs(double x)
 		return (-x);
 	else
 		return (x);
+}
+
+double	get_min(double a, double b)
+{
+	if (a > b)
+		return (b);
+	return (a);
+}
+
+double	get_max(double a, double b)
+{
+	if (a < b)
+		return (b);
+	return (a);
 }
