@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/28 16:41:03 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:01:31 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,18 +75,35 @@ static int	point_in_cylinder(t_shape cy, t_point intersec)
 	return (1);
 }
 
-// static void	get_bases_cy(t_shape cy, t_shape *base1, t_shape *base2)
-// {
-// 	base1->xyz.coor[0] = cy.xyz.coor[0];
-// 	base1->xyz.coor[1] = cy.xyz.coor[1];
-// 	base1->xyz.coor[2] = cy.xyz.coor[2];
-// 	base1->vector_xyz = cy.vector_xyz;
-// 	cy.xyz = apply_vec_to_nbr(vec_multiplication2(cy.vector_xyz, cy.height), cy.xyz);
-// 	base2->xyz.coor[0] = cy.xyz.coor[0];
-// 	base2->xyz.coor[1] = cy.xyz.coor[1];
-// 	base2->xyz.coor[2] = cy.xyz.coor[2];
-// 	base2->vector_xyz = cy.vector_xyz;
-// }
+static void	get_bases_cy(t_shape cy, t_shape *base1, t_shape *base2)
+{
+	base1->xyz.coor[0] = cy.xyz.coor[0];
+	base1->xyz.coor[1] = cy.xyz.coor[1];
+	base1->xyz.coor[2] = cy.xyz.coor[2];
+	base1->vector_xyz = cy.vector_xyz;
+	cy.xyz = apply_vec_to_nbr(vec_multiplication2(cy.vector_xyz, cy.height), cy.xyz);
+	base2->xyz.coor[0] = cy.xyz.coor[0];
+	base2->xyz.coor[1] = cy.xyz.coor[1];
+	base2->xyz.coor[2] = cy.xyz.coor[2];
+	base2->vector_xyz = cy.vector_xyz;
+}
+
+static double	intersec_base_cy(t_minirt *minirt, t_vector pixel, t_shape cy)
+{
+	t_shape	b1;
+	t_shape	b2;
+	t_point	intersec;
+	double	dist_plan;
+	
+	get_bases_cy(cy, &b1, &b2);
+	dist_plan = get_min(intersec_plan(minirt, pixel, b2), intersec_plan(minirt, pixel, b1));
+	if (dist_plan < 0)
+		return (-1);
+	intersec = apply_vec_to_nbr(vec_multiplication2(pixel, dist_plan), cy.xyz);
+	if (vec_magnitude2(vec_sub_vec2(*(t_vector *)&b1.xyz, *(t_vector *)&intersec)) > cy.diameter / 2)
+		return (-1);
+	return (dist_plan);
+}
 
 double	intersec_cylinder(t_minirt *minirt, t_vector pixel, t_shape cy)
 {
@@ -94,10 +111,6 @@ double	intersec_cylinder(t_minirt *minirt, t_vector pixel, t_shape cy)
 	double	delta;
 	t_point	intersec;
 	t_vector	oc;
-	// t_shape	base1;
-	// t_shape	base2;
-	// double	b1;
-	// double	b2;
 
 	oc = vec_sub_vec2(*(t_vector *)&minirt->camera->xyz,
 		*(t_vector *)&cy.xyz);
@@ -115,15 +128,8 @@ double	intersec_cylinder(t_minirt *minirt, t_vector pixel, t_shape cy)
 		(-quadratic[1] - sqrt(delta)) / (2 * quadratic[0]))),
 		minirt->camera->xyz);
 	if (!point_in_cylinder(cy, intersec))
-		return (-1);
-	// get_bases_cy(cy, &base1, &base2);
-	// b1 = intersec_plan(minirt, pixel, base1);
-	// b2 = intersec_plan(minirt, pixel, base2);
-	// if (b1 < 0)
-	// 	b1 = 1e10;
-	// if (b2 < 0)
-	// 	b2 = 1e10;
-	return (/*get_min(b2, get_min(b1, */get_min((-quadratic[1] + sqrt(delta)) / (2 * quadratic[0]),
-		(-quadratic[1] - sqrt(delta)) / (2 * quadratic[0])))/*))*/;
+		return (intersec_base_cy(minirt, pixel, cy));
+	return (get_min((-quadratic[1] + sqrt(delta)) / (2 * quadratic[0]),
+		(-quadratic[1] - sqrt(delta)) / (2 * quadratic[0])));
 }
 
