@@ -28,7 +28,8 @@ SRCS =	src/main.c \
 	src/matrix_transformation.c \
 	src/intersections.c \
 	src/cam_movement.c \
-	src/utils4.c
+	src/utils4.c \
+	src/vector_utils2.c
 
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)

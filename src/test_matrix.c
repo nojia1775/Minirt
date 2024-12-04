@@ -637,7 +637,6 @@ void	test_chaining_matrix(void)
 	can4 = multiplying_4X4_matrix(&can3, &can2);
 	can5 = multiplying_4X4_matrix(&can4, &can);
 	tup5 = multiplying_matrix_tuple(&can5, *tup);
-	printf("x : %f, y : %f, z : %f\n", tup5->coor[0], tup5->coor[1], tup5->coor[2]);
 	if ((int)tup2->coor[0] != 1.0 || (int)tup2->coor[1] != -1.0 || (int)tup2->coor[2] != 0.0)
 		printf("[KO] chaining matrix test 1\n");
 	else if ((int)tup3->coor[0] != 5.0 || (int)tup3->coor[1] != -5.0 || (int)tup3->coor[2] != 0.0)
@@ -648,4 +647,124 @@ void	test_chaining_matrix(void)
 		printf("[KO] chaining matrix test 4\n");
 	else
 		printf("[OK] chaining matrix test 1, 2, 3, 4\n");
+}
+
+void	test_normal_at_sphere(void)
+{
+	t_shape	s;
+	t_tuple	*p;
+	t_tuple	*p2;
+	t_tuple	*p3;
+	t_tuple	*p4;
+	t_tuple	v;
+	t_tuple	v2;
+	t_tuple	v3;
+	t_tuple	v4;
+	t_tuple	v5;
+
+	s = create_sphere(5);
+	s.type = 1;
+	p = create_tuple(1, 0, 0, 0);
+	p2 = create_tuple(0, 1, 0, 0);
+	p3 = create_tuple(0, 0, 1, 0);
+	p4 = create_tuple(sqrt(3.0) / 3.0, sqrt(3.0) / 3.0, sqrt(3.0) / 3.0, 0);
+	v = normal_vector_sphere(s, *p);
+	v2 = normal_vector_sphere(s, *p2);
+	v3 = normal_vector_sphere(s, *p3);
+	v4 = normal_vector_sphere(s, *p4);
+	v5 = vec_normalization2(v4);
+	if (v.coor[0] != 1 || v.coor[1] != 0 || v.coor[2] != 0 || v.coor[3] != 1)
+		printf("[KO] normal at sphere function test 1\n");
+	else if (v2.coor[0] != 0 || v2.coor[1] != 1 || v2.coor[2] != 0 || v2.coor[3] != 1)
+		printf("[KO] normal at sphere function test 2\n");
+	else if (v3.coor[0] != 0 || v3.coor[1] != 0 || v3.coor[2] != 1 || v3.coor[3] != 1)
+		printf("[KO] normal at sphere function test 3\n");
+	else if (v4.coor[0] != sqrt(3.0) / 3.0 || v4.coor[1] != sqrt(3.0) / 3.0 || v4.coor[2] != sqrt(3.0) / 3.0 || v4.coor[3] != 1)
+		printf("[KO] normal at sphere function test 4\n");
+	else if (v5.coor[0] != sqrt(3.0) / 3.0 || v5.coor[1] != sqrt(3.0) / 3.0 || v5.coor[2] != sqrt(3.0) / 3.0 || v5.coor[3] != 1)
+		printf("[KO] normal at sphere function test 5\n");
+	else
+		printf("[OK] normal at sphere function test 1, 2, 3, 4, 5\n");
+}
+
+void	test_reflect_function(void)
+{
+	t_tuple	*v = create_tuple(1, -1, 0, 0);
+	t_tuple *n = create_tuple(0, 1, 0, 0);
+	t_tuple r = reflect(*v, *n);
+	t_tuple	*v2 = create_tuple(0, -1, 0, 0);
+	t_tuple *n2 = create_tuple(sqrt(2.0) / 2, sqrt(2.0) / 2, 0, 0);
+	t_tuple r2 = reflect(*v2, *n2);
+	if (r.coor[0] != 1 || r.coor[1] != 1 || r.coor[2] != 0)
+		printf("[KO] test reflect function 1\n");
+	else if ((int)(r2.coor[0] + 0.5) != 1.0 || (int)(r2.coor[1] + 0.5) != 0.0 || (int)(r2.coor[2] + 0.5) != 0.0)
+		printf("[KO] test reflect function 2\n");
+	else
+		printf("[OK] test reflect function 1, 2\n");
+}
+
+void	test_lighting_function(void)
+{
+	t_tuple	*point = create_tuple(0.0, 0.0, 0.0, 1);
+	t_tuple *eyev = create_tuple(0.0, 0.0, -1.0, 0);
+	t_tuple *normalv = create_tuple(0.0, 0.0, -1.0, 0);
+	t_light	light;
+	light.xyz = create_tuple(0.0, 0.0, -10.0, 1);
+	light.rgb = create_tuple(1.0, 1.0, 1.0, 2);
+	double result = lighting(light, *point, *eyev, *normalv);
+	if (result != 1.9)
+	{
+		printf("[KO] test lighting function 1\n");
+		return ;
+	}
+	t_tuple	*point2 = create_tuple(0.0, 0.0, 0.0, 1);
+	t_tuple *eyev2 = create_tuple(0.0, sqrt(2)/2, sqrt(2)/2, 0);
+	t_tuple *normalv2 = create_tuple(0.0, 0.0, -1.0, 0);
+	t_light	light2;
+	light2.xyz = create_tuple(0.0, 0.0, -10.0, 1);
+	light2.rgb = create_tuple(1.0, 1.0, 1.0, 2);
+	double result2 = lighting(light2, *point2, *eyev2, *normalv2);
+	if (result2 != 1.0)
+	{
+		printf("[KO] test lighting function 2\n");
+		return ;
+	}
+	t_tuple	*point3 = create_tuple(0.0, 0.0, 0.0, 1);
+	t_tuple *eyev3 = create_tuple(0.0, 0.0, -1.0, 0);
+	t_tuple *normalv3 = create_tuple(0.0, 0.0, -1.0, 0);
+	t_light	light3;
+	light3.xyz = create_tuple(0.0, 10.0, -10.0, 1);
+	light3.rgb = create_tuple(1.0, 1.0, 1.0, 2);
+	double result3 = lighting(light3, *point3, *eyev3, *normalv3);
+	if ((int)(result3 * 10000) != 7363)
+	{
+		printf("[KO] test lighting function 3\n");
+		return ;
+	}
+	t_tuple	*point4 = create_tuple(0.0, 0.0, 0.0, 1);
+	t_tuple *eyev4 = create_tuple(0.0, -sqrt(2)/2, -sqrt(2)/2, 0);
+	t_tuple *normalv4 = create_tuple(0.0, 0.0, -1.0, 0);
+	t_light	light4;
+	light4.xyz = create_tuple(0.0, 10.0, -10.0, 1);
+	light4.rgb = create_tuple(1.0, 1.0, 1.0, 2);
+	double result4 = lighting(light4, *point4, *eyev4, *normalv4);
+	if ((int)(result4 * 10000) != 16363)
+	{
+		printf("[KO] test lighting function 4\n");
+		return ;
+	}
+
+	t_tuple	*point5 = create_tuple(0.0, 0.0, 0.0, 1);
+	t_tuple *eyev5 = create_tuple(0.0, 0.0, -1.0, 0);
+	t_tuple *normalv5 = create_tuple(0.0, 0.0, -1.0, 0);
+	t_light	light5;
+	light5.xyz = create_tuple(0.0, 0.0, 10.0, 1);
+	light5.rgb = create_tuple(1.0, 1.0, 1.0, 2);
+	double result5 = lighting(light5, *point5, *eyev5, *normalv5);
+	if (result5 != 0.1)
+	{
+		printf("[KO] test lighting function 5\n");
+		return ;
+	}
+	printf("[OK] test lighting function 1, 2, 3, 4, 5\n");
 }

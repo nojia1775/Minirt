@@ -76,9 +76,9 @@ typedef struct s_tuple
 
 typedef struct s_light
 {
-	double		xyz[3];
+	t_tuple		*xyz;
 	double		luminosity;
-	t_uint8	rgb[3];
+	t_tuple		*rgb;
 }	t_light;
 
 typedef struct s_ambient
@@ -110,6 +110,7 @@ typedef struct s_matrix
 
 typedef struct s_shape
 {
+	int		type;
 	size_t	index;
 	t_point	xyz;
 	t_uint8	rgb[3];
@@ -152,6 +153,11 @@ typedef	struct s_environment
 
 //vector_utils
 t_tuple	*create_tuple(double x, double y, double z, int w);
+
+//vector_utils2
+t_tuple normal_vector_sphere(t_shape sphere, t_tuple point);
+t_tuple reflect(t_tuple in, t_tuple normal);
+double  lighting(t_light light, t_tuple point, t_tuple eyev, t_tuple normalv);
 
 typedef struct s_file_rt
 {
@@ -235,6 +241,9 @@ void		test_scaling_matrix(void);
 void		test_rotation_matrix(void);
 void		test_shearing_matrix(void);
 void		test_chaining_matrix(void);
+void		test_normal_at_sphere(void);
+void		test_reflect_function(void);
+void		test_lighting_function(void);
 
 
 //sphere

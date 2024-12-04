@@ -129,6 +129,7 @@ t_tuple	vec_normalization2(t_tuple vec)
 	normal.coor[0] = vec.coor[0] / length;
 	normal.coor[1] = vec.coor[1] / length;
 	normal.coor[2] = vec.coor[2] / length;
+	normal.coor[3] = vec.coor[3];
 	return (normal);
 }
 
