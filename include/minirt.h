@@ -76,15 +76,15 @@ typedef struct s_tuple
 
 typedef struct s_light
 {
-	t_tuple		*xyz;
+	t_tuple		xyz;
 	double		luminosity;
-	t_tuple		*rgb;
+	t_tuple		rgb;
 }	t_light;
 
 typedef struct s_ambient
 {
 	double		ambient;
-	t_uint8	rgb[3];
+	double		rgb[3];
 }	t_ambient;
 
 typedef struct s_camera
@@ -113,7 +113,8 @@ typedef struct s_shape
 	int		type;
 	size_t	index;
 	t_point	xyz;
-	t_uint8	rgb[3];
+	t_uint8		rgb[3];
+	double		distance;
 	double		height;
 	double		diameter;
 	t_tuple		vector_xyz;

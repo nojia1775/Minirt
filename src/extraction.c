@@ -75,9 +75,9 @@ int	get_light(char **datas, t_minirt *minirt)
 	minirt->light = (t_light *)ft_calloc(1, sizeof(t_light));
 	if (minirt->light == NULL)
 		return (printf("Error : light : alloc failed/n"), 0);
-	get_three_double(minirt->light->xyz, datas[1]);
+	get_three_double(minirt->light->xyz.coor, datas[1]);
 	minirt->light->luminosity = atod(datas[2]);
-	get_three_int(minirt->light->rgb, datas[3]);
+	get_three_int(minirt->light->rgb.coor, datas[3]);
 	return (1);
 }
 

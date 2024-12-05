@@ -20,7 +20,9 @@ static void	print_image(t_minirt *minirt, t_shape *shape, int x, int y)
 	int	pixel_offset;
 
 	if (shape)
+	{
 		color = convert_rgb(shape->rgb);
+	}
 	else
 		color = 0x000000;
 	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
@@ -49,7 +51,7 @@ static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y
 	int	pixel_offset;
 
 	if (shape)
-		color = convert_rgb(shape->rgb);
+		color = convert_rgb((t_uint8 *)shape->rgb);
 	else
 		color = 0x000000;
 	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);

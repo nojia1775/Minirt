@@ -36,7 +36,7 @@ double  lighting(t_light light, t_tuple point, t_tuple eyev, t_tuple normalv)
 
     double effective_color = 1;
 
-    t_tuple lightv = vec_normalization2(*vec_sub_vec(light.xyz, &point));
+    t_tuple lightv = vec_normalization2(*vec_sub_vec(&light.xyz, &point));
     ambient = effective_color * ambient;
 
     double light_dot_normal = dot_product2(lightv, normalv);
