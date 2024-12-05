@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/02 16:54:41 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/05 15:15:55 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 #  define LEFT 97
 #  define RIGHT 100
 # endif
-# define ENTER 65293
+# define CTRL 65508
 # define SPACE 32
 # define TAB 65289
 
@@ -52,6 +52,13 @@
 # include "../libft/libft.h"
 
 typedef unsigned char	t_uint8;
+
+typedef enum	e_type
+{
+	SPHERE,
+	PLAN,
+	CYLINDER
+}	t_type;
 
 typedef struct s_point
 {
@@ -78,18 +85,18 @@ typedef struct s_light
 {
 	t_tuple		xyz;
 	double		luminosity;
-	t_tuple		rgb;
+	t_uint8		rgb[3];
 }	t_light;
 
 typedef struct s_ambient
 {
 	double		ambient;
-	double		rgb[3];
+	t_uint8		rgb[3];
 }	t_ambient;
 
 typedef struct s_camera
 {
-	t_point	xyz;
+	t_tuple	xyz;
 	t_tuple	vector_xyz;
 	double	fov_x;
 	double	fov_y;
@@ -110,9 +117,9 @@ typedef struct s_matrix
 
 typedef struct s_shape
 {
-	int		type;
+	t_type		type;
 	size_t	index;
-	t_point	xyz;
+	t_tuple	xyz;
 	t_uint8		rgb[3];
 	double		distance;
 	double		height;
@@ -158,7 +165,7 @@ t_tuple	*create_tuple(double x, double y, double z, int w);
 //vector_utils2
 t_tuple normal_vector_sphere(t_shape sphere, t_tuple point);
 t_tuple reflect(t_tuple in, t_tuple normal);
-double  lighting(t_light light, t_tuple point, t_tuple eyev, t_tuple normalv);
+double  lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_shape *shape);
 
 typedef struct s_file_rt
 {
@@ -176,7 +183,6 @@ int	get_b(int trgb);
 //tuple_operation
 t_tuple		*vec_add_nbr(t_tuple *vec, double nbr);
 t_tuple		*vec_add_vec(t_tuple *vec, t_tuple *add);
-t_tuple		*vec_sub_vec(t_tuple *vec, t_tuple *add);
 double		vec_magnitude(t_tuple *vec);
 double		dot_product(t_tuple *first, t_tuple *second, int length);
 t_tuple		*vec_normalization(t_tuple *vec);
@@ -284,12 +290,12 @@ int		convert_rgb(t_uint8 rgb[3]);
 double	convert_rad(double deg);
 double	convert_deg(double rad);
 t_tuple vec_add_vec2(t_tuple vec, t_tuple add);
-t_point	apply_vec_to_nbr(t_tuple vec, t_point point);
+t_tuple	apply_vec_to_nbr(t_tuple vec, t_tuple point);
 t_tuple vec_multiplication2(t_tuple vec, double nbr);
 t_tuple	vec_normalization2(t_tuple vec);
 t_tuple	vec_cross(t_tuple a, t_tuple b);
 double	double_abs(double x);
-t_tuple	create_vector2(double x, double y, double z);
+t_tuple	create_tuple2(double x, double y, double z);
 t_tuple	get_pixel_vector(t_minirt *minirt, int x, int y);
 double	intersec_sphere(t_minirt *minirt, t_tuple pixel, t_shape sphere);
 double	get_min(double a, double b);
@@ -317,7 +323,7 @@ int		convert_rgb(t_uint8 rgb[3]);
 double	convert_rad(double deg);
 double	convert_deg(double rad);
 t_tuple vec_add_vec2(t_tuple vec, t_tuple add);
-t_point	apply_vec_to_nbr(t_tuple vec, t_point point);
+t_tuple	apply_vec_to_nbr(t_tuple vec, t_tuple point);
 t_tuple	vec_multiplication2(t_tuple vec, double nbr);
 t_tuple	vec_normalization2(t_tuple vec);
 t_tuple	vec_cross(t_tuple a, t_tuple b);

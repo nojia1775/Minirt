@@ -6,22 +6,26 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/05 12:48:17 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/12/05 16:48:16 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-static void	print_image(t_minirt *minirt, t_shape *shape, int x, int y)
+static void	print_image(t_minirt *minirt, t_shape *shape, int x, int y, double shading)
 {
 	int	i;
 	int	j;
-	int	color;
 	int	pixel_offset;
+	t_uint8	rgb[3];
+	int	color;
 
 	if (shape)
 	{
-		color = convert_rgb(shape->rgb);
+		rgb[0] = shape->rgb[0] * (shading / 3);
+		rgb[1] = shape->rgb[1] * (shading / 3);
+		rgb[2] = shape->rgb[2] * (shading / 3);
+		color = convert_rgb(rgb);
 	}
 	else
 		color = 0x000000;
@@ -45,16 +49,27 @@ static void	print_image(t_minirt *minirt, t_shape *shape, int x, int y)
 	}
 }
 
-static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y)
+static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y, double shading)
 {
 	int	color;
 	int	pixel_offset;
+	t_uint8	rgb[3];
 
 	if (shape)
-		color = convert_rgb((t_uint8 *)shape->rgb);
+	{
+		rgb[0] = shape->rgb[0] * (shading / 3);
+		rgb[1] = shape->rgb[1] * (shading / 3);
+		rgb[2] = shape->rgb[2] * (shading / 3);
+		color = convert_rgb(rgb);
+	}
 	else
 		color = 0x000000;
 	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
+	if (!minirt->img)
+	{
+		free_minirt(minirt);
+		exit(1);
+	}
 	pixel_offset = y * minirt->size_line + x * (minirt->bits / 8);
 	*(int *)(minirt->img + pixel_offset) = color;
 }
@@ -77,6 +92,8 @@ static t_shape	*closest_sphere(t_minirt *minirt, t_tuple pixel, double *min)
 		}
 		tmp = tmp->next;
 	}
+	if (shape)
+		shape->distance = *min;
 	return (shape);
 }
 
@@ -98,6 +115,8 @@ static t_shape	*closest_plan(t_minirt *minirt, t_tuple pixel, double *min)
 		}
 		tmp = tmp->next;
 	}
+	if (shape)
+		shape->distance = *min;
 	return (shape);
 }
 
@@ -119,6 +138,8 @@ static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple pixel, double *min)
 		}
 		tmp = tmp->next;
 	}
+	if (shape)
+		shape->distance = *min;
 	return (shape);
 }
 
@@ -146,7 +167,10 @@ void	display(t_minirt *minirt)
 {
 	t_tuple	pixel;
 	t_shape	*shape;
+	t_tuple	intersec;
+	double	color;
 
+	color = 0;
 	int y = 2;
 	while (y < HEIGHT)
 	{
@@ -156,7 +180,12 @@ void	display(t_minirt *minirt)
 			shape = NULL;
 			pixel = get_pixel_vector(minirt, x, y);
 			shape = closest_shape(minirt, pixel);
-			print_image(minirt, shape, x, y);
+			if (shape)
+			{
+				intersec = vec_multiplication2(pixel, shape->distance);
+				color = lighting(minirt, intersec, negate_tuple(pixel), shape);
+			}
+			print_image(minirt, shape, x, y, color);
 			x += 5;
 		}
 		y += 5;
@@ -168,6 +197,8 @@ void	display_precision(t_minirt *minirt)
 {
 	t_tuple	pixel;
 	t_shape	*shape;
+	t_tuple	intersec;
+	double	color;
 
 	int y = 0;
 	while (y < HEIGHT)
@@ -178,7 +209,12 @@ void	display_precision(t_minirt *minirt)
 			shape = NULL;
 			pixel = get_pixel_vector(minirt, x, y);
 			shape = closest_shape(minirt, pixel);
-			print_image_precision(minirt, shape, x, y);
+			if (shape)
+			{
+				intersec = vec_multiplication2(pixel, shape->distance);
+				color = lighting(minirt, intersec, negate_tuple(pixel), shape);
+			}
+			print_image_precision(minirt, shape, x, y, color);
 			x++;
 		}
 		y++;

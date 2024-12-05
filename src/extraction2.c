@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extraction2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 16:04:38 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/02 16:05:10 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/05 14:32:53 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	get_cylinder(char **datas, t_minirt *minirt)
 	cur = minirt->cylinder;
 	while (cur->next)
 		cur = cur->next;
+	cur->type = CYLINDER;
 	get_three_double(cur->xyz.coor, datas[1]);
 	get_three_double(cur->vector_xyz.coor, datas[2]);
 	cur->diameter = atod(datas[3]);

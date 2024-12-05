@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector_operation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:27:13 by yrio              #+#    #+#             */
-/*   Updated: 2024/12/02 15:52:48 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/05 12:55:00 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ t_tuple *vec_add_nbr(t_tuple *vec, double nbr)
 	return (vec);
 }
 
-t_point	apply_vec_to_nbr(t_tuple vec, t_point point)
+t_tuple	apply_vec_to_nbr(t_tuple vec, t_tuple point)
 {
-	t_point	result;
+	t_tuple	result;
 	
 	result.coor[0] = point.coor[0] + vec.coor[0];
 	result.coor[1] = point.coor[1] + vec.coor[1];

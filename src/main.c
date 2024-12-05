@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/05 12:52:48 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/12/05 16:04:35 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int	key_pressed(int key, void *param)
 		cam_go_updown(minirt, -1);
 	else if (key == SPACE)
 		cam_go_updown(minirt, 1);
-	else if (key == ENTER)
+	else if (key == CTRL)
 	{
 		mlx_clear_window(minirt->mlx, minirt->win);
 		display_precision(minirt);
@@ -121,7 +121,7 @@ void	init_minirt(t_minirt *minirt)
 // 	mlx_hook(minirt.win, 17, 0, close_win, &minirt);
 // 	mlx_key_hook(minirt.win, key_pressed, &minirt);
 // 	put_pixel_projectile(&minirt, height, 45, 23, 210);
-// 	// put_one_color(&minirt, 45, 23, 210);
+// 	 put_one_color(&minirt, 45, 23, 210);
 // 	mlx_loop(minirt.mlx);
 // 	free_minirt(&minirt);
 // 	return (0);

@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:12:35 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/15 16:35:27 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:59:41 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	get_three_int(t_uint8 *tab, char *line)
 	while (line[++i] && line[i] != ',')
 		;
 	tab[2] = ft_atoi(line + i + 1);
-	printf("%d %d %d\n", tab[0], tab[1], tab[2]);
 }
 
 int	parse_nbr_dot(char *str)
