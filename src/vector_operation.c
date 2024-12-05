@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   vector_operation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:27:13 by yrio              #+#    #+#             */
-/*   Updated: 2024/11/28 09:55:21 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:52:48 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-t_vector *vec_add_nbr(t_vector *vec, double nbr)
+t_tuple *vec_add_nbr(t_tuple *vec, double nbr)
 {
 	if (!vec)
 		return (NULL);
@@ -22,7 +22,7 @@ t_vector *vec_add_nbr(t_vector *vec, double nbr)
 	return (vec);
 }
 
-t_point	apply_vec_to_nbr(t_vector vec, t_point point)
+t_point	apply_vec_to_nbr(t_tuple vec, t_point point)
 {
 	t_point	result;
 	
@@ -32,19 +32,20 @@ t_point	apply_vec_to_nbr(t_vector vec, t_point point)
 	return (result);
 }
 
-t_vector *vec_add_vec(t_vector *vec, t_vector *add)
+t_tuple *vec_add_vec(t_tuple *vec, t_tuple *add)
 {
 	if (!vec || !add)
 		return (NULL);
 	vec->coor[0] = vec->coor[0] + add->coor[0];
 	vec->coor[1] = vec->coor[1] + add->coor[1];
 	vec->coor[2] = vec->coor[2] + add->coor[2];
+	vec->coor[3] = vec->coor[3] + add->coor[3];
 	return (vec);
 }
 
-t_vector vec_add_vec2(t_vector vec, t_vector add)
+t_tuple vec_add_vec2(t_tuple vec, t_tuple add)
 {
-	t_vector	result;
+	t_tuple	result;
 
 	result.coor[0] = vec.coor[0] + add.coor[0];
 	result.coor[1] = vec.coor[1] + add.coor[1];
@@ -52,19 +53,20 @@ t_vector vec_add_vec2(t_vector vec, t_vector add)
 	return (result);
 }
 
-t_vector *vec_sub_vec(t_vector *vec, t_vector *add)
+t_tuple *vec_sub_vec(t_tuple *vec, t_tuple *add)
 {
 	if (!vec || !add)
 		return (NULL);
 	vec->coor[0] = vec->coor[0] - add->coor[0];
 	vec->coor[1] = vec->coor[1] - add->coor[1];
 	vec->coor[2] = vec->coor[2] - add->coor[2];
+	vec->coor[3] = vec->coor[3] - add->coor[3];
 	return (vec);
 }
 
-t_vector	vec_sub_vec2(t_vector a, t_vector b)
+t_tuple	vec_sub_vec2(t_tuple a, t_tuple b)
 {
-	t_vector	result;
+	t_tuple	result;
 
 	result.coor[0] = a.coor[0] - b.coor[0];
 	result.coor[1] = a.coor[1] - b.coor[1];
@@ -72,19 +74,19 @@ t_vector	vec_sub_vec2(t_vector a, t_vector b)
 	return (result);
 }
 
-double	vec_magnitude(t_vector *vec)
+double	vec_magnitude(t_tuple *vec)
 {
 	if (!vec)
 		return (-1);
 	return (sqrt(pow(vec->coor[0], 2) + pow(vec->coor[1], 2) + pow(vec->coor[2], 2)));
 }
 
-double	vec_magnitude2(t_vector vec)
+double	vec_magnitude2(t_tuple vec)
 {
 	return (sqrt(pow(vec.coor[0], 2) + pow(vec.coor[1], 2) + pow(vec.coor[2], 2)));
 }
 
-double dot_product(t_vector *first, t_vector *second, int length)
+double dot_product(t_tuple *first, t_tuple *second, int length)
 {
 	double	result;
 	int		count;
@@ -99,13 +101,13 @@ double dot_product(t_vector *first, t_vector *second, int length)
 	return (result);
 }
 
-double	dot_product2(t_vector a, t_vector b)
+double	dot_product2(t_tuple a, t_tuple b)
 {
 	return (a.coor[0] * b.coor[0] + a.coor[1] * b.coor[1]
 		+ a.coor[2] * b.coor[2]);
 }
 
-t_vector *vec_normalization(t_vector *vec)
+t_tuple *vec_normalization(t_tuple *vec)
 {
 	double	magnitude;
 
@@ -118,19 +120,20 @@ t_vector *vec_normalization(t_vector *vec)
 	return (vec);
 }
 
-t_vector	vec_normalization2(t_vector vec)
+t_tuple	vec_normalization2(t_tuple vec)
 {
-	t_vector	normal;
+	t_tuple	normal;
 	double	length;
 
 	length = vec_magnitude(&vec);
 	normal.coor[0] = vec.coor[0] / length;
 	normal.coor[1] = vec.coor[1] / length;
 	normal.coor[2] = vec.coor[2] / length;
+	normal.coor[3] = vec.coor[3];
 	return (normal);
 }
 
-t_vector *vec_multiplication(t_vector *vec, double scalar)
+t_tuple *vec_multiplication(t_tuple *vec, double scalar)
 {
 	int count;
 
@@ -143,10 +146,10 @@ t_vector *vec_multiplication(t_vector *vec, double scalar)
 	return (vec);
 }
 
-t_vector vec_multiplication2(t_vector vec, double nbr)
+t_tuple vec_multiplication2(t_tuple vec, double nbr)
 {
 	int count;
-	t_vector	result;
+	t_tuple	result;
 
 	count = 0;
 	while (count < 3)
@@ -157,12 +160,35 @@ t_vector vec_multiplication2(t_vector vec, double nbr)
 	return (result);
 }
 
-t_vector	vec_cross(t_vector a, t_vector b)
+t_tuple *vec_division(t_tuple *vec, double nbr)
 {
-	t_vector	result;
+	int count;
+	t_tuple	*result;
+
+	count = 0;
+	result = NULL;
+	while (count < 3)
+	{
+		result->coor[count] = vec->coor[count] / nbr;
+		count++;
+	}
+	return (result);
+}
+
+t_tuple	vec_cross(t_tuple a, t_tuple b)
+{
+	t_tuple	result;
 
 	result.coor[0] = a.coor[1] * b.coor[2] - a.coor[2] * b.coor[1];
 	result.coor[1] = a.coor[2] * b.coor[0] - a.coor[0] * b.coor[2];
 	result.coor[2] = a.coor[0] * b.coor[1] - a.coor[1] * b.coor[0];
 	return (result);
+}
+
+t_tuple	negate_tuple(t_tuple tuple)
+{
+	tuple.coor[0] = -tuple.coor[0];
+	tuple.coor[1] = -tuple.coor[1];
+	tuple.coor[2] = -tuple.coor[2];
+	return (tuple);
 }

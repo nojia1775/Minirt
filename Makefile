@@ -20,9 +20,16 @@ SRCS =	src/main.c \
 	src/my_mlx_func.c \
 	src/display.c \
 	src/utils3.c \
+	src/projectile.c \
+	src/color_utils.c \
+	src/canva.c \
+	src/matrix_utils.c \
+	src/test_matrix.c \
+	src/matrix_transformation.c \
 	src/intersections.c \
 	src/cam_movement.c \
-	src/utils4.c
+	src/utils4.c \
+	src/vector_utils2.c
 
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)

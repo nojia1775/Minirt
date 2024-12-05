@@ -38,6 +38,7 @@ void	get_three_int(t_uint8 *tab, char *line)
 	while (line[++i] && line[i] != ',')
 		;
 	tab[2] = ft_atoi(line + i + 1);
+	printf("%d %d %d\n", tab[0], tab[1], tab[2]);
 }
 
 int	parse_nbr_dot(char *str)

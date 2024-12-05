@@ -6,13 +6,13 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2024/12/03 18:01:31 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:51:37 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-double	intersec_sphere(t_minirt *minirt, t_vector pixel, t_shape sphere)
+double	intersec_sphere(t_minirt *minirt, t_tuple pixel, t_shape sphere)
 {
 	double	b;
 	double	c;
@@ -38,10 +38,10 @@ double	intersec_sphere(t_minirt *minirt, t_vector pixel, t_shape sphere)
 		/ 2));
 }
 
-double	intersec_plan(t_minirt *minirt, t_vector pixel, t_shape plan)
+double	intersec_plan(t_minirt *minirt, t_tuple pixel, t_shape plan)
 {
-	t_vector	p;
-	t_vector	o;
+	t_tuple	p;
+	t_tuple	o;
 
 	p = create_vector2(plan.xyz.coor[0], plan.xyz.coor[1],
 		plan.xyz.coor[2]);
@@ -56,9 +56,9 @@ double	intersec_plan(t_minirt *minirt, t_vector pixel, t_shape plan)
 }
 static int	point_in_cylinder(t_shape cy, t_point intersec)
 {
-	t_vector	intersec_proj;
+	t_tuple	intersec_proj;
 
-	intersec_proj = vec_add_vec2(*(t_vector *)&cy.xyz, vec_multiplication2(
+	intersec_proj = vec_add_vec2(*(t_tuple *)&cy.xyz, vec_multiplication2(
 		cy.vector_xyz, dot_product2(create_vector2(
 		intersec.coor[0] - cy.xyz.coor[0],
 		intersec.coor[1] - cy.xyz.coor[1],
@@ -105,15 +105,36 @@ static double	intersec_base_cy(t_minirt *minirt, t_vector pixel, t_shape cy)
 	return (dist_plan);
 }
 
-double	intersec_cylinder(t_minirt *minirt, t_vector pixel, t_shape cy)
+static double	intersec_base_cy(t_minirt *minirt, t_vector pixel, t_shape cy)
+{
+	t_shape	b1;
+	t_shape	b2;
+	t_point	intersec;
+	double	dist_plan;
+	
+	get_bases_cy(cy, &b1, &b2);
+	dist_plan = get_min(intersec_plan(minirt, pixel, b2), intersec_plan(minirt, pixel, b1));
+	if (dist_plan < 0)
+		return (-1);
+	intersec = apply_vec_to_nbr(vec_multiplication2(pixel, dist_plan), cy.xyz);
+	if (vec_magnitude2(vec_sub_vec2(*(t_vector *)&b1.xyz, *(t_vector *)&intersec)) > cy.diameter / 2)
+		return (-1);
+	return (dist_plan);
+}
+
+double	intersec_cylinder(t_minirt *minirt, t_tuple pixel, t_shape cy)
 {
 	double	quadratic[3];
 	double	delta;
 	t_point	intersec;
-	t_vector	oc;
+	t_tuple	oc;
+	// t_shape	base1;
+	// t_shape	base2;
+	// double	b1;
+	// double	b2;
 
-	oc = vec_sub_vec2(*(t_vector *)&minirt->camera->xyz,
-		*(t_vector *)&cy.xyz);
+	oc = vec_sub_vec2(*(t_tuple *)&minirt->camera->xyz,
+		*(t_tuple *)&cy.xyz);
 	pixel = vec_normalization2(pixel);
 	quadratic[0] = dot_product2(pixel, pixel) - pow(dot_product2(pixel,
 		vec_normalization2(cy.vector_xyz)), 2);

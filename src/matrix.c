@@ -117,5 +117,3 @@ void	display_mat2d(t_matrix *mat, int axis_1, int axis_2, int slice_axis_3)
 		}
 	}
 }
-
-

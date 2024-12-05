@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/03 14:24:49 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:48:17 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ static void	print_image(t_minirt *minirt, t_shape *shape, int x, int y)
 	int	pixel_offset;
 
 	if (shape)
+	{
 		color = convert_rgb(shape->rgb);
+	}
 	else
 		color = 0x000000;
 	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
@@ -49,7 +51,7 @@ static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y
 	int	pixel_offset;
 
 	if (shape)
-		color = convert_rgb(shape->rgb);
+		color = convert_rgb((t_uint8 *)shape->rgb);
 	else
 		color = 0x000000;
 	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
@@ -57,7 +59,7 @@ static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y
 	*(int *)(minirt->img + pixel_offset) = color;
 }
 
-static t_shape	*closest_sphere(t_minirt *minirt, t_vector pixel, double *min)
+static t_shape	*closest_sphere(t_minirt *minirt, t_tuple pixel, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -78,7 +80,7 @@ static t_shape	*closest_sphere(t_minirt *minirt, t_vector pixel, double *min)
 	return (shape);
 }
 
-static t_shape	*closest_plan(t_minirt *minirt, t_vector pixel, double *min)
+static t_shape	*closest_plan(t_minirt *minirt, t_tuple pixel, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -99,7 +101,7 @@ static t_shape	*closest_plan(t_minirt *minirt, t_vector pixel, double *min)
 	return (shape);
 }
 
-static t_shape	*closest_cylinder(t_minirt *minirt, t_vector pixel, double *min)
+static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple pixel, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -120,7 +122,7 @@ static t_shape	*closest_cylinder(t_minirt *minirt, t_vector pixel, double *min)
 	return (shape);
 }
 
-t_shape	*closest_shape(t_minirt *minirt, t_vector pixel)
+t_shape	*closest_shape(t_minirt *minirt, t_tuple pixel)
 {
 	double	min;
 	t_shape	*shape;
@@ -142,7 +144,7 @@ t_shape	*closest_shape(t_minirt *minirt, t_vector pixel)
  
 void	display(t_minirt *minirt)
 {
-	t_vector	pixel;
+	t_tuple	pixel;
 	t_shape	*shape;
 
 	int y = 2;
@@ -164,7 +166,7 @@ void	display(t_minirt *minirt)
 
 void	display_precision(t_minirt *minirt)
 {
-	t_vector	pixel;
+	t_tuple	pixel;
 	t_shape	*shape;
 
 	int y = 0;
@@ -182,4 +184,56 @@ void	display_precision(t_minirt *minirt)
 		y++;
 	}
 	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
+}
+
+int	put_one_color(t_minirt *minirt, int r, int g, int b)
+{
+	int count = 0;
+	int	count2 = 0;
+	int	value = create_trgb(0, r, g, b);
+	while (count < 500)
+	{
+		count2 = 0;
+		while (count2 < 500)
+		{
+			mlx_pixel_put(minirt->mlx, minirt->win, count, count2, value);
+			count2++;
+		}
+		count++;
+	}
+	return (1);
+}
+
+void	put_pixel_projectile(t_minirt *minirt, int height, int r, int g, int b)
+{
+	int count = 0;
+	int	count2 = 0;
+	int	value = create_trgb(0, r, g, b);
+	t_tuple			*position;
+	t_tuple			*velocity;
+	t_tuple			*gravity;
+	t_tuple			*wind;
+	t_projectile	*proj;
+	t_environment	*env;
+	position = create_tuple(0, 1, 0, 1);
+	velocity = vec_multiplication(vec_normalization(create_tuple(1, 1.8, 0, 0)), 11.25);
+	proj = create_projectile(position, velocity);
+	gravity = create_tuple(0, -0.1, 0, 0);
+	wind = create_tuple(-0.01, 0, 0, 0);
+	env = create_environment(gravity, wind);
+	while (count < 500)
+	{
+		count2 = 0;
+		printf("projectile position : %f , %f , %f | velocity : %f , %f , %f\n", 
+			proj->position->coor[0], proj->position->coor[1], 
+			proj->position->coor[2], proj->velocity->coor[0],
+			proj->velocity->coor[1], proj->velocity->coor[2]);
+		proj = tick(env, proj);
+		while (count2 < 500)
+		{
+			mlx_pixel_put(minirt->mlx, minirt->win, count, height - proj->position->coor[1], value);
+			count2++;
+		}
+		count++;
+	}
 }
