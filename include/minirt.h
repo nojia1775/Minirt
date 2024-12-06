@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/05 15:15:55 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/12/06 17:31:58 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # define WIDTH 1000
 # define HEIGHT 700
 
-# define AZERTY 0
-# define QWERTY 1
+# define AZERTY 1
+# define QWERTY 0
 
 # define ESC 65307
 # define A_RIGHT 65363

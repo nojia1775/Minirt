@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -MMD
 
 OBJS_DIR = obj
 
@@ -31,6 +31,7 @@ SRCS =	src/main.c \
 	src/utils4.c \
 	src/vector_utils2.c
 
+DEPS = $(OBJS:.o=.d)
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 
@@ -53,12 +54,14 @@ all: $(NAME)
 clean:
 	@make clean -C libft/
 	@make clean -C minilibx-linux/
-	rm -rf $(OBJS_DIR)
+	rm -rf $(OBJS_DIR) $(DEPS)
 
 fclean: clean
 	rm -f $(NAME)
 	@make fclean -C libft/
 
 re: fclean all
+
+-include $(DEPS)
 
 .PHONY: all clean fclean re
