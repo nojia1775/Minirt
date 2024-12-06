@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2024/12/05 15:12:20 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/12/06 18:37:31 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ double	intersec_plan(t_minirt *minirt, t_tuple pixel, t_shape plan)
 	t_tuple	o;
 
 	p = create_tuple2(plan.xyz.coor[0], plan.xyz.coor[1],
-		plan.xyz.coor[2]);
+		plan.xyz.coor[2], 0);
 	o = create_tuple2(minirt->camera->xyz.coor[0],
 		minirt->camera->xyz.coor[1],
-		minirt->camera->xyz.coor[2]);
+		minirt->camera->xyz.coor[2], 0);
 	if (dot_product2(plan.vector_xyz, pixel) == 0)
 		return (-1);
 	return ((dot_product2(plan.vector_xyz,
@@ -62,15 +62,15 @@ static int	point_in_cylinder(t_shape cy, t_tuple intersec)
 		cy.vector_xyz, dot_product2(create_tuple2(
 		intersec.coor[0] - cy.xyz.coor[0],
 		intersec.coor[1] - cy.xyz.coor[1],
-		intersec.coor[2] - cy.xyz.coor[2]), cy.vector_xyz)));
+		intersec.coor[2] - cy.xyz.coor[2], 0), cy.vector_xyz)));
 	if (dot_product2(create_tuple2(intersec_proj.coor[0] - cy.xyz.coor[0],
 		intersec_proj.coor[1] - cy.xyz.coor[1],
-		intersec_proj.coor[2] - cy.xyz.coor[2]), cy.vector_xyz) < 0)
+		intersec_proj.coor[2] - cy.xyz.coor[2], 0), cy.vector_xyz) < 0)
 		return (0);
 	if (vec_magnitude2(create_tuple2(
 		intersec_proj.coor[0] - cy.xyz.coor[0],
 		intersec_proj.coor[1] - cy.xyz.coor[1],
-		intersec_proj.coor[2] - cy.xyz.coor[2])) > cy.height)
+		intersec_proj.coor[2] - cy.xyz.coor[2], 0)) > cy.height)
 		return (0);
 	return (1);
 }

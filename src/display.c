@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/05 16:48:16 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/12/06 17:08:41 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ void	display(t_minirt *minirt)
 	t_tuple	pixel;
 	t_shape	*shape;
 	t_tuple	intersec;
+	t_tuple	normalv;
 	double	color;
 
 	color = 0;
@@ -182,8 +183,9 @@ void	display(t_minirt *minirt)
 			shape = closest_shape(minirt, pixel);
 			if (shape)
 			{
+				normalv = normal_vector_sphere(*shape, pixel);
 				intersec = vec_multiplication2(pixel, shape->distance);
-				color = lighting(minirt, intersec, negate_tuple(pixel), shape);
+				color = lighting(*minirt->light, intersec, negate_tuple(pixel), normalv);
 			}
 			print_image(minirt, shape, x, y, color);
 			x += 5;
@@ -198,6 +200,7 @@ void	display_precision(t_minirt *minirt)
 	t_tuple	pixel;
 	t_shape	*shape;
 	t_tuple	intersec;
+	t_tuple	normalv;
 	double	color;
 
 	int y = 0;
@@ -211,8 +214,9 @@ void	display_precision(t_minirt *minirt)
 			shape = closest_shape(minirt, pixel);
 			if (shape)
 			{
+				normalv = normal_vector_sphere(*shape, pixel);
 				intersec = vec_multiplication2(pixel, shape->distance);
-				color = lighting(minirt, intersec, negate_tuple(pixel), shape);
+				color = lighting(*minirt->light, intersec, negate_tuple(pixel), normalv);
 			}
 			print_image_precision(minirt, shape, x, y, color);
 			x++;

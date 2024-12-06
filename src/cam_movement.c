@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cam_movement.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 12:16:41 by nojia             #+#    #+#             */
-/*   Updated: 2024/12/05 15:11:48 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/12/06 18:37:57 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	cam_look_updown(t_minirt *minirt, double angle)
 	old_cam = vec_normalization2(minirt->camera->vector_xyz);
 	if (double_abs(old_cam.coor[0]) == 0 && double_abs(old_cam.coor[1]) == 1
 		&& double_abs(old_cam.coor[2]) == 0)
-		up = create_tuple2(-1, 0, 0);
+		up = create_tuple2(-1, 0, 0, 0);
 	else
-		up = create_tuple2(0, 1, 0);
+		up = create_tuple2(0, 1, 0, 0);
 	up = vec_cross(vec_cross(up, old_cam), old_cam);
 	up = vec_normalization2(up);
 	minirt->camera->vector_xyz.coor[0] = old_cam.coor[0] * cos(angle)
@@ -69,9 +69,9 @@ void	cam_go_leftright(t_minirt *minirt, int left_right)
 	if (double_abs(minirt->camera->vector_xyz.coor[0] == 0
 		&& double_abs(minirt->camera->vector_xyz.coor[1] == 1
 		&& double_abs(minirt->camera->vector_xyz.coor[2] == 0))))
-		up = create_tuple2(-1, 0, 0);
+		up = create_tuple2(-1, 0, 0, 0);
 	else
-		up = create_tuple2(0, -1, 0);
+		up = create_tuple2(0, -1, 0, 0);
 	up = vec_cross(vec_cross(up, minirt->camera->vector_xyz),
 		minirt->camera->vector_xyz);
 	right = vec_cross(up, minirt->camera->vector_xyz);

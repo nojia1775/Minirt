@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/05 15:15:55 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/12/06 19:14:40 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,9 +163,10 @@ typedef	struct s_environment
 t_tuple	*create_tuple(double x, double y, double z, int w);
 
 //vector_utils2
-t_tuple normal_vector_sphere(t_shape sphere, t_tuple point);
+t_tuple normal_vector_sphere(t_shape sphere, t_canva transform, t_tuple point);
 t_tuple reflect(t_tuple in, t_tuple normal);
-double  lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_shape *shape);
+// double  lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_shape *shape);
+double  lighting(t_light light, t_tuple point, t_tuple eyev, t_tuple normalv);
 
 typedef struct s_file_rt
 {
@@ -218,15 +219,15 @@ void		display_mat2d(t_matrix *mat, int axis_1, int axis_2, int slice_axis_3);
 t_canva    	multiplying_4X4_matrix(t_canva *mat1, t_canva *mat2);
 t_tuple		*multiplying_matrix_tuple(t_canva *mat, t_tuple tup);
 t_canva		transpose_4X4_matrix(t_canva mat);
-int			get_determinant_2X2_matrix(t_canva mat);
+double			get_determinant_2X2_matrix(t_canva mat);
 t_canva		get_submatrix(t_canva matrix, int row, int column);
-int			get_minor_3X3_matrix(t_canva mat, int row, int column);
-int			get_cofactor_3X3_matrix(t_canva mat, int row, int column);
-int			get_determinant_3X3_matrix(t_canva mat, int row, int column);
-int			get_minor_4X4_matrix(t_canva mat, int row, int columns);
-int			get_cofactor_4X4_matrix(t_canva mat, int row, int column);
-int			get_determinant_4X4_matrix(t_canva mat, int row);
-int			matrix_4X4_isinvertible(t_canva mat);
+double			get_minor_3X3_matrix(t_canva mat, int row, int column);
+double			get_cofactor_3X3_matrix(t_canva mat, int row, int column);
+double			get_determinant_3X3_matrix(t_canva mat, int row, int column);
+double			get_minor_4X4_matrix(t_canva mat, int row, int columns);
+double			get_cofactor_4X4_matrix(t_canva mat, int row, int column);
+double			get_determinant_4X4_matrix(t_canva mat, int row);
+double			matrix_4X4_isinvertible(t_canva mat);
 t_canva		inverse_matrix_4X4(t_canva mat);
 
 //test
@@ -251,6 +252,7 @@ void		test_chaining_matrix(void);
 void		test_normal_at_sphere(void);
 void		test_reflect_function(void);
 void		test_lighting_function(void);
+void		test_normal_transformation(void);
 
 
 //sphere
@@ -295,7 +297,7 @@ t_tuple vec_multiplication2(t_tuple vec, double nbr);
 t_tuple	vec_normalization2(t_tuple vec);
 t_tuple	vec_cross(t_tuple a, t_tuple b);
 double	double_abs(double x);
-t_tuple	create_tuple2(double x, double y, double z);
+t_tuple	create_tuple2(double x, double y, double z, int w);
 t_tuple	get_pixel_vector(t_minirt *minirt, int x, int y);
 double	intersec_sphere(t_minirt *minirt, t_tuple pixel, t_shape sphere);
 double	get_min(double a, double b);
