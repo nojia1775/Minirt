@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/06 19:20:15 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/09 19:51:52 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,11 @@ int	main(void)
 	// test_normal_at_sphere();
 	// test_reflect_function();
 	// test_lighting_function();
-	test_normal_transformation();
+	test_rayon_position();
+	test_intersection_sphere();
+	test_encapsulates_t_shape();
+
+
 
 	return (0);
 }

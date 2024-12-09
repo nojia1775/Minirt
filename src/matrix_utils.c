@@ -75,7 +75,7 @@ t_canva transpose_4X4_matrix(t_canva mat)
     return (result);
 }
 
-double get_determinant_2X2_matrix(t_canva mat)
+int get_determinant_2X2_matrix(t_canva mat)
 {
     return((mat.array[0][0] * mat.array[1][1]) - 
             (mat.array[0][1] * mat.array[1][0]));
@@ -116,7 +116,7 @@ t_canva get_submatrix(t_canva matrix, int row, int column)
     return (submatrix);
 }
 
-double get_minor_3X3_matrix(t_canva mat, int row, int column)
+int get_minor_3X3_matrix(t_canva mat, int row, int column)
 {
     t_canva submatrix;
 
@@ -124,9 +124,9 @@ double get_minor_3X3_matrix(t_canva mat, int row, int column)
     return (get_determinant_2X2_matrix(submatrix));
 }
 
-double get_cofactor_3X3_matrix(t_canva mat, int row, int column)
+int get_cofactor_3X3_matrix(t_canva mat, int row, int column)
 {
-    double minor;
+    int minor;
 
     minor = get_minor_3X3_matrix(mat, row, column);
     if ((row + column) % 2)
@@ -135,11 +135,11 @@ double get_cofactor_3X3_matrix(t_canva mat, int row, int column)
         return (minor);
 }
 
-double get_determinant_3X3_matrix(t_canva mat, int row, int column)
+int get_determinant_3X3_matrix(t_canva mat, int row, int column)
 {
-    double cofactor1;
-    double cofactor2;
-    double cofactor3;
+    int cofactor1;
+    int cofactor2;
+    int cofactor3;
 
     if (row >= 3 && column % 2)
         row = 2;
@@ -153,7 +153,7 @@ double get_determinant_3X3_matrix(t_canva mat, int row, int column)
             mat.array[row][2] * cofactor3);
 }
 
-double get_minor_4X4_matrix(t_canva mat, int row, int column)
+int get_minor_4X4_matrix(t_canva mat, int row, int column)
 {
     t_canva submatrix;
 
@@ -161,9 +161,9 @@ double get_minor_4X4_matrix(t_canva mat, int row, int column)
     return (get_determinant_3X3_matrix(submatrix, row, column));
 }
 
-double get_cofactor_4X4_matrix(t_canva mat, int row, int column)
+int get_cofactor_4X4_matrix(t_canva mat, int row, int column)
 {
-    double minor;
+    int minor;
     minor = get_minor_4X4_matrix(mat, row, column);
     if (row == 3)
         return (minor);
@@ -173,12 +173,12 @@ double get_cofactor_4X4_matrix(t_canva mat, int row, int column)
         return (minor);
 }
 
-double get_determinant_4X4_matrix(t_canva mat, int row)
+int get_determinant_4X4_matrix(t_canva mat, int row)
 {
-    double cofactor1;
-    double cofactor2;
-    double cofactor3;
-    double cofactor4;
+    int cofactor1;
+    int cofactor2;
+    int cofactor3;
+    int cofactor4;
 
     if (row >= 3)
         row = 2;
@@ -192,9 +192,9 @@ double get_determinant_4X4_matrix(t_canva mat, int row)
             mat.array[row][3] * cofactor4);
 }
 
-double matrix_4X4_isinvertible(t_canva mat)
+int matrix_4X4_isinvertible(t_canva mat)
 {
-    double determinant;
+    int determinant;
 
     determinant = get_determinant_4X4_matrix(mat, 0);
     if (determinant == 0)
@@ -209,7 +209,7 @@ t_canva inverse_matrix_4X4(t_canva mat)
     t_canva result_transpose;
     int     count;
     int     count2;
-    double     determinant;
+    int     determinant;
 
     result = create_canva(4, 4);
     count = 0;
