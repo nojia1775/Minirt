@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/06 17:31:58 by nojia            ###   ########.fr       */
+/*   Updated: 2024/12/10 17:13:18 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # define WIDTH 1000
 # define HEIGHT 700
 
-# define AZERTY 1
-# define QWERTY 0
+# define AZERTY 0
+# define QWERTY 1
 
 # define ESC 65307
 # define A_RIGHT 65363
@@ -165,7 +165,8 @@ t_tuple	*create_tuple(double x, double y, double z, int w);
 //vector_utils2
 t_tuple normal_vector_sphere(t_shape sphere, t_tuple point);
 t_tuple reflect(t_tuple in, t_tuple normal);
-double  lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_shape *shape);
+// double  lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_shape *shape);
+double	lightning(t_minirt *minirt, t_tuple ray, t_shape *shape, t_tuple intersection);
 
 typedef struct s_file_rt
 {

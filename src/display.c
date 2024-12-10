@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/05 16:48:16 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/12/10 18:16:59 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,16 @@ static void	print_image(t_minirt *minirt, t_shape *shape, int x, int y, double s
 	int	i;
 	int	j;
 	int	pixel_offset;
-	t_uint8	rgb[3];
+	// t_uint8	rgb[3];
 	int	color;
 
 	if (shape)
 	{
-		rgb[0] = shape->rgb[0] * (shading / 3);
-		rgb[1] = shape->rgb[1] * (shading / 3);
-		rgb[2] = shape->rgb[2] * (shading / 3);
-		color = convert_rgb(rgb);
+		color = shading;
+		// rgb[0] = shape->rgb[0] * (shading / 3);
+		// rgb[1] = shape->rgb[1] * (shading / 3);
+		// rgb[2] = shape->rgb[2] * (shading / 3);
+		// color = convert_rgb(rgb);
 	}
 	else
 		color = 0x000000;
@@ -183,7 +184,7 @@ void	display(t_minirt *minirt)
 			if (shape)
 			{
 				intersec = vec_multiplication2(pixel, shape->distance);
-				color = lighting(minirt, intersec, negate_tuple(pixel), shape);
+				color = lightning(minirt, pixel, shape, intersec);
 			}
 			print_image(minirt, shape, x, y, color);
 			x += 5;
@@ -212,7 +213,7 @@ void	display_precision(t_minirt *minirt)
 			if (shape)
 			{
 				intersec = vec_multiplication2(pixel, shape->distance);
-				color = lighting(minirt, intersec, negate_tuple(pixel), shape);
+				color = lightning(minirt, pixel, shape, intersec);
 			}
 			print_image_precision(minirt, shape, x, y, color);
 			x++;
