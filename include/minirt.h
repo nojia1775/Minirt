@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/09 20:02:10 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/10 19:52:22 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ typedef struct s_shape
 	double		diameter;
 	t_tuple		vector_xyz;
 	t_matrix	*mat;
+	t_canva		transform;
 	struct s_shape	*next;
 }	t_shape;
 
@@ -179,6 +180,7 @@ t_tuple	*create_tuple(double x, double y, double z, int w);
 t_tuple normal_vector_sphere(t_shape sphere, t_tuple point);
 t_tuple reflect(t_tuple in, t_tuple normal);
 double  lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_shape *shape);
+t_intersection	hit(t_intersection *intersections);
 
 typedef struct s_file_rt
 {
@@ -195,9 +197,11 @@ int	get_b(int trgb);
 
 //ray_utils
 t_tuple			position_ray(t_ray rayon, double t);
-t_intersection	*point_intersection_sphere(t_tuple origin_cam, t_tuple pixel, t_shape sphere);
+t_intersection	*point_intersection_sphere(t_ray rayon, t_shape sphere);
 t_intersection	create_struct_intersection(double t, t_shape shape);
 t_intersection	*aggregating_intersections(t_intersection i1, t_intersection i2);
+t_intersection	*aggregating_4_intersections(t_intersection i1, t_intersection i2, t_intersection i3, t_intersection i4);
+t_intersection	hit(t_intersection *intersections);
 
 //tuple_operation
 t_tuple		*vec_add_nbr(t_tuple *vec, double nbr);
@@ -214,8 +218,8 @@ t_canva		scaling(double x, double y, double z);
 t_canva		rotation_x(double radian);
 t_canva		rotation_y(double radian);
 t_canva		rotation_z(double radian);
-t_canva	shearing(double x_y, double x_z, double y_x, double y_z, double z_x, double z_y);
-
+t_canva		shearing(double x_y, double x_z, double y_x, double y_z, double z_x, double z_y);
+t_ray		transform_ray(t_ray ray, t_canva matrix);
 
 //projectile
 t_projectile	*create_projectile(t_tuple *position, t_tuple *velocity);
@@ -232,6 +236,8 @@ int			compare_2Dmatrix(t_canva *can1, t_canva *can2);
 t_matrix	*alloc_matrix(t_matrix *mat, int x, int y, int z);
 t_matrix	create_matrix(int x, int y, int z);
 void		display_mat2d(t_matrix *mat, int axis_1, int axis_2, int slice_axis_3);
+t_canva		create_matrix_identity(void);
+int			is_matrix_identity(t_canva mat);
 
 //matrix_utils
 t_canva    	multiplying_4X4_matrix(t_canva *mat1, t_canva *mat2);
@@ -275,6 +281,9 @@ void		test_lighting_function(void);
 void	test_rayon_position(void);
 void	test_intersection_sphere(void);
 void	test_encapsulates_t_shape(void);
+void	test_hit_function(void);
+void	test_transform_ray(void);
+void	test_transformation_sphere_operation(void);
 
 
 //sphere

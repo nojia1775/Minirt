@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:06:21 by yrio              #+#    #+#             */
-/*   Updated: 2024/12/06 16:33:11 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/10 17:24:28 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,13 @@ t_tuple *create_tuple(double x, double y, double z, int w)
 	return (vec);
 }
 
-t_tuple	create_tuple2(double x, double y, double z, int w)
+t_tuple	create_tuple2(double x, double y, double z)
 {
 	t_tuple	vec;
 
 	vec.coor[0] = x;
 	vec.coor[1] = y;
 	vec.coor[2] = z;
-	vec.coor[3] = w;
 	return (vec);
 }
 
@@ -49,9 +48,9 @@ t_tuple	get_pixel_vector(t_minirt *minirt, int x, int y)
 	normal_v_cam = vec_normalization2(minirt->camera->vector_xyz);
 	if (double_abs(normal_v_cam.coor[0]) <= 0.1
 		&& double_abs(normal_v_cam.coor[1]) >= 0.9 && double_abs(normal_v_cam.coor[2]) <= 0.1)
-		U = vec_normalization2(vec_cross(create_tuple2(0, 0, 1, 0), normal_v_cam));
+		U = vec_normalization2(vec_cross(create_tuple2(0, 0, 1), normal_v_cam));
 	else
-		U = vec_normalization2(vec_cross(create_tuple2(0, 1, 0, 0), normal_v_cam));
+		U = vec_normalization2(vec_cross(create_tuple2(0, 1, 0), normal_v_cam));
 	V = vec_normalization2(vec_cross(normal_v_cam, U));
 	x_screen = ((double)x / WIDTH - 0.5) * WIDTH;
 	y_screen = (0.5 - (double)y / HEIGHT) * HEIGHT;

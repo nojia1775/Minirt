@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/09 19:51:52 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/10 19:20:30 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,19 +159,20 @@ int	main(void)
 	// test_determinant_of_4X4_matrix();
 	// test1_invert_4X4_matrix();
 	// test_multiply_product_by_inverse();
-	// test_translation_matrix();
+	test_translation_matrix();
 	// test_scaling_matrix();
 	// test_rotation_matrix();
 	// test_shearing_matrix();
 	// test_chaining_matrix();
 	// test_normal_at_sphere();
-	// test_reflect_function();
+	//test_reflect_function();
 	// test_lighting_function();
 	test_rayon_position();
 	test_intersection_sphere();
 	test_encapsulates_t_shape();
-
-
+	test_hit_function();
+	test_transform_ray();
+	test_transformation_sphere_operation();
 
 	return (0);
 }

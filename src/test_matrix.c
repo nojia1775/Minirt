@@ -10,7 +10,7 @@
 // /*                                                                            */
 // /* ************************************************************************** */
 
-// # include "../include/minirt.h"
+# include "../include/minirt.h"
 
 // void	test_multiply_matrix(void)
 // {
@@ -469,32 +469,32 @@
 // 		printf("[KO] multiply a product by inverse function\n");
 // }
 
-// void	test_translation_matrix(void)
-// {
-// 	t_tuple *tup;
-// 	t_tuple	*tup2;
-// 	t_tuple	*tup3;
-// 	t_tuple	*vec;
-// 	t_tuple	*vec2;
-// 	t_canva can3;
-// 	t_canva	can4;
+void	test_translation_matrix(void)
+{
+	t_tuple *tup;
+	t_tuple	*tup2;
+	t_tuple	*tup3;
+	t_tuple	*vec;
+	t_tuple	*vec2;
+	t_canva can3;
+	t_canva	can4;
 	
-// 	can3 = translation(5.0, -3.0, 2.0);
-// 	tup = create_tuple(-3.0, 4.0, 5.0, 1);
-// 	vec = create_tuple(-3.0, 4.0, 5.0, 0);
-// 	tup2 = multiplying_matrix_tuple(&can3, *tup);
-// 	can4 = inverse_matrix_4X4(can3);
-// 	tup3 = multiplying_matrix_tuple(&can4, *tup);
-// 	vec2 = multiplying_matrix_tuple(&can3, *vec);
-// 	if (tup2->coor[0] != 2.0 || tup2->coor[1] != 1.0 || tup2->coor[2] != 7.0)
-// 		printf("[KO] translation test 1\n");
-// 	else if (tup3->coor[0] != -8.0 || tup3->coor[1] != 7.0 || tup3->coor[2] != 3.0)
-// 		printf("[KO] translation test 2\n");
-// 	else if (vec2->coor[0] != -3.0 || vec2->coor[1] != 4.0 || vec2->coor[2] != 5.0)
-// 		printf("[KO] translation test 3\n");
-// 	else
-// 		printf("[OK] translation test 1, 2, 3\n");
-// }
+	can3 = translation(5.0, -3.0, 2.0);
+	tup = create_tuple(-3.0, 4.0, 5.0, 1);
+	vec = create_tuple(-3.0, 4.0, 5.0, 0);
+	tup2 = multiplying_matrix_tuple(&can3, *tup);
+	can4 = inverse_matrix_4X4(can3);
+	tup3 = multiplying_matrix_tuple(&can4, *tup);
+	vec2 = multiplying_matrix_tuple(&can3, *vec);
+	if (tup2->coor[0] != 2.0 || tup2->coor[1] != 1.0 || tup2->coor[2] != 7.0)
+		printf("[KO] translation test 1\n");
+	else if (tup3->coor[0] != -8.0 || tup3->coor[1] != 7.0 || tup3->coor[2] != 3.0)
+		printf("[KO] translation test 2\n");
+	else if (vec2->coor[0] != -3.0 || vec2->coor[1] != 4.0 || vec2->coor[2] != 5.0)
+		printf("[KO] translation test 3\n");
+	else
+		printf("[OK] translation test 1, 2, 3\n");
+}
 
 // void	test_scaling_matrix(void)
 // {
