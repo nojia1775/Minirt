@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/10 19:52:22 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/11 16:41:47 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,8 @@ t_tuple	*create_tuple(double x, double y, double z, int w);
 //vector_utils2
 t_tuple normal_vector_sphere(t_shape sphere, t_tuple point);
 t_tuple reflect(t_tuple in, t_tuple normal);
-double  lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_shape *shape);
+//double  lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_shape *shape);
+double  lighting(t_light light, t_tuple point, t_tuple eyev, t_tuple normalv);
 t_intersection	hit(t_intersection *intersections);
 
 typedef struct s_file_rt
@@ -241,7 +242,7 @@ int			is_matrix_identity(t_canva mat);
 
 //matrix_utils
 t_canva    	multiplying_4X4_matrix(t_canva *mat1, t_canva *mat2);
-t_tuple		*multiplying_matrix_tuple(t_canva *mat, t_tuple tup);
+t_tuple		multiplying_matrix_tuple(t_canva mat, t_tuple tup);
 t_canva		transpose_4X4_matrix(t_canva mat);
 int			get_determinant_2X2_matrix(t_canva mat);
 t_canva		get_submatrix(t_canva matrix, int row, int column);
@@ -328,7 +329,7 @@ t_tuple vec_multiplication2(t_tuple vec, double nbr);
 t_tuple	vec_normalization2(t_tuple vec);
 t_tuple	vec_cross(t_tuple a, t_tuple b);
 double	double_abs(double x);
-t_tuple	create_tuple2(double x, double y, double z);
+t_tuple	create_tuple2(double x, double y, double z, int w);
 t_tuple	get_pixel_vector(t_minirt *minirt, int x, int y);
 double	intersec_sphere(t_minirt *minirt, t_tuple pixel, t_shape sphere);
 double	get_min(double a, double b);
@@ -351,6 +352,7 @@ void	my_mlx_new_img(t_minirt *minirt);
 void	display(t_minirt *minirt);
 int		put_one_color(t_minirt *minirt, int r, int g, int b);
 void	put_pixel_projectile(t_minirt *minirt, int height, int r, int g, int b);
+void	display_manual(t_minirt	*minirt);
 
 int		convert_rgb(t_uint8 rgb[3]);
 double	convert_rad(double deg);

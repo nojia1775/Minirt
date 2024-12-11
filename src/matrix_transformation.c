@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:26:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/12/10 18:55:46 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/11 09:50:25 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,12 +159,12 @@ t_canva	shearing(double x_y, double x_z, double y_x, double y_z, double z_x, dou
 t_ray transform_ray(t_ray ray, t_canva matrix)
 {	
 	t_ray	ray_transform;
-	t_tuple	*origin;
-	t_tuple	*direction;
+	t_tuple	origin;
+	t_tuple	direction;
 	
-	origin = multiplying_matrix_tuple(&matrix, ray.origin);
-	direction = multiplying_matrix_tuple(&matrix, ray.direction);
-	ray_transform.origin = *origin;
-	ray_transform.direction = *direction;
+	origin = multiplying_matrix_tuple(matrix, ray.origin);
+	direction = multiplying_matrix_tuple(matrix, ray.direction);
+	ray_transform.origin = origin;
+	ray_transform.direction = direction;
 	return (ray_transform);
 }

@@ -36,21 +36,21 @@ t_canva    multiplying_4X4_matrix(t_canva *mat1, t_canva *mat2)
     return (result);
 }
 
-t_tuple *multiplying_matrix_tuple(t_canva *mat, t_tuple tup)
+t_tuple multiplying_matrix_tuple(t_canva mat, t_tuple tup)
 {
     t_tuple *result;
     int count;
     count = 0;
     result = create_tuple(0, 0, 0, 0);
-    while (count < mat->shape[0])
+    while (count < mat.shape[0])
     {
-        result->coor[count] = mat->array[count][0] * tup.coor[0] +
-                                mat->array[count][1] * tup.coor[1] +
-                                mat->array[count][2] * tup.coor[2] +
-                                mat->array[count][3] * tup.coor[3];
+        result->coor[count] = mat.array[count][0] * tup.coor[0] +
+                                mat.array[count][1] * tup.coor[1] +
+                                mat.array[count][2] * tup.coor[2] +
+                                mat.array[count][3] * tup.coor[3];
         count++;
     }
-    return (result);
+    return (*result);
 }
 
 t_canva transpose_4X4_matrix(t_canva mat)

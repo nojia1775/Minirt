@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:08:19 by yrio              #+#    #+#             */
-/*   Updated: 2024/12/10 19:53:59 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/11 11:49:43 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	test_intersection_sphere(void)
 	t_intersection *intersections4;
 	t_intersection *intersections5;
 
-	sphere.xyz = create_tuple2(0.0, 0.0, 0.0);
+	sphere.xyz = create_tuple2(0.0, 0.0, 0.0, 1.0);
 	sphere.diameter = 2;
 	sphere.transform = create_matrix_identity();
 	intersections = point_intersection_sphere(ray, sphere);
@@ -103,7 +103,7 @@ void	test_encapsulates_t_shape(void)
 	t_intersection	*inter_agr;
 	t_shape			sphere;
 
-	sphere.xyz = create_tuple2(0.0, 0.0, 0.0);
+	sphere.xyz = create_tuple2(0.0, 0.0, 0.0, 1.0);
 	inter1 = create_struct_intersection(1, sphere);
 	inter2 = create_struct_intersection(2, sphere);
 	inter_agr = aggregating_intersections(inter1, inter2);
@@ -133,7 +133,7 @@ void	test_hit_function(void)
 	t_intersection	*inter_agr3;
 	t_intersection	*inter_agr4;
 	
-	sphere.xyz = create_tuple2(0.0, 0.0, 0.0);
+	sphere.xyz = create_tuple2(0.0, 0.0, 0.0, 1.0);
 	i1 = create_struct_intersection(1, sphere);
 	i2 = create_struct_intersection(2, sphere);
 	i3 = create_struct_intersection(-1, sphere);
@@ -191,16 +191,30 @@ void	test_transform_ray(void)
 void	test_transformation_sphere_operation(void)
 {
 	t_ray			rayon;
-	t_tuple			origin;
-	t_tuple			direction;
+	t_tuple			*origin;
+	t_tuple			*direction;
+	t_canva			transform;
+	t_canva			transform2;
 	t_shape			sphere;
 	t_intersection	*xs;
+	t_intersection	*xs2;
 
-	origin = create_tuple2(0.0, 0.0, -5.0);
-	direction = create_tuple2(0.0, 0.0, 0.1);
-	sphere.transform = scaling(2.0, 2.0, 2.0);
-	rayon.origin = origin;
-	rayon.direction = direction;
+	origin = create_tuple(0.0, 0.0, -5.0, 1);
+	direction = create_tuple(0.0, 0.0, 1.0, 0);
+	transform = scaling(2.0, 2.0, 2.0);
+	transform2 = translation(5.0, 0.0, 0.0);
+	sphere.transform = transform;
+	sphere.xyz = create_tuple2(0.0, 0.0, 0.0, 1);
+	sphere.diameter = 2;
+	rayon.origin = *origin;
+	rayon.direction = *direction;
 	xs = point_intersection_sphere(rayon, sphere);
-	printf("xs 1 : %f, xs 2 : %f\n", xs[0].t, xs[1].t);
+	sphere.transform = transform2;
+	xs2 = point_intersection_sphere(rayon, sphere);
+	if (xs[0].t != 3 || xs[1].t != 7)
+		printf("[KO] test 1 transformation sphere operation\n");
+	else if (xs2->count != 0)
+		printf("[KO] count : %d test 2 transformation sphere operation\n", xs2->count);
+	else
+		printf("[OK] test 1, 2 transformation sphere operation\n");
 }

@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:13:26 by yrio              #+#    #+#             */
-/*   Updated: 2024/12/10 19:55:22 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/11 11:49:31 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,21 @@ t_intersection	*point_intersection_sphere(t_ray rayon, t_shape sphere)
 	t_intersection	*intersections;
 	t_intersection	inter1;
 	t_intersection	inter2;
-	// t_tuple			*origin_cam_transform;
 	t_canva			inv_transform_sphere;
+	double	a;
 	double	b;
 	double	c;
 	double	delta;
 
-	printf("x : %f, y : %f, z : %f\n", rayon.direction.coor[0], rayon.direction.coor[1], rayon.direction.coor[2]);
-	if (!is_matrix_identity(sphere.transform))
-	{
-		inv_transform_sphere = inverse_matrix_4X4(sphere.transform);
-		rayon = transform_ray(rayon, sphere.transform);
-	}
-	printf("x : %f, y : %f, z : %f\n", rayon.direction.coor[0], rayon.direction.coor[1], rayon.direction.coor[2]);
+	inv_transform_sphere = inverse_matrix_4X4(sphere.transform);
+	rayon = transform_ray(rayon, inv_transform_sphere);
+	sphere.xyz = multiplying_matrix_tuple(sphere.transform, sphere.xyz);
 	inter1 = create_struct_intersection(0, sphere);
 	inter2 = create_struct_intersection(0, sphere);
 	intersections = aggregating_intersections(inter1, inter2);
+	a = ((rayon.direction.coor[0] * rayon.direction.coor[0]) +
+		(rayon.direction.coor[1] * rayon.direction.coor[1]) +
+		(rayon.direction.coor[2] * rayon.direction.coor[2]));
 	b = 2 * ((rayon.origin.coor[0] - sphere.xyz.coor[0])
 		* rayon.direction.coor[0] + ((rayon.origin.coor[1]
 		- sphere.xyz.coor[1]) * rayon.direction.coor[1])
@@ -52,17 +51,20 @@ t_intersection	*point_intersection_sphere(t_ray rayon, t_shape sphere)
 		+ pow(rayon.origin.coor[1] - sphere.xyz.coor[1], 2)
 		+ pow(rayon.origin.coor[2] - sphere.xyz.coor[2], 2)
 		- pow(sphere.diameter / 2, 2);
-	delta = pow(b, 2) - 4 * 1 * c;
+	delta = pow(b, 2) - 4 * a * c;
 	if (delta < 0)
+	{
+		intersections->count = 0;
 		return (intersections);
+	}
 	if (delta == 0)
 	{
 		intersections[0].t = -b / 2;
 		intersections[1].t = -b / 2;
 		return (intersections);
 	}
-	intersections[0].t = (-b - sqrt(delta)) / 2;
-	intersections[1].t = (-b + sqrt(delta)) / 2;
+	intersections[0].t = (-b - sqrt(delta)) / (2 * a);
+	intersections[1].t = (-b + sqrt(delta)) / (2 * a);
 	return (intersections);
 }
 
