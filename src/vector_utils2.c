@@ -72,6 +72,14 @@ t_tuple	reflect(t_tuple in, t_tuple normal)
 	return (vec_sub_vec2(in, vec_multiplication2(normal, 2 * dot_product2(in, normal))));
 }
 
+static double	min_diffuse(double diffuse)
+{
+	if (diffuse > 0.25)
+		return (diffuse);
+	else
+		return (0.25);
+}
+
 double	lightning(t_minirt *minirt, t_tuple ray, t_shape *shape, t_tuple intersection)
 {
 	t_tuple	light_ray;
@@ -80,24 +88,21 @@ double	lightning(t_minirt *minirt, t_tuple ray, t_shape *shape, t_tuple intersec
 	double	diffuse;
 	t_uint8	rgb[3];
 
-	light_ray = vec_normalization2(vec_sub_vec2(intersection, minirt->light->xyz));
+	light_ray = vec_normalization2(vec_sub_vec2(minirt->light->xyz, intersection));
 	if (shape->type == SPHERE)
 		normal_shape = vec_normalization2(vec_sub_vec2(shape->xyz, intersection));
 	else
 		normal_shape = vec_normalization2(shape->vector_xyz);
 	reflection = vec_normalization2(reflect(ray, normal_shape));
-	diffuse = dot_product2(reflection, light_ray);
-	if (diffuse <= 0)
-	{
-		rgb[0] = shape->rgb[0] * 0.01;
-		rgb[1] = shape->rgb[1] * 0.01;
-		rgb[2] = shape->rgb[2] * 0.01;
-	}
-	else
-	{
-		rgb[0] = shape->rgb[0] * diffuse;
-		rgb[1] = shape->rgb[1] * diffuse;
-		rgb[2] = shape->rgb[2] * diffuse;
-	}
+	printf("reflection : ");
+	print_coor(&reflection);
+	printf("-light_ray : ");
+	print_coor(&light_ray);
+	diffuse = min_diffuse(dot_product2(reflection, light_ray));
+	printf("diffuse = %f\n", diffuse);
+	rgb[0] = shape->rgb[0] * diffuse;
+	rgb[1] = shape->rgb[1] * diffuse;
+	rgb[2] = shape->rgb[2] * diffuse;
+	printf("r = %d g = %d b = %d\n", rgb[0], rgb[1], rgb[2]);
 	return (convert_rgb(rgb));
 }

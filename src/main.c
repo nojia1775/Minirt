@@ -105,27 +105,26 @@ void	init_minirt(t_minirt *minirt)
 	minirt->size_line = 0;
 }
 
-// int	main(int argc, char **argv, char **env)
-// {
-// 	t_minirt	minirt;
-// 	int			width;
-// 	int			height;
-
-// 	width = 900;
-// 	height = 550;
-// 	init_minirt(&minirt);
-// 	if (!parsing(argc, argv, env, &minirt))
-// 		return (free_minirt(&minirt), 1);
-// 	my_mlx_init(&minirt);
-// 	my_mlx_new_window(&minirt, width, height, "MINIRT");
-// 	mlx_hook(minirt.win, 17, 0, close_win, &minirt);
-// 	mlx_key_hook(minirt.win, key_pressed, &minirt);
-// 	put_pixel_projectile(&minirt, height, 45, 23, 210);
-// 	 put_one_color(&minirt, 45, 23, 210);
-// 	mlx_loop(minirt.mlx);
-// 	free_minirt(&minirt);
-// 	return (0);
-// }
+//int	main(int argc, char **argv, char **env)
+//{
+//	t_minirt	minirt;
+//	int			width;
+//	int			height;
+//	width = 900;
+//	height = 550;
+//	init_minirt(&minirt);
+//	if (!parsing(argc, argv, env, &minirt))
+//		return (free_minirt(&minirt), 1);
+//	my_mlx_init(&minirt);
+//	my_mlx_new_window(&minirt, width, height, "MINIRT");
+//	mlx_hook(minirt.win, 17, 0, close_win, &minirt);
+//	mlx_key_hook(minirt.win, key_pressed, &minirt);
+//	put_pixel_projectile(&minirt, height, 45, 23, 210);
+//	 put_one_color(&minirt, 45, 23, 210);
+//	mlx_loop(minirt.mlx);
+//	free_minirt(&minirt);
+//	return (0);
+//}
 
 int	main(int argc, char **argv, char **env)
 {
