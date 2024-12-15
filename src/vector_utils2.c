@@ -74,10 +74,10 @@ t_tuple	reflect(t_tuple in, t_tuple normal)
 
 static double	min_diffuse(double diffuse)
 {
-	if (diffuse > 0.25)
+	if (diffuse > 0.01)
 		return (diffuse);
 	else
-		return (0.25);
+		return (0.01);
 }
 
 double	lightning(t_minirt *minirt, t_tuple ray, t_shape *shape, t_tuple intersection)
@@ -94,15 +94,15 @@ double	lightning(t_minirt *minirt, t_tuple ray, t_shape *shape, t_tuple intersec
 	else
 		normal_shape = vec_normalization2(shape->vector_xyz);
 	reflection = vec_normalization2(reflect(ray, normal_shape));
-	printf("reflection : ");
-	print_coor(&reflection);
-	printf("-light_ray : ");
-	print_coor(&light_ray);
+	// printf("reflection : ");
+	// print_coor(&reflection);
+	// printf("-light_ray : ");
+	// print_coor(&light_ray);
 	diffuse = min_diffuse(dot_product2(reflection, light_ray));
-	printf("diffuse = %f\n", diffuse);
+	// printf("diffuse = %f\n", diffuse);
 	rgb[0] = shape->rgb[0] * diffuse;
 	rgb[1] = shape->rgb[1] * diffuse;
 	rgb[2] = shape->rgb[2] * diffuse;
-	printf("r = %d g = %d b = %d\n", rgb[0], rgb[1], rgb[2]);
+	// printf("r = %d g = %d b = %d\n", rgb[0], rgb[1], rgb[2]);
 	return (convert_rgb(rgb));
 }
