@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g -MMD
+CFLAGS = -Wall -Wextra -Werror -O3
 
 OBJS_DIR = obj
 
@@ -29,7 +29,9 @@ SRCS =	src/main.c \
 	src/intersections.c \
 	src/cam_movement.c \
 	src/utils4.c \
-	src/vector_utils2.c
+	src/vector_utils2.c \
+	src/ray_utils.c \
+	src/test2_matrix.c
 
 DEPS = $(OBJS:.o=.d)
 

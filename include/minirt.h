@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/12 18:09:35 by nojia            ###   ########.fr       */
+/*   Updated: 2024/12/06 17:31:58 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,17 @@ typedef struct s_tuple
 	double coor[4];
 }	t_tuple;
 
-// typedef	struct s_ray
-// {
-// 	t_tuple	*origin;
-// 	t_tuple	*direction;
-// }	t_ray;
+typedef	struct s_ray
+{
+	t_tuple	origin;
+	t_tuple	direction;
+}	t_ray;
+
+typedef	struct s_xs
+{
+	double	intersect[2];
+	int		count;
+}	t_xs;
 
 typedef struct s_light
 {
@@ -126,6 +132,7 @@ typedef struct s_shape
 	double		diameter;
 	t_tuple		vector_xyz;
 	t_matrix	*mat;
+	t_canva		transform;
 	struct s_shape	*next;
 }	t_shape;
 
@@ -146,6 +153,13 @@ typedef struct s_minirt
 	t_ambient	*ambient;
 }	t_minirt;
 
+typedef	struct s_intersection
+{
+	t_shape	shape;
+	double	t;
+	int		count;
+}	t_intersection;
+
 typedef	struct s_projectile
 {
 	t_tuple	*position;
@@ -165,8 +179,8 @@ t_tuple	*create_tuple(double x, double y, double z, int w);
 //vector_utils2
 t_tuple normal_vector_sphere(t_shape sphere, t_tuple point);
 t_tuple reflect(t_tuple in, t_tuple normal);
-// double  lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_shape *shape);
-double	lightning(t_minirt *minirt, t_tuple ray, t_shape *shape, t_tuple intersection);
+double  lighting(t_light light, t_tuple point, t_tuple eyev, t_tuple normalv);
+t_intersection	hit(t_intersection *intersections);
 
 typedef struct s_file_rt
 {
@@ -180,6 +194,14 @@ int	get_t(int trgb);
 int	get_r(int trgb);
 int	get_g(int trgb);
 int	get_b(int trgb);
+
+//ray_utils
+t_tuple			position_ray(t_ray rayon, double t);
+t_intersection	*point_intersection_sphere(t_ray rayon, t_shape sphere);
+t_intersection	create_struct_intersection(double t, t_shape shape);
+t_intersection	*aggregating_intersections(t_intersection i1, t_intersection i2);
+t_intersection	*aggregating_4_intersections(t_intersection i1, t_intersection i2, t_intersection i3, t_intersection i4);
+t_intersection	hit(t_intersection *intersections);
 
 //tuple_operation
 t_tuple		*vec_add_nbr(t_tuple *vec, double nbr);
@@ -196,8 +218,8 @@ t_canva		scaling(double x, double y, double z);
 t_canva		rotation_x(double radian);
 t_canva		rotation_y(double radian);
 t_canva		rotation_z(double radian);
-t_canva	shearing(double x_y, double x_z, double y_x, double y_z, double z_x, double z_y);
-
+t_canva		shearing(double x_y, double x_z, double y_x, double y_z, double z_x, double z_y);
+t_ray		transform_ray(t_ray ray, t_canva matrix);
 
 //projectile
 t_projectile	*create_projectile(t_tuple *position, t_tuple *velocity);
@@ -214,10 +236,12 @@ int			compare_2Dmatrix(t_canva *can1, t_canva *can2);
 t_matrix	*alloc_matrix(t_matrix *mat, int x, int y, int z);
 t_matrix	create_matrix(int x, int y, int z);
 void		display_mat2d(t_matrix *mat, int axis_1, int axis_2, int slice_axis_3);
+t_canva		create_matrix_identity(void);
+int			is_matrix_identity(t_canva mat);
 
 //matrix_utils
 t_canva    	multiplying_4X4_matrix(t_canva *mat1, t_canva *mat2);
-t_tuple		*multiplying_matrix_tuple(t_canva *mat, t_tuple tup);
+t_tuple		multiplying_matrix_tuple(t_canva mat, t_tuple tup);
 t_canva		transpose_4X4_matrix(t_canva mat);
 int			get_determinant_2X2_matrix(t_canva mat);
 t_canva		get_submatrix(t_canva matrix, int row, int column);
@@ -252,6 +276,14 @@ void		test_chaining_matrix(void);
 void		test_normal_at_sphere(void);
 void		test_reflect_function(void);
 void		test_lighting_function(void);
+
+// test 2
+void	test_rayon_position(void);
+void	test_intersection_sphere(void);
+void	test_encapsulates_t_shape(void);
+void	test_hit_function(void);
+void	test_transform_ray(void);
+void	test_transformation_sphere_operation(void);
 
 
 //sphere
@@ -296,7 +328,7 @@ t_tuple vec_multiplication2(t_tuple vec, double nbr);
 t_tuple	vec_normalization2(t_tuple vec);
 t_tuple	vec_cross(t_tuple a, t_tuple b);
 double	double_abs(double x);
-t_tuple	create_tuple2(double x, double y, double z);
+t_tuple	create_tuple2(double x, double y, double z, int w);
 t_tuple	get_pixel_vector(t_minirt *minirt, int x, int y);
 double	intersec_sphere(t_minirt *minirt, t_tuple pixel, t_shape sphere);
 double	get_min(double a, double b);
@@ -319,6 +351,7 @@ void	my_mlx_new_img(t_minirt *minirt);
 void	display(t_minirt *minirt);
 int		put_one_color(t_minirt *minirt, int r, int g, int b);
 void	put_pixel_projectile(t_minirt *minirt, int height, int r, int g, int b);
+void	display_manual(t_minirt	*minirt);
 
 int		convert_rgb(t_uint8 rgb[3]);
 double	convert_rad(double deg);

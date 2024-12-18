@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/10 18:16:59 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:47:33 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,10 @@ t_shape	*closest_shape(t_minirt *minirt, t_tuple pixel)
 		shape = tmp;
 	tmp = closest_cylinder(minirt, pixel, &min);
 	if (tmp)
+	{
 		shape = tmp;
+		shape->distance = min;
+	}
 	return (shape);
 }
  
@@ -184,9 +187,9 @@ void	display(t_minirt *minirt)
 			if (shape)
 			{
 				intersec = vec_multiplication2(pixel, shape->distance);
-				color = lightning(minirt, pixel, shape, intersec);
+				//color = lighting(minirt, intersec, negate_tuple(pixel), shape);
 			}
-			print_image(minirt, shape, x, y, color);
+			print_image(minirt, shape, x, y, 3);
 			x += 5;
 		}
 		y += 5;
@@ -198,8 +201,8 @@ void	display_precision(t_minirt *minirt)
 {
 	t_tuple	pixel;
 	t_shape	*shape;
-	t_tuple	intersec;
-	double	color;
+	//t_ray	rayon;
+	//double	color;
 
 	int y = 0;
 	while (y < HEIGHT)
@@ -212,10 +215,13 @@ void	display_precision(t_minirt *minirt)
 			shape = closest_shape(minirt, pixel);
 			if (shape)
 			{
-				intersec = vec_multiplication2(pixel, shape->distance);
-				color = lightning(minirt, pixel, shape, intersec);
+				//rayon.origin = minirt->camera->xyz;
+				//rayon.direction = pixel;
+				//t_tuple	point = position_ray(rayon, shape->distance);
+				//t_tuple normalv = normal_vector_sphere(*shape, point);
+				//color = lighting(*minirt->light, point, negate_tuple(pixel), normalv);
 			}
-			print_image_precision(minirt, shape, x, y, color);
+			print_image_precision(minirt, shape, x, y, 3);
 			x++;
 		}
 		y++;
@@ -223,54 +229,38 @@ void	display_precision(t_minirt *minirt)
 	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
 }
 
-int	put_one_color(t_minirt *minirt, int r, int g, int b)
+void	display_manual(t_minirt	*minirt)
 {
-	int count = 0;
-	int	count2 = 0;
-	int	value = create_trgb(0, r, g, b);
-	while (count < 500)
+	t_ray	rayon;
+	t_shape	sphere;
+	double 	color;
+	//t_tuple	pixel;
+	sphere.diameter = 2;
+	sphere.xyz = create_tuple2(0.0, 0.0, 0.0, 1);
+	sphere.transform = create_matrix_identity();
+	sphere.rgb[0] = 255;
+	sphere.rgb[1] = 0;
+	sphere.rgb[2] = 0;
+	int y = 0;
+	while (y < HEIGHT)
 	{
-		count2 = 0;
-		while (count2 < 500)
+		int x = 0;
+		while (x < 1000)
 		{
-			mlx_pixel_put(minirt->mlx, minirt->win, count, count2, value);
-			count2++;
+			rayon.origin = minirt->camera->xyz;
+			rayon.direction = get_pixel_vector(minirt, x, y);
+			t_intersection *xs = point_intersection_sphere(rayon, sphere);
+			t_intersection intersection = hit(xs);
+			if (intersection.count > 0)
+			{
+				t_tuple point = position_ray(rayon, intersection.t);
+				t_tuple normalv = normal_vector_sphere(sphere, point);
+				color = lighting(*minirt->light, point, negate_tuple(rayon.direction), normalv);
+				print_image(minirt, &sphere, x, y, color);
+			}
+			x++;
 		}
-		count++;
+		y++;
 	}
-	return (1);
-}
-
-void	put_pixel_projectile(t_minirt *minirt, int height, int r, int g, int b)
-{
-	int count = 0;
-	int	count2 = 0;
-	int	value = create_trgb(0, r, g, b);
-	t_tuple			*position;
-	t_tuple			*velocity;
-	t_tuple			*gravity;
-	t_tuple			*wind;
-	t_projectile	*proj;
-	t_environment	*env;
-	position = create_tuple(0, 1, 0, 1);
-	velocity = vec_multiplication(vec_normalization(create_tuple(1, 1.8, 0, 0)), 11.25);
-	proj = create_projectile(position, velocity);
-	gravity = create_tuple(0, -0.1, 0, 0);
-	wind = create_tuple(-0.01, 0, 0, 0);
-	env = create_environment(gravity, wind);
-	while (count < 500)
-	{
-		count2 = 0;
-		printf("projectile position : %f , %f , %f | velocity : %f , %f , %f\n", 
-			proj->position->coor[0], proj->position->coor[1], 
-			proj->position->coor[2], proj->velocity->coor[0],
-			proj->velocity->coor[1], proj->velocity->coor[2]);
-		proj = tick(env, proj);
-		while (count2 < 500)
-		{
-			mlx_pixel_put(minirt->mlx, minirt->win, count, height - proj->position->coor[1], value);
-			count2++;
-		}
-		count++;
-	}
+	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
 }

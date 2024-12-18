@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extraction.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:12:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/05 14:32:43 by nadjemia         ###   ########.fr       */
+/*   Updated: 2024/12/10 19:10:27 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int	get_sphere(char **datas, t_minirt *minirt)
 	while (cur->next)
 		cur = cur->next;
 	cur->type = SPHERE;
+	cur->transform = create_matrix_identity();
 	get_three_double(cur->xyz.coor, datas[1]);
 	cur->diameter = atod(datas[2]);
 	get_three_int(cur->rgb, datas[3]);
