@@ -50,46 +50,49 @@ static void	print_image(t_minirt *minirt, t_shape *shape, int x, int y, double s
 	}
 }
 
-static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y, double shading)
-{
-	int	color;
-	int	pixel_offset;
-	t_uint8	rgb[3];
+// static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y, double shading)
+// {
+// 	int	color;
+// 	int	pixel_offset;
+// 	t_uint8	rgb[3];
+// 
+// 	if (shape)
+// 	{
+// 		rgb[0] = shape->rgb[0] * (shading / 3);
+// 		rgb[1] = shape->rgb[1] * (shading / 3);
+// 		rgb[2] = shape->rgb[2] * (shading / 3);
+// 		color = convert_rgb(rgb);
+// 	}
+// 	else
+// 		color = 0x000000;
+// 	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
+// 	if (!minirt->img)
+// 	{
+// 		free_minirt(minirt);
+// 		exit(1);
+// 	}
+// 	pixel_offset = y * minirt->size_line + x * (minirt->bits / 8);
+// 	*(int *)(minirt->img + pixel_offset) = color;
+// }
 
-	if (shape)
-	{
-		rgb[0] = shape->rgb[0] * (shading / 3);
-		rgb[1] = shape->rgb[1] * (shading / 3);
-		rgb[2] = shape->rgb[2] * (shading / 3);
-		color = convert_rgb(rgb);
-	}
-	else
-		color = 0x000000;
-	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
-	if (!minirt->img)
-	{
-		free_minirt(minirt);
-		exit(1);
-	}
-	pixel_offset = y * minirt->size_line + x * (minirt->bits / 8);
-	*(int *)(minirt->img + pixel_offset) = color;
-}
-
-static t_shape	*closest_sphere(t_minirt *minirt, t_tuple pixel, double *min)
+static t_shape	*closest_sphere(t_minirt *minirt, t_ray rayon, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
-	double	distance;
+	t_intersection	*xs;
 	
 	shape = NULL;
 	tmp = minirt->sphere;
 	while (tmp)
 	{
-		distance = intersec_sphere(minirt, pixel, *tmp);
-		if (distance > 0 && distance < *min)
+		xs = point_intersection_sphere(rayon, *tmp);
+		if (xs->count > 0)
 		{
-			shape = tmp;
-			*min = distance;
+			if (get_min(xs[0].t, xs[1].t) < *min)
+			{
+				shape = tmp;
+				*min = get_min(xs[0].t, xs[1].t); 
+			}
 		}
 		tmp = tmp->next;
 	}
@@ -98,53 +101,76 @@ static t_shape	*closest_sphere(t_minirt *minirt, t_tuple pixel, double *min)
 	return (shape);
 }
 
-static t_shape	*closest_plan(t_minirt *minirt, t_tuple pixel, double *min)
-{
-	t_shape	*tmp;
-	t_shape	*shape;
-	double	distance;
-	
-	shape = NULL;
-	tmp = minirt->plan;
-	while (tmp)
-	{
-		distance = intersec_plan(minirt, pixel, *tmp);
-		if (distance > 0 && distance < *min)
-		{
-			shape = tmp;
-			*min = distance;
-		}
-		tmp = tmp->next;
-	}
-	if (shape)
-		shape->distance = *min;
-	return (shape);
-}
+// static t_shape	*closest_plan(t_minirt *minirt, t_tuple pixel, double *min)
+// {
+// 	t_shape	*tmp;
+// 	t_shape	*shape;
+// 	double	distance;
+// 	
+// 	shape = NULL;
+// 	tmp = minirt->plan;
+// 	while (tmp)
+// 	{
+// 		distance = intersec_plan(minirt, pixel, *tmp);
+// 		if (distance > 0 && distance < *min)
+// 		{
+// 			shape = tmp;
+// 			*min = distance;
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// 	if (shape)
+// 		shape->distance = *min;
+// 	return (shape);
+// }
 
-static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple pixel, double *min)
-{
-	t_shape	*tmp;
-	t_shape	*shape;
-	double	distance;
-	
-	shape = NULL;
-	tmp = minirt->cylinder;
-	while (tmp)
-	{
-		distance = intersec_cylinder(minirt, pixel, *tmp);
-		if (distance > 0 && distance < *min)
-		{
-			shape = tmp;
-			*min = distance;
-		}
-		tmp = tmp->next;
-	}
-	if (shape)
-		shape->distance = *min;
-	return (shape);
-}
+// static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple pixel, double *min)
+// {
+// 	t_shape	*tmp;
+// 	t_shape	*shape;
+// 	double	distance;
+// 	
+// 	shape = NULL;
+// 	tmp = minirt->cylinder;
+// 	while (tmp)
+// 	{
+// 		distance = intersec_cylinder(minirt, pixel, *tmp);
+// 		if (distance > 0 && distance < *min)
+// 		{
+// 			shape = tmp;
+// 			*min = distance;
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// 	if (shape)
+// 		shape->distance = *min;
+// 	return (shape);
+// }
 
-t_shape	*closest_shape(t_minirt *minirt, t_tuple pixel)
+// t_shape	*closest_shape(t_minirt *minirt, t_tuple pixel)
+// {
+// 	double	min;
+// 	t_shape	*shape;
+// 	t_shape	*tmp;
+// 
+// 	shape = NULL;
+// 	min = 1000;
+// 	tmp = closest_sphere(minirt, pixel, &min);
+// 	if (tmp)
+// 		shape = tmp;
+// 	tmp = closest_plan(minirt, pixel, &min);
+// 	if (tmp)
+// 		shape = tmp;
+// 	tmp = closest_cylinder(minirt, pixel, &min);
+// 	if (tmp)
+// 	{
+// 		shape = tmp;
+// 		shape->distance = min;
+// 	}
+// 	return (shape);
+// }
+
+t_shape	*closest_shape(t_minirt *minirt, t_ray rayon)
 {
 	double	min;
 	t_shape	*shape;
@@ -152,13 +178,13 @@ t_shape	*closest_shape(t_minirt *minirt, t_tuple pixel)
 
 	shape = NULL;
 	min = 1000;
-	tmp = closest_sphere(minirt, pixel, &min);
+	tmp = closest_sphere(minirt, rayon, &min);
 	if (tmp)
 		shape = tmp;
-	tmp = closest_plan(minirt, pixel, &min);
-	if (tmp)
-		shape = tmp;
-	tmp = closest_cylinder(minirt, pixel, &min);
+	// tmp = closest_plan(minirt, pixel, &min);
+	// if (tmp)
+	// 	shape = tmp;
+	// tmp = closest_cylinder(minirt, pixel, &min);
 	if (tmp)
 	{
 		shape = tmp;
@@ -167,96 +193,97 @@ t_shape	*closest_shape(t_minirt *minirt, t_tuple pixel)
 	return (shape);
 }
  
-void	display(t_minirt *minirt)
-{
-	t_tuple	pixel;
-	t_shape	*shape;
-	t_tuple	intersec;
-	double	color;
+// void	display(t_minirt *minirt)
+// {
+// 	t_tuple	pixel;
+// 	t_shape	*shape;
+// 	// t_tuple	intersec;
+// 	// double	color;
+// 
+// 	// color = 0;
+// 	int y = 2;
+// 	while (y < HEIGHT)
+// 	{
+// 		int x = 2;
+// 		while (x < WIDTH)
+// 		{
+// 			shape = NULL;
+// 			pixel = get_pixel_vector(minirt, x, y);
+// 			shape = closest_shape(minirt, pixel);
+// 			if (shape)
+// 			{
+// 				// intersec = vec_multiplication2(pixel, shape->distance);
+// 				//color = lighting(minirt, intersec, negate_tuple(pixel), shape);
+// 			}
+// 			print_image(minirt, shape, x, y, 3);
+// 			x += 5;
+// 		}
+// 		y += 5;
+// 	}
+// 	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
+// }
 
-	color = 0;
-	int y = 2;
-	while (y < HEIGHT)
-	{
-		int x = 2;
-		while (x < WIDTH)
-		{
-			shape = NULL;
-			pixel = get_pixel_vector(minirt, x, y);
-			shape = closest_shape(minirt, pixel);
-			if (shape)
-			{
-				intersec = vec_multiplication2(pixel, shape->distance);
-				//color = lighting(minirt, intersec, negate_tuple(pixel), shape);
-			}
-			print_image(minirt, shape, x, y, 3);
-			x += 5;
-		}
-		y += 5;
-	}
-	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
-}
-
-void	display_precision(t_minirt *minirt)
-{
-	t_tuple	pixel;
-	t_shape	*shape;
-	//t_ray	rayon;
-	//double	color;
-
-	int y = 0;
-	while (y < HEIGHT)
-	{
-		int x = 0;
-		while (x < WIDTH)
-		{
-			shape = NULL;
-			pixel = get_pixel_vector(minirt, x, y);
-			shape = closest_shape(minirt, pixel);
-			if (shape)
-			{
-				//rayon.origin = minirt->camera->xyz;
-				//rayon.direction = pixel;
-				//t_tuple	point = position_ray(rayon, shape->distance);
-				//t_tuple normalv = normal_vector_sphere(*shape, point);
-				//color = lighting(*minirt->light, point, negate_tuple(pixel), normalv);
-			}
-			print_image_precision(minirt, shape, x, y, 3);
-			x++;
-		}
-		y++;
-	}
-	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
-}
+// void	display_precision(t_minirt *minirt)
+// {
+// 	t_tuple	pixel;
+// 	t_shape	*shape;
+// 	//t_ray	rayon;
+// 	//double	color;
+// 
+// 	int y = 0;
+// 	while (y < HEIGHT)
+// 	{
+// 		int x = 0;
+// 		while (x < WIDTH)
+// 		{
+// 			shape = NULL;
+// 			pixel = get_pixel_vector(minirt, x, y);
+// 			shape = closest_shape(minirt, pixel);
+// 			if (shape)
+// 			{
+// 				//rayon.origin = minirt->camera->xyz;
+// 				//rayon.direction = pixel;
+// 				//t_tuple	point = position_ray(rayon, shape->distance);
+// 				//t_tuple normalv = normal_vector_sphere(*shape, point);
+// 				//color = lighting(*minirt->light, point, negate_tuple(pixel), normalv);
+// 			}
+// 			print_image_precision(minirt, shape, x, y, 3);
+// 			x++;
+// 		}
+// 		y++;
+// 	}
+// 	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
+// }
 
 void	display_manual(t_minirt	*minirt)
 {
 	t_ray	rayon;
-	t_shape	sphere;
+	t_shape	*shape;
 	double 	color;
 	//t_tuple	pixel;
-	sphere.diameter = 2;
-	sphere.xyz = create_tuple2(0.0, 0.0, 0.0, 1);
-	sphere.transform = create_matrix_identity();
-	sphere.rgb[0] = 255;
-	sphere.rgb[1] = 0;
-	sphere.rgb[2] = 0;
+	// sphere.diameter = 2;
+	// sphere.xyz = create_tuple2(0.0, 0.0, 0.0, 1);
+	// sphere.transform = create_matrix_identity();
+	// sphere.rgb[0] = 255;
+	// sphere.rgb[1] = 0;
+	// sphere.rgb[2] = 0;
 	int y = 0;
 	while (y < HEIGHT)
 	{
 		int x = 0;
-		while (x < 1000)
+		while (x < WIDTH)
 		{
+			shape = closest_shape(minirt, rayon);
 			rayon.origin = minirt->camera->xyz;
 			rayon.direction = get_pixel_vector(minirt, x, y);
-			t_intersection *xs = point_intersection_sphere(rayon, sphere);
-			t_intersection intersection = hit(xs);
-			if (intersection.count > 0)
+			if (shape)
 			{
+				t_intersection *xs = point_intersection_sphere(rayon, *shape);
+				t_intersection intersection = hit(xs);
 				t_tuple point = position_ray(rayon, intersection.t);
-				t_tuple normalv = normal_vector_sphere(sphere, point);
+				t_tuple normalv = normal_vector_sphere(*shape, point);
 				color = lighting(*minirt->light, point, negate_tuple(rayon.direction), normalv);
-				print_image(minirt, &sphere, x, y, color);
+				print_image(minirt, shape, x, y, color);
 			}
 			x++;
 		}

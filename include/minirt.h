@@ -362,6 +362,6 @@ t_tuple	vec_multiplication2(t_tuple vec, double nbr);
 t_tuple	vec_normalization2(t_tuple vec);
 t_tuple	vec_cross(t_tuple a, t_tuple b);
 double	double_abs(double x);
-t_shape	*closest_shape(t_minirt *minirt, t_tuple pixel);
+t_shape	*closest_shape(t_minirt *minirt, t_ray rayon);
 
 #endif

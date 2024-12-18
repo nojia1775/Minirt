@@ -101,6 +101,8 @@ int	get_sphere(char **datas, t_minirt *minirt)
 	cur->type = SPHERE;
 	cur->transform = create_matrix_identity();
 	get_three_double(cur->xyz.coor, datas[1]);
+	cur->transform = translation(cur->xyz.coor[0], cur->xyz.coor[1], cur->xyz.coor[2]);
+	cur->xyz = create_tuple2(0, 0, 0, 1);
 	cur->diameter = atod(datas[2]);
 	get_three_int(cur->rgb, datas[3]);
 	return (1);
@@ -127,6 +129,8 @@ int	get_plan(char **datas, t_minirt *minirt)
 	cur->type = PLAN;
 	get_three_double(cur->xyz.coor, datas[1]);
 	get_three_double(cur->vector_xyz.coor, datas[2]);
+	cur->transform = translation(cur->xyz.coor[0], cur->xyz.coor[1], cur->xyz.coor[0]);
+	cur->xyz = create_tuple2(0, 0, 0, 0);
 	get_three_int(cur->rgb, datas[3]);
 	return (1);
 }

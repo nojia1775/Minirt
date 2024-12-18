@@ -35,6 +35,8 @@ int	get_cylinder(char **datas, t_minirt *minirt)
 		cur = cur->next;
 	cur->type = CYLINDER;
 	get_three_double(cur->xyz.coor, datas[1]);
+	cur->transform = translation(cur->xyz.coor[0], cur->xyz.coor[1], cur->xyz.coor[0]);
+	cur->xyz = create_tuple2(0, 0, 0, 0);
 	get_three_double(cur->vector_xyz.coor, datas[2]);
 	cur->diameter = atod(datas[3]);
 	cur->height = atod(datas[4]);
