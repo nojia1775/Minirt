@@ -12,43 +12,43 @@
 
 #include "../include/minirt.h"
 
-static void	print_image(t_minirt *minirt, t_shape *shape, int x, int y, double shading)
-{
-	int	i;
-	int	j;
-	int	pixel_offset;
-	// t_uint8	rgb[3];
-	int	color;
-
-	if (shape)
-	{
-		color = shading;
-		// rgb[0] = shape->rgb[0] * (shading / 3);
-		// rgb[1] = shape->rgb[1] * (shading / 3);
-		// rgb[2] = shape->rgb[2] * (shading / 3);
-		// color = convert_rgb(rgb);
-	}
-	else
-		color = 0x000000;
-	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
-	if (!minirt->img)
-	{
-		free_minirt(minirt);
-		exit(1);
-	}
-	i = y - 2;
-	while (i < 5 + y - 2)
-	{
-		j = x - 2;
-		while (j < 5 + x - 2)
-		{
-			pixel_offset = i * minirt->size_line + j * (minirt->bits / 8);
-			*(int *)(minirt->img + pixel_offset) = color;
-			j++;
-		}
-		i++;
-	}
-}
+// static void	print_image(t_minirt *minirt, t_shape *shape, int x, int y, double shading)
+// {
+// 	int	i;
+// 	int	j;
+// 	int	pixel_offset;
+// 	// t_uint8	rgb[3];
+// 	int	color;
+// 
+// 	if (shape)
+// 	{
+// 		color = shading;
+// 		// rgb[0] = shape->rgb[0] * (shading / 3);
+// 		// rgb[1] = shape->rgb[1] * (shading / 3);
+// 		// rgb[2] = shape->rgb[2] * (shading / 3);
+// 		// color = convert_rgb(rgb);
+// 	}
+// 	else
+// 		color = 0x000000;
+// 	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
+// 	if (!minirt->img)
+// 	{
+// 		free_minirt(minirt);
+// 		exit(1);
+// 	}
+// 	i = y - 2;
+// 	while (i < 5 + y - 2)
+// 	{
+// 		j = x - 2;
+// 		while (j < 5 + x - 2)
+// 		{
+// 			pixel_offset = i * minirt->size_line + j * (minirt->bits / 8);
+// 			*(int *)(minirt->img + pixel_offset) = color;
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }
 
 // static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y, double shading)
 // {
@@ -260,13 +260,8 @@ void	display_manual(t_minirt	*minirt)
 	t_ray	rayon;
 	t_shape	*shape;
 	double 	color;
-	//t_tuple	pixel;
-	// sphere.diameter = 2;
-	// sphere.xyz = create_tuple2(0.0, 0.0, 0.0, 1);
-	// sphere.transform = create_matrix_identity();
-	// sphere.rgb[0] = 255;
-	// sphere.rgb[1] = 0;
-	// sphere.rgb[2] = 0;
+	
+	color = 3;
 	int y = 0;
 	while (y < HEIGHT)
 	{
@@ -283,11 +278,19 @@ void	display_manual(t_minirt	*minirt)
 				t_tuple point = position_ray(rayon, intersection.t);
 				t_tuple normalv = normal_vector_sphere(*shape, point);
 				color = lighting(*minirt->light, point, negate_tuple(rayon.direction), normalv);
-				print_image(minirt, shape, x, y, color);
+				// print_image_precision(minirt, shape, x, y, color);
 			}
+			if (color >= 0 && color < 1)
+				printf("0");
+			else if (color >= 1 && color < 1.8)
+				printf("|");
+			else if (color >= 1.8)
+				printf("8");
+			if (x == WIDTH - 1)
+				printf("\n");
 			x++;
 		}
 		y++;
 	}
-	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
+	//mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
 }

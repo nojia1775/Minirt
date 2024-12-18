@@ -14,8 +14,8 @@
 
 # define MINIRT_H
 
-# define WIDTH 1000
-# define HEIGHT 700
+# define WIDTH 100
+# define HEIGHT 100
 
 # define AZERTY 1
 # define QWERTY 0
