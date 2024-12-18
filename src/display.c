@@ -278,16 +278,9 @@ void	display_manual(t_minirt	*minirt)
 				t_tuple point = position_ray(rayon, intersection.t);
 				t_tuple normalv = normal_vector_sphere(*shape, point);
 				color = lighting(*minirt->light, point, negate_tuple(rayon.direction), normalv);
+				(void)color;
 				// print_image_precision(minirt, shape, x, y, color);
 			}
-			if (color >= 0 && color < 1)
-				printf("0");
-			else if (color >= 1 && color < 1.8)
-				printf("|");
-			else if (color >= 1.8)
-				printf("8");
-			if (x == WIDTH - 1)
-				printf("\n");
 			x++;
 		}
 		y++;

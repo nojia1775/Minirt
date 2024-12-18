@@ -41,7 +41,7 @@ int	get_camera(char **datas, t_minirt *minirt)
 		return (printf("Error : camera : wrong number of information\n"), 0);
 	if (!parse_range(datas[1], -DBL_MAX, DBL_MAX, 3))
 		return (printf("Error : camera : in coordinates\n"), 0);
-	if (!parse_range(datas[2], -1.0, 1.0, 3))
+	if (parse_range(datas[2], -1.0, 1.0, 3) < 1)
 		return (printf("Error : camera : in vectors\n"), 0);
 	if (!parse_range(datas[3], 0.0, 180.0, 1))
 		return (printf("Error : camera : in FOV\n"), 0);
@@ -116,7 +116,7 @@ int	get_plan(char **datas, t_minirt *minirt)
 		return (printf("Error : plan : wrong number of information\n"), 0);
 	if (!parse_range(datas[1], -DBL_MAX, DBL_MAX, 3))
 		return (printf("Error : plan : in coordinates\n"), 0);
-	if (!parse_range(datas[2], -1.0, 1.0, 3))
+	if (parse_range(datas[2], -1.0, 1.0, 3) < 1)
 		return (printf("Error : plan : in vectors\n"), 0);
 	if (!parse_rgb(datas[3]))
 		return (printf("Error : plan : in color\n"), 0);
