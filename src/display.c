@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/11 16:47:33 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/19 10:33:37 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,30 +50,30 @@
 // 	}
 // }
 
-// static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y, double shading)
-// {
-// 	int	color;
-// 	int	pixel_offset;
-// 	t_uint8	rgb[3];
-// 
-// 	if (shape)
-// 	{
-// 		rgb[0] = shape->rgb[0] * (shading / 3);
-// 		rgb[1] = shape->rgb[1] * (shading / 3);
-// 		rgb[2] = shape->rgb[2] * (shading / 3);
-// 		color = convert_rgb(rgb);
-// 	}
-// 	else
-// 		color = 0x000000;
-// 	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
-// 	if (!minirt->img)
-// 	{
-// 		free_minirt(minirt);
-// 		exit(1);
-// 	}
-// 	pixel_offset = y * minirt->size_line + x * (minirt->bits / 8);
-// 	*(int *)(minirt->img + pixel_offset) = color;
-// }
+static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y, double shading)
+{
+	int	color;
+	int	pixel_offset;
+	t_uint8	rgb[3];
+
+	if (shape)
+	{
+		rgb[0] = shape->rgb[0] * (shading / 3);
+		rgb[1] = shape->rgb[1] * (shading / 3);
+		rgb[2] = shape->rgb[2] * (shading / 3);
+		color = convert_rgb(rgb);
+	}
+	else
+		color = 0x000000;
+	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
+	if (!minirt->img)
+	{
+		free_minirt(minirt);
+		exit(1);
+	}
+	pixel_offset = y * minirt->size_line + x * (minirt->bits / 8);
+	*(int *)(minirt->img + pixel_offset) = color;
+}
 
 static t_shape	*closest_sphere(t_minirt *minirt, t_ray rayon, double *min)
 {
@@ -278,12 +278,11 @@ void	display_manual(t_minirt	*minirt)
 				t_tuple point = position_ray(rayon, intersection.t);
 				t_tuple normalv = normal_vector_sphere(*shape, point);
 				color = lighting(*minirt->light, point, negate_tuple(rayon.direction), normalv);
-				(void)color;
-				// print_image_precision(minirt, shape, x, y, color);
+				print_image_precision(minirt, shape, x, y, color);
 			}
 			x++;
 		}
 		y++;
 	}
-	//mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
+	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
 }

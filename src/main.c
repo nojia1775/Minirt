@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/11 16:54:51 by yrio             ###   ########.fr       */
+/*   Updated: 2024/12/19 10:34:07 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,50 +44,50 @@
 // 	return (0);
 // }
 
-// static int	close_win(void *param)
-// {
-// 	t_minirt	*minirt;
-// 	
-// 	minirt = (t_minirt *)param;
-// 	free_minirt(minirt);
-// 	exit(0);
-// 	return (1);
-// }
+static int	close_win(void *param)
+{
+	t_minirt	*minirt;
+	
+	minirt = (t_minirt *)param;
+	free_minirt(minirt);
+	exit(0);
+	return (1);
+}
 
-// static int	key_pressed(int key, void *param)
-// {
-// 	t_minirt	*minirt;
-// 
-// 	minirt = (t_minirt *)param;
-// 	if (key == ESC)
-// 		close_win(minirt);
-// 	// else if (key == A_RIGHT)
-// 	// 	cam_go_leftright(minirt, 1);
-// 	// else if (key == A_LEFT)
-// 	// 	cam_go_leftright(minirt, -1);
-// 	// else if (key == A_UP)
-// 	// 	cam_go_frontback(minirt, 1);
-// 	// else if (key == A_DOWN)
-// 	// 	cam_go_frontback(minirt, -1);
-// 	// else if (key == UP)
-// 	// 	cam_look_updown(minirt, -PI / 8.0);
-// 	// else if (key == DOWN)
-// 	// 	cam_look_updown(minirt, PI / 8.0);
-// 	// else if (key == LEFT)
-// 	// 	cam_look_leftright(minirt, -PI / 8.0);
-// 	// else if (key == RIGHT)
-// 	// 	cam_look_leftright(minirt, PI / 8.0);
-// 	// else if (key == TAB)
-// 	// 	cam_go_updown(minirt, -1);
-// 	// else if (key == SPACE)
-// 	// 	cam_go_updown(minirt, 1);
-// 	// else if (key == CTRL)
-// 	// {
-// 	// 	mlx_clear_window(minirt->mlx, minirt->win);
-// 	// 	display_precision(minirt);
-// 	// }
-// 	return (1);
-// }
+static int	key_pressed(int key, void *param)
+{
+	t_minirt	*minirt;
+
+	minirt = (t_minirt *)param;
+	if (key == ESC)
+		close_win(minirt);
+	else if (key == A_RIGHT)
+		cam_go_leftright(minirt, 1);
+	else if (key == A_LEFT)
+		cam_go_leftright(minirt, -1);
+	else if (key == A_UP)
+		cam_go_frontback(minirt, 1);
+	else if (key == A_DOWN)
+		cam_go_frontback(minirt, -1);
+	else if (key == UP)
+		cam_look_updown(minirt, -PI / 8.0);
+	else if (key == DOWN)
+		cam_look_updown(minirt, PI / 8.0);
+	else if (key == LEFT)
+		cam_look_leftright(minirt, -PI / 8.0);
+	else if (key == RIGHT)
+		cam_look_leftright(minirt, PI / 8.0);
+	else if (key == TAB)
+		cam_go_updown(minirt, -1);
+	else if (key == SPACE)
+		cam_go_updown(minirt, 1);
+	else if (key == CTRL)
+	{
+		mlx_clear_window(minirt->mlx, minirt->win);
+		display_manual(minirt);
+	}
+	return (1);
+}
 
 void	init_minirt(t_minirt *minirt)
 {
@@ -133,13 +133,13 @@ int	main(int argc, char **argv, char **env)
 	init_minirt(&minirt);
 	if (!parsing(argc, argv, env, &minirt))
 		return (free_minirt(&minirt), 1);
-	//my_mlx_init(&minirt);
-	//my_mlx_new_window(&minirt, WIDTH, HEIGHT, "MINIRT");
-	//mlx_hook(minirt.win, 17, 0, close_win, &minirt);
-	//mlx_key_hook(minirt.win, key_pressed, &minirt);
-	//my_mlx_new_img(&minirt);
+	my_mlx_init(&minirt);
+	my_mlx_new_window(&minirt, WIDTH, HEIGHT, "MINIRT");
+	mlx_hook(minirt.win, 17, 0, close_win, &minirt);
+	mlx_key_hook(minirt.win, key_pressed, &minirt);
+	my_mlx_new_img(&minirt);
 	display_manual(&minirt);
-	//mlx_loop(minirt.mlx);
+	mlx_loop(minirt.mlx);
 	free_minirt(&minirt);
 	return (0);
 }
