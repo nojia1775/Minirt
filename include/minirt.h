@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/19 12:07:52 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/09 10:47:39 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 # define MINIRT_H
 
-# define WIDTH 500
-# define HEIGHT 500
+# define WIDTH 100
+# define HEIGHT 100
 
-# define AZERTY 1
-# define QWERTY 0
+# define AZERTY 0
+# define QWERTY 1
 
 # define ESC 65307
 # define A_RIGHT 65363

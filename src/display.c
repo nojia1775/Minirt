@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/19 10:33:37 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/09 11:25:54 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,11 @@ t_shape	*closest_shape(t_minirt *minirt, t_ray rayon)
 		shape = tmp;
 		shape->distance = min;
 	}
+	if (rayon.direction.coor[0] == -0.705978 || rayon.direction.coor[1] == 0.056478 || rayon.direction.coor[2] == 0.705978)
+	{
+		if (shape) printf("%d\n", shape->rgb[0]);
+		else printf("null\n");
+	}
 	return (shape);
 }
  
@@ -268,9 +273,15 @@ void	display_manual(t_minirt	*minirt)
 		int x = 0;
 		while (x < WIDTH)
 		{
-			shape = closest_shape(minirt, rayon);
 			rayon.origin = minirt->camera->xyz;
 			rayon.direction = get_pixel_vector(minirt, x, y);
+			shape = closest_shape(minirt, rayon);
+			if (!shape)
+				printf(" ");
+			else
+				printf("%d", shape->rgb[0] / 100);
+			if (x == 0 && y == 46)
+				printf("%f %f %f\n", rayon.direction.coor[0], rayon.direction.coor[1], rayon.direction.coor[2]);
 			if (shape)
 			{
 				t_intersection *xs = point_intersection_sphere(rayon, *shape);
@@ -282,6 +293,7 @@ void	display_manual(t_minirt	*minirt)
 			}
 			x++;
 		}
+		printf("\n");
 		y++;
 	}
 	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
