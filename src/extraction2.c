@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 16:04:38 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/09 20:51:41 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/09 21:20:49 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	get_cylinder(char **datas, t_minirt *minirt)
 	if (size_double_tab(datas) != 6
 		|| !parse_range(datas[1], -DBL_MAX, DBL_MAX, 3))
 		return (printf("Error : cylinder : number or coordinates\n"), 0);
-	if (!parse_range(datas[2], -1.0, 1.0, 3) < 1)
+	if (parse_range(datas[2], -1.0, 1.0, 3) < 1)
 		return (printf("Error : cylinder : in vectors\n"), 0);
 	if (!parse_range(datas[3], 0, DBL_MAX, 1))
 		return (printf("Error : cylinder : in diameter\n"), 0);

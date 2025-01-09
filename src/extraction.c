@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:12:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/09 20:51:14 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/09 21:20:36 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int	get_plan(char **datas, t_minirt *minirt)
 		return (printf("Error : plan : wrong number of information\n"), 0);
 	if (!parse_range(datas[1], -DBL_MAX, DBL_MAX, 3))
 		return (printf("Error : plan : in coordinates\n"), 0);
-	if (!parse_range(datas[2], -1.0, 1.0, 3) < 1)
+	if (parse_range(datas[2], -1.0, 1.0, 3) < 1)
 		return (printf("Error : plan : in vectors\n"), 0);
 	if (!parse_rgb(datas[3]))
 		return (printf("Error : plan : in color\n"), 0);

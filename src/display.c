@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/09 21:10:30 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/09 21:22:00 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,47 +78,47 @@ static t_shape	*closest_sphere(t_minirt *minirt, t_ray rayon, double *min)
 	return (shape);
 }
 
-static t_shape	*closest_plan(t_minirt *minirt, t_tuple pixel, double *min)
-{
-	t_shape	*tmp;
-	t_shape	*shape;
-	double	distance;
-	
-	shape = NULL;
-	tmp = minirt->plan;
-	while (tmp)
-	{
-		distance = intersec_plan(minirt, pixel, *tmp);
-		if (distance > 0 && distance < *min)
-		{
-			shape = tmp;
-			*min = distance;
-		}
-		tmp = tmp->next;
-	}
-	return (shape);
-}
-
-static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple pixel, double *min)
-{
-	t_shape	*tmp;
-	t_shape	*shape;
-	double	distance;
-	
-	shape = NULL;
-	tmp = minirt->cylinder;
-	while (tmp)
-	{
-		distance = intersec_cylinder(minirt, pixel, *tmp);
-		if (distance > 0 && distance < *min)
-		{
-			shape = tmp;
-			*min = distance;
-		}
-		tmp = tmp->next;
-	}
-	return (shape);
-}
+// static t_shape	*closest_plan(t_minirt *minirt, t_tuple pixel, double *min)
+// {
+// 	t_shape	*tmp;
+// 	t_shape	*shape;
+// 	double	distance;
+// 	
+// 	shape = NULL;
+// 	tmp = minirt->plan;
+// 	while (tmp)
+// 	{
+// 		distance = intersec_plan(minirt, pixel, *tmp);
+// 		if (distance > 0 && distance < *min)
+// 		{
+// 			shape = tmp;
+// 			*min = distance;
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// 	return (shape);
+// }
+// 
+// static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple pixel, double *min)
+// {
+// 	t_shape	*tmp;
+// 	t_shape	*shape;
+// 	double	distance;
+// 	
+// 	shape = NULL;
+// 	tmp = minirt->cylinder;
+// 	while (tmp)
+// 	{
+// 		distance = intersec_cylinder(minirt, pixel, *tmp);
+// 		if (distance > 0 && distance < *min)
+// 		{
+// 			shape = tmp;
+// 			*min = distance;
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// 	return (shape);
+// }
 
 t_shape	*closest_shape(t_minirt *minirt, t_ray rayon)
 {
