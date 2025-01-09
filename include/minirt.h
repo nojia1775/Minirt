@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/09 10:47:39 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/09 15:43:30 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 # define MINIRT_H
 
-# define WIDTH 100
-# define HEIGHT 100
+# define WIDTH 200
+# define HEIGHT 200
 
 # define AZERTY 0
 # define QWERTY 1

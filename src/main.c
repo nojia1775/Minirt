@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/19 10:34:07 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/09 16:40:58 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ int	main(int argc, char **argv, char **env)
 	mlx_key_hook(minirt.win, key_pressed, &minirt);
 	my_mlx_new_img(&minirt);
 	display_manual(&minirt);
+	printf("DONE\n");
 	mlx_loop(minirt.mlx);
 	free_minirt(&minirt);
 	return (0);

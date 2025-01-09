@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:13:26 by yrio              #+#    #+#             */
-/*   Updated: 2024/12/11 11:49:31 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/09 17:01:02 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_intersection	*point_intersection_sphere(t_ray rayon, t_shape sphere)
 	inv_transform_sphere = inverse_matrix_4X4(sphere.transform);
 	rayon = transform_ray(rayon, inv_transform_sphere);
 	sphere.xyz = multiplying_matrix_tuple(sphere.transform, sphere.xyz);
+	//printf("%f %f %f\n", sphere.xyz.coor[0], sphere.xyz.coor[1], sphere.xyz.coor[2]);
 	inter1 = create_struct_intersection(0, sphere);
 	inter2 = create_struct_intersection(0, sphere);
 	intersections = aggregating_intersections(inter1, inter2);
@@ -61,10 +62,12 @@ t_intersection	*point_intersection_sphere(t_ray rayon, t_shape sphere)
 	{
 		intersections[0].t = -b / 2;
 		intersections[1].t = -b / 2;
+		intersections->count = 1;
 		return (intersections);
 	}
 	intersections[0].t = (-b - sqrt(delta)) / (2 * a);
 	intersections[1].t = (-b + sqrt(delta)) / (2 * a);
+	intersections->count = 2;
 	return (intersections);
 }
 
