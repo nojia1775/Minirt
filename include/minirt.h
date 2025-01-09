@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/09 20:36:16 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/09 21:09:23 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,23 @@
 
 typedef unsigned char	t_uint8;
 
-typedef struct s_point
+typedef enum	e_type
 {
-	double	coor[3];
-}	t_point;
+	SPHERE,
+	PLAN,
+	CYLINDER	
+}	t_type;
 
-typedef struct s_vector
+typedef struct s_tuple
 {
-	double coor[3];
-}	t_vector;
+	double coor[4];
+}	t_tuple;
+
+typedef	struct s_ray
+{
+	t_tuple	origin;
+	t_tuple	direction;
+}	t_ray;
 
 typedef struct s_light
 {
@@ -78,8 +86,8 @@ typedef struct s_ambient
 
 typedef struct s_camera
 {
-	t_point	xyz;
-	t_vector	vector_xyz;
+	t_tuple	xyz;
+	t_tuple	vector_xyz;
 	double	fov_x;
 	double	fov_y;
 	double	focal_length;
@@ -94,13 +102,15 @@ typedef struct s_matrix
 typedef struct s_shape
 {
 	size_t	index;
-	t_point	xyz;
+	t_tuple	xyz;
 	t_uint8	rgb[3];
 	double		height;
 	double		diameter;
-	t_vector		vector_xyz;
+	t_tuple		vector_xyz;
 	t_matrix	*mat;
 	struct s_shape	*next;
+	t_type		type;
+	double		distance;
 }	t_shape;
 
 typedef struct s_minirt
@@ -127,16 +137,16 @@ typedef struct s_file_rt
 }	t_file_rt;
 
 // yann
-t_vector	*create_vector(double x, double y, double z);
+t_tuple	*create_vector(double x, double y, double z);
 
 //vector_operation
-t_vector	*vec_add_nbr(t_vector *vec, double nbr);
-t_vector	*vec_add_vec(t_vector *vec, t_vector *add);
-t_vector	*vec_sub_vec(t_vector *vec, t_vector *add);
-double		vec_magnitude(t_vector *vec);
-double		dot_product(t_vector *first, t_vector *second, int length);
-t_vector	*vec_normalization(t_vector *vec);
-t_vector	*vec_multiplication(t_vector *vec, double scalar);
+t_tuple	*vec_add_nbr(t_tuple *vec, double nbr);
+t_tuple	*vec_add_vec(t_tuple *vec, t_tuple *add);
+t_tuple	*vec_sub_vec(t_tuple *vec, t_tuple *add);
+double		vec_magnitude(t_tuple *vec);
+double		dot_product(t_tuple *first, t_tuple *second, int length);
+t_tuple	*vec_normalization(t_tuple *vec);
+t_tuple	*vec_multiplication(t_tuple *vec, double scalar);
 
 //matrix
 t_matrix	*alloc_matrix(t_matrix *mat, int x, int y, int z);
@@ -179,29 +189,29 @@ void	display(t_minirt *minirt);
 int		convert_rgb(t_uint8 rgb[3]);
 double	convert_rad(double deg);
 double	convert_deg(double rad);
-t_vector vec_add_vec2(t_vector vec, t_vector add);
-t_point	apply_vec_to_nbr(t_vector vec, t_point point);
-t_vector vec_multiplication2(t_vector vec, double nbr);
-t_vector	vec_normalization2(t_vector vec);
-t_vector	vec_cross(t_vector a, t_vector b);
+t_tuple vec_add_vec2(t_tuple vec, t_tuple add);
+t_tuple	apply_vec_to_nbr(t_tuple vec, t_tuple point);
+t_tuple vec_multiplication2(t_tuple vec, double nbr);
+t_tuple	vec_normalization2(t_tuple vec);
+t_tuple	vec_cross(t_tuple a, t_tuple b);
 double	double_abs(double x);
-t_vector	create_vector2(double x, double y, double z);
-t_vector	get_pixel_vector(t_minirt *minirt, int x, int y);
-double	intersec_sphere(t_minirt *minirt, t_vector pixel, t_shape sphere);
+t_tuple	create_vector2(double x, double y, double z);
+t_tuple	get_pixel_vector(t_minirt *minirt, int x, int y);
+double	intersec_sphere(t_minirt *minirt, t_ray rayon, t_shape sphere);
 double	get_min(double a, double b);
 double	get_max(double a, double b);
 void	display_precision(t_minirt *minirt);
-double	dot_product2(t_vector a, t_vector b);
-t_vector	vec_sub_vec2(t_vector a, t_vector b);
-double	intersec_plan(t_minirt *minirt, t_vector pixel, t_shape plan);
+double	dot_product2(t_tuple a, t_tuple b);
+t_tuple	vec_sub_vec2(t_tuple a, t_tuple b);
+double	intersec_plan(t_minirt *minirt, t_tuple pixel, t_shape plan);
 void	cam_look_leftright(t_minirt *minirt, double angle);
 void	cam_look_updown(t_minirt *minirt, double angle);
 void	cam_go_frontback(t_minirt *minirt, int dir);
 void	print_coor(void *coor);
 void	cam_go_leftright(t_minirt *minirt, int left_right);
 void	cam_go_updown(t_minirt *minirt, int up_down);
-double	intersec_cylinder(t_minirt *minirt, t_vector pixel, t_shape cylinder);
-double	vec_magnitude2(t_vector vec);
+double	intersec_cylinder(t_minirt *minirt, t_tuple pixel, t_shape cylinder);
+double	vec_magnitude2(t_tuple vec);
 void	my_mlx_new_img(t_minirt *minirt);
 
 #endif

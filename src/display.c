@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/03 14:24:49 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/09 21:10:30 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y
 	*(int *)(minirt->img + pixel_offset) = color;
 }
 
-static t_shape	*closest_sphere(t_minirt *minirt, t_vector pixel, double *min)
+static t_shape	*closest_sphere(t_minirt *minirt, t_ray rayon, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -67,7 +67,7 @@ static t_shape	*closest_sphere(t_minirt *minirt, t_vector pixel, double *min)
 	tmp = minirt->sphere;
 	while (tmp)
 	{
-		distance = intersec_sphere(minirt, pixel, *tmp);
+		distance = intersec_sphere(minirt, rayon, *tmp);
 		if (distance > 0 && distance < *min)
 		{
 			shape = tmp;
@@ -78,7 +78,7 @@ static t_shape	*closest_sphere(t_minirt *minirt, t_vector pixel, double *min)
 	return (shape);
 }
 
-static t_shape	*closest_plan(t_minirt *minirt, t_vector pixel, double *min)
+static t_shape	*closest_plan(t_minirt *minirt, t_tuple pixel, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -99,7 +99,7 @@ static t_shape	*closest_plan(t_minirt *minirt, t_vector pixel, double *min)
 	return (shape);
 }
 
-static t_shape	*closest_cylinder(t_minirt *minirt, t_vector pixel, double *min)
+static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple pixel, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -120,7 +120,7 @@ static t_shape	*closest_cylinder(t_minirt *minirt, t_vector pixel, double *min)
 	return (shape);
 }
 
-t_shape	*closest_shape(t_minirt *minirt, t_vector pixel)
+t_shape	*closest_shape(t_minirt *minirt, t_ray rayon)
 {
 	double	min;
 	t_shape	*shape;
@@ -128,21 +128,24 @@ t_shape	*closest_shape(t_minirt *minirt, t_vector pixel)
 
 	shape = NULL;
 	min = 1000;
-	tmp = closest_sphere(minirt, pixel, &min);
+	tmp = closest_sphere(minirt, rayon, &min);
 	if (tmp)
+	{
 		shape = tmp;
-	tmp = closest_plan(minirt, pixel, &min);
-	if (tmp)
-		shape = tmp;
-	tmp = closest_cylinder(minirt, pixel, &min);
-	if (tmp)
-		shape = tmp;
+		shape->distance = min;
+	}
+	// tmp = closest_plan(minirt, pixel, &min);
+	// if (tmp)
+	// 	shape = tmp;
+	// tmp = closest_cylinder(minirt, pixel, &min);
+	// if (tmp)
+	// 	shape = tmp;
 	return (shape);
 }
  
 void	display(t_minirt *minirt)
 {
-	t_vector	pixel;
+	t_ray	rayon;
 	t_shape	*shape;
 
 	int y = 2;
@@ -151,9 +154,9 @@ void	display(t_minirt *minirt)
 		int x = 2;
 		while (x < WIDTH)
 		{
-			shape = NULL;
-			pixel = get_pixel_vector(minirt, x, y);
-			shape = closest_shape(minirt, pixel);
+			rayon.origin = minirt->camera->xyz;
+			rayon.direction = get_pixel_vector(minirt, x, y);
+			shape = closest_shape(minirt, rayon);
 			print_image(minirt, shape, x, y);
 			x += 5;
 		}
@@ -164,7 +167,7 @@ void	display(t_minirt *minirt)
 
 void	display_precision(t_minirt *minirt)
 {
-	t_vector	pixel;
+	t_ray	rayon;
 	t_shape	*shape;
 
 	int y = 0;
@@ -173,9 +176,9 @@ void	display_precision(t_minirt *minirt)
 		int x = 0;
 		while (x < WIDTH)
 		{
-			shape = NULL;
-			pixel = get_pixel_vector(minirt, x, y);
-			shape = closest_shape(minirt, pixel);
+			rayon.origin = minirt->camera->xyz;
+			rayon.direction = get_pixel_vector(minirt, x, y);
+			shape = closest_shape(minirt, rayon);
 			print_image_precision(minirt, shape, x, y);
 			x++;
 		}

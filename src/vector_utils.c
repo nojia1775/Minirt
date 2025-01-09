@@ -6,17 +6,17 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:06:21 by yrio              #+#    #+#             */
-/*   Updated: 2024/11/21 14:52:25 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/09 21:02:11 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-t_vector *create_vector(double x, double y, double z)
+t_tuple *create_vector(double x, double y, double z)
 {
-	t_vector *vec;
+	t_tuple *vec;
 
-	vec = malloc(sizeof(t_vector));
+	vec = malloc(sizeof(t_tuple));
 	if (!vec)
 		return (NULL);
 	vec->coor[0] = x;
@@ -25,9 +25,9 @@ t_vector *create_vector(double x, double y, double z)
 	return (vec);
 }
 
-t_vector	create_vector2(double x, double y, double z)
+t_tuple	create_vector2(double x, double y, double z)
 {
-	t_vector	vec;
+	t_tuple	vec;
 
 	vec.coor[0] = x;
 	vec.coor[1] = y;
@@ -35,12 +35,12 @@ t_vector	create_vector2(double x, double y, double z)
 	return (vec);
 }
 
-t_vector	get_pixel_vector(t_minirt *minirt, int x, int y)
+t_tuple	get_pixel_vector(t_minirt *minirt, int x, int y)
 {
-	t_vector	U;
-	t_vector	V;
-	t_vector	normal_v_cam;
-	t_vector	pixel;
+	t_tuple	U;
+	t_tuple	V;
+	t_tuple	normal_v_cam;
+	t_tuple	pixel;
 	double		x_screen;
 	double		y_screen;
 

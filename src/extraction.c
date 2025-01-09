@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:12:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/19 19:29:54 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/09 20:51:14 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int	get_sphere(char **datas, t_minirt *minirt)
 	if (minirt->sphere == NULL)
 		return (printf("Error : sphere : alloc failed\n"), 0);
 	cur = minirt->sphere;
+	cur->type = SPHERE;
 	while (cur->next)
 		cur = cur->next;
 	get_three_double(cur->xyz.coor, datas[1]);
@@ -113,7 +114,7 @@ int	get_plan(char **datas, t_minirt *minirt)
 		return (printf("Error : plan : wrong number of information\n"), 0);
 	if (!parse_range(datas[1], -DBL_MAX, DBL_MAX, 3))
 		return (printf("Error : plan : in coordinates\n"), 0);
-	if (!parse_range(datas[2], -1.0, 1.0, 3))
+	if (!parse_range(datas[2], -1.0, 1.0, 3) < 1)
 		return (printf("Error : plan : in vectors\n"), 0);
 	if (!parse_rgb(datas[3]))
 		return (printf("Error : plan : in color\n"), 0);
@@ -123,6 +124,7 @@ int	get_plan(char **datas, t_minirt *minirt)
 	cur = minirt->plan;
 	while (cur->next)
 		cur = cur->next;
+	cur->type = PLAN;
 	get_three_double(cur->xyz.coor, datas[1]);
 	get_three_double(cur->vector_xyz.coor, datas[2]);
 	get_three_int(cur->rgb, datas[3]);
