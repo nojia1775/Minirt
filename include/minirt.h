@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/09 21:09:23 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/10 11:35:31 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ typedef	struct s_ray
 
 typedef struct s_light
 {
-	double		xyz[3];
+	t_tuple		xyz;
 	double		luminosity;
 	t_uint8	rgb[3];
 }	t_light;
@@ -87,7 +87,7 @@ typedef struct s_ambient
 typedef struct s_camera
 {
 	t_tuple	xyz;
-	t_tuple	vector_xyz;
+	t_tuple	tuple_xyz;
 	double	fov_x;
 	double	fov_y;
 	double	focal_length;
@@ -99,6 +99,12 @@ typedef struct s_matrix
 	int	***array;
 }	t_matrix;
 
+typedef struct	s_canva
+{
+	int		shape[2];
+	double	**array;
+}	t_canva;
+
 typedef struct s_shape
 {
 	size_t	index;
@@ -106,11 +112,12 @@ typedef struct s_shape
 	t_uint8	rgb[3];
 	double		height;
 	double		diameter;
-	t_tuple		vector_xyz;
+	t_tuple		tuple_xyz;
 	t_matrix	*mat;
 	struct s_shape	*next;
 	t_type		type;
 	double		distance;
+	t_canva		transform;
 }	t_shape;
 
 typedef struct s_minirt
@@ -137,9 +144,9 @@ typedef struct s_file_rt
 }	t_file_rt;
 
 // yann
-t_tuple	*create_vector(double x, double y, double z);
+t_tuple	*create_tuple(double x, double y, double z, int w);
 
-//vector_operation
+//tuple_operation
 t_tuple	*vec_add_nbr(t_tuple *vec, double nbr);
 t_tuple	*vec_add_vec(t_tuple *vec, t_tuple *add);
 t_tuple	*vec_sub_vec(t_tuple *vec, t_tuple *add);
@@ -195,8 +202,8 @@ t_tuple vec_multiplication2(t_tuple vec, double nbr);
 t_tuple	vec_normalization2(t_tuple vec);
 t_tuple	vec_cross(t_tuple a, t_tuple b);
 double	double_abs(double x);
-t_tuple	create_vector2(double x, double y, double z);
-t_tuple	get_pixel_vector(t_minirt *minirt, int x, int y);
+t_tuple	create_tuple2(double x, double y, double z, int w);
+t_tuple	get_pixel_tuple(t_minirt *minirt, int x, int y);
 double	intersec_sphere(t_minirt *minirt, t_ray rayon, t_shape sphere);
 double	get_min(double a, double b);
 double	get_max(double a, double b);
@@ -213,5 +220,33 @@ void	cam_go_updown(t_minirt *minirt, int up_down);
 double	intersec_cylinder(t_minirt *minirt, t_tuple pixel, t_shape cylinder);
 double	vec_magnitude2(t_tuple vec);
 void	my_mlx_new_img(t_minirt *minirt);
+t_tuple	negate_tuple(t_tuple tuple);
+t_tuple	normal_tuple_sphere(t_shape sphere, t_tuple world_point);
+t_canva    multiplying_4X4_matrix(t_canva *mat1, t_canva *mat2);
+t_tuple multiplying_matrix_tuple(t_canva mat, t_tuple tup);
+t_canva transpose_4X4_matrix(t_canva mat);
+int	get_determinant_2X2_matrix(t_canva mat);
+t_canva get_submatrix(t_canva matrix, int row, int column);
+int	get_minor_3X3_matrix(t_canva mat, int row, int column);
+int	get_cofactor_3X3_matrix(t_canva mat, int row, int column)
+;
+int	get_determinant_3X3_matrix(t_canva mat, int row, int column);
+int	get_minor_4X4_matrix(t_canva mat, int row, int column);
+int	get_cofactor_4X4_matrix(t_canva mat, int row, int column);
+int	get_determinant_4X4_matrix(t_canva mat, int row);
+int	matrix_4X4_isinvertible(t_canva mat);
+t_canva	inverse_matrix_4X4(t_canva mat);
+t_canva *alloc_canva(t_canva *can, int x, int y);
+t_canva create_canva(int x, int y);
+void	display_canva(t_canva *can);
+int	compare_2Dmatrix(t_canva *can1, t_canva *can2);
+t_tuple reflect(t_tuple in, t_tuple normal);
+t_canva	translation(double x, double y, double z);
+t_canva	scaling(double x, double y, double z);
+t_canva	rotation_x(double radian);
+t_canva	rotation_y(double radian);
+t_canva	rotation_z(double radian);
+t_canva	shearing(double x_y, double x_z, double y_x, double y_z, double z_x, double z_y);
+t_ray transform_ray(t_ray ray, t_canva matrix);
 
 #endif

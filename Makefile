@@ -22,7 +22,10 @@ SRCS =	src/main.c \
 	src/utils3.c \
 	src/intersections.c \
 	src/cam_movement.c \
-	src/utils4.c
+	src/utils4.c \
+	src/canva.c \
+	src/matrix_transformation.c \
+	src/matrix_utils.c
 
 DEPS = $(OBJS:.o=.d)
 

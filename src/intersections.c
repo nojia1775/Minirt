@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2025/01/09 21:08:59 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/10 11:42:40 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,34 +43,34 @@ double	intersec_plan(t_minirt *minirt, t_tuple pixel, t_shape plan)
 	t_tuple	p;
 	t_tuple	o;
 
-	p = create_vector2(plan.xyz.coor[0], plan.xyz.coor[1],
-		plan.xyz.coor[2]);
-	o = create_vector2(minirt->camera->xyz.coor[0],
+	p = create_tuple2(plan.xyz.coor[0], plan.xyz.coor[1],
+		plan.xyz.coor[2], 0);
+	o = create_tuple2(minirt->camera->xyz.coor[0],
 		minirt->camera->xyz.coor[1],
-		minirt->camera->xyz.coor[2]);
-	if (dot_product2(plan.vector_xyz, pixel) == 0)
+		minirt->camera->xyz.coor[2], 0);
+	if (dot_product2(plan.tuple_xyz, pixel) == 0)
 		return (-1);
-	return ((dot_product2(plan.vector_xyz,
+	return ((dot_product2(plan.tuple_xyz,
 		vec_sub_vec2(p, o)))
-		/ dot_product2(plan.vector_xyz, pixel));
+		/ dot_product2(plan.tuple_xyz, pixel));
 }
 static int	point_in_cylinder(t_shape cy, t_tuple intersec)
 {
 	t_tuple	intersec_proj;
 
 	intersec_proj = vec_add_vec2(*(t_tuple *)&cy.xyz, vec_multiplication2(
-		cy.vector_xyz, dot_product2(create_vector2(
+		cy.tuple_xyz, dot_product2(create_tuple2(
 		intersec.coor[0] - cy.xyz.coor[0],
 		intersec.coor[1] - cy.xyz.coor[1],
-		intersec.coor[2] - cy.xyz.coor[2]), cy.vector_xyz)));
-	if (dot_product2(create_vector2(intersec_proj.coor[0] - cy.xyz.coor[0],
+		intersec.coor[2] - cy.xyz.coor[2], 0), cy.tuple_xyz)));
+	if (dot_product2(create_tuple2(intersec_proj.coor[0] - cy.xyz.coor[0],
 		intersec_proj.coor[1] - cy.xyz.coor[1],
-		intersec_proj.coor[2] - cy.xyz.coor[2]), cy.vector_xyz) < 0)
+		intersec_proj.coor[2] - cy.xyz.coor[2], 0), cy.tuple_xyz) < 0)
 		return (0);
-	if (vec_magnitude2(create_vector2(
+	if (vec_magnitude2(create_tuple2(
 		intersec_proj.coor[0] - cy.xyz.coor[0],
 		intersec_proj.coor[1] - cy.xyz.coor[1],
-		intersec_proj.coor[2] - cy.xyz.coor[2])) > cy.height)
+		intersec_proj.coor[2] - cy.xyz.coor[2], 0)) > cy.height)
 		return (0);
 	return (1);
 }
@@ -80,12 +80,12 @@ static void	get_bases_cy(t_shape cy, t_shape *base1, t_shape *base2)
 	base1->xyz.coor[0] = cy.xyz.coor[0];
 	base1->xyz.coor[1] = cy.xyz.coor[1];
 	base1->xyz.coor[2] = cy.xyz.coor[2];
-	base1->vector_xyz = cy.vector_xyz;
-	cy.xyz = apply_vec_to_nbr(vec_multiplication2(cy.vector_xyz, cy.height), cy.xyz);
+	base1->tuple_xyz = cy.tuple_xyz;
+	cy.xyz = apply_vec_to_nbr(vec_multiplication2(cy.tuple_xyz, cy.height), cy.xyz);
 	base2->xyz.coor[0] = cy.xyz.coor[0];
 	base2->xyz.coor[1] = cy.xyz.coor[1];
 	base2->xyz.coor[2] = cy.xyz.coor[2];
-	base2->vector_xyz = cy.vector_xyz;
+	base2->tuple_xyz = cy.tuple_xyz;
 }
 
 static double	intersec_base_cy(t_minirt *minirt, t_tuple pixel, t_shape cy)
@@ -116,10 +116,10 @@ double	intersec_cylinder(t_minirt *minirt, t_tuple pixel, t_shape cy)
 		*(t_tuple *)&cy.xyz);
 	pixel = vec_normalization2(pixel);
 	quadratic[0] = dot_product2(pixel, pixel) - pow(dot_product2(pixel,
-		vec_normalization2(cy.vector_xyz)), 2);
-	quadratic[1] = 2 * (dot_product2(pixel, oc) - dot_product2(pixel, cy.vector_xyz)
-		* dot_product2(oc, cy.vector_xyz));
-	quadratic[2] = dot_product2(oc, oc) - pow(dot_product2(oc, cy.vector_xyz), 2) - pow(cy.diameter / 2, 2);
+		vec_normalization2(cy.tuple_xyz)), 2);
+	quadratic[1] = 2 * (dot_product2(pixel, oc) - dot_product2(pixel, cy.tuple_xyz)
+		* dot_product2(oc, cy.tuple_xyz));
+	quadratic[2] = dot_product2(oc, oc) - pow(dot_product2(oc, cy.tuple_xyz), 2) - pow(cy.diameter / 2, 2);
 	delta = pow(quadratic[1], 2) - 4 * quadratic[0] * quadratic[2];
 	if (delta < 0)
 		return (-1);

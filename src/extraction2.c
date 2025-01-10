@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 16:04:38 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/09 21:20:49 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/10 11:36:38 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	get_cylinder(char **datas, t_minirt *minirt)
 		|| !parse_range(datas[1], -DBL_MAX, DBL_MAX, 3))
 		return (printf("Error : cylinder : number or coordinates\n"), 0);
 	if (parse_range(datas[2], -1.0, 1.0, 3) < 1)
-		return (printf("Error : cylinder : in vectors\n"), 0);
+		return (printf("Error : cylinder : in tuples\n"), 0);
 	if (!parse_range(datas[3], 0, DBL_MAX, 1))
 		return (printf("Error : cylinder : in diameter\n"), 0);
 	if (!parse_range(datas[4], 0, DBL_MAX, 1))
@@ -35,7 +35,9 @@ int	get_cylinder(char **datas, t_minirt *minirt)
 		cur = cur->next;
 	cur->type = CYLINDER;
 	get_three_double(cur->xyz.coor, datas[1]);
-	get_three_double(cur->vector_xyz.coor, datas[2]);
+	get_three_double(cur->tuple_xyz.coor, datas[2]);
+	cur->transform = translation(cur->xyz.coor[0], cur->xyz.coor[1], cur->xyz.coor[0]);
+	cur->xyz = create_tuple2(0, 0, 0, 0);
 	cur->diameter = atod(datas[3]);
 	cur->height = atod(datas[4]);
 	get_three_int(cur->rgb, datas[5]);
