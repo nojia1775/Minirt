@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/10 11:35:31 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/10 12:00:49 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 # define MINIRT_H
 
-# define WIDTH 200
-# define HEIGHT 200
+# define WIDTH 600
+# define HEIGHT 600
 
 # define AZERTY 1
 # define QWERTY 0
@@ -36,7 +36,7 @@
 #  define LEFT 97
 #  define RIGHT 100
 # endif
-# define ENTER 65293
+# define P 112
 # define SPACE 32
 # define TAB 65289
 

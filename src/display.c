@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/10 11:38:48 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/10 12:03:00 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,10 @@ static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y
 	int	pixel_offset;
 	t_uint8	rgb[3];
 
-	if (shape)
-	{
-		rgb[0] = shape->rgb[0] * (shading / 3);
-		rgb[1] = shape->rgb[1] * (shading / 3);
-		rgb[2] = shape->rgb[2] * (shading / 3);
-		color = convert_rgb(rgb);
-	}
-	else
-		color = 0x000000;
+	rgb[0] = shape->rgb[0] * (shading / 3);
+	rgb[1] = shape->rgb[1] * (shading / 3);
+	rgb[2] = shape->rgb[2] * (shading / 3);
+	color = convert_rgb(rgb);
 	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
 	if (!minirt->img)
 	{
@@ -178,7 +173,7 @@ void	display(t_minirt *minirt)
 
 double 	lighting(t_light light, t_tuple point, t_tuple eyev, t_tuple normalv)
 {
-	double 	ambient = 0.3;
+	double 	ambient = 0.5;
 	double 	diffuse = 0.9;
 	double 	specular = 0.9;
 	double	effective_color = 1;

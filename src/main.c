@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/10 11:44:59 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/10 11:57:12 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	key_pressed(int key, void *param)
 		cam_go_updown(minirt, -1);
 	else if (key == SPACE)
 		cam_go_updown(minirt, 1);
-	else if (key == ENTER)
+	else if (key == P)
 	{
 		mlx_clear_window(minirt->mlx, minirt->win);
 		display_precision(minirt);
