@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extraction.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:12:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/10 11:47:03 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/10 16:05:10 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	get_light(char **datas, t_minirt *minirt)
 	if (minirt->light == NULL)
 		return (printf("Error : light : alloc failed/n"), 0);
 	get_three_double(minirt->light->xyz.coor, datas[1]);
+	printf("%f %f %f\n", minirt->light->xyz.coor[0], minirt->light->xyz.coor[1], minirt->light->xyz.coor[2]);
 	minirt->light->luminosity = atod(datas[2]);
 	get_three_int(minirt->light->rgb, datas[3]);
 	return (1);
@@ -130,7 +131,6 @@ int	get_plan(char **datas, t_minirt *minirt)
 	get_three_double(cur->xyz.coor, datas[1]);
 	get_three_double(cur->tuple_xyz.coor, datas[2]);
 	cur->transform = translation(cur->xyz.coor[0], cur->xyz.coor[1], cur->xyz.coor[0]);
-	cur->xyz = create_tuple2(0, 0, 0, 0);
 	get_three_int(cur->rgb, datas[3]);
 	return (1);
 }

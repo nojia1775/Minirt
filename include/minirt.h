@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/10 12:00:49 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/10 15:44:26 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # define WIDTH 600
 # define HEIGHT 600
 
-# define AZERTY 1
-# define QWERTY 0
+# define AZERTY 0
+# define QWERTY 1
 
 # define ESC 65307
 # define A_RIGHT 65363
@@ -210,7 +210,7 @@ double	get_max(double a, double b);
 void	display_precision(t_minirt *minirt);
 double	dot_product2(t_tuple a, t_tuple b);
 t_tuple	vec_sub_vec2(t_tuple a, t_tuple b);
-double	intersec_plan(t_minirt *minirt, t_tuple pixel, t_shape plan);
+double	intersec_plan(t_minirt *minirt, t_ray rayon, t_shape plan);
 void	cam_look_leftright(t_minirt *minirt, double angle);
 void	cam_look_updown(t_minirt *minirt, double angle);
 void	cam_go_frontback(t_minirt *minirt, int dir);

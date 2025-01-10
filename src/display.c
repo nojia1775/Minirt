@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/10 12:03:00 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/10 16:16:17 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,26 +84,26 @@ static t_shape	*closest_sphere(t_minirt *minirt, t_ray rayon, double *min)
 	return (shape);
 }
 
-// static t_shape	*closest_plan(t_minirt *minirt, t_tuple pixel, double *min)
-// {
-// 	t_shape	*tmp;
-// 	t_shape	*shape;
-// 	double	distance;
-// 	
-// 	shape = NULL;
-// 	tmp = minirt->plan;
-// 	while (tmp)
-// 	{
-// 		distance = intersec_plan(minirt, pixel, *tmp);
-// 		if (distance > 0 && distance < *min)
-// 		{
-// 			shape = tmp;
-// 			*min = distance;
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// 	return (shape);
-// }
+static t_shape	*closest_plan(t_minirt *minirt, t_ray rayon, double *min)
+{
+	t_shape	*tmp;
+	t_shape	*shape;
+	double	distance;
+	
+	shape = NULL;
+	tmp = minirt->plan;
+	while (tmp)
+	{
+		distance = intersec_plan(minirt, rayon, *tmp);
+		if (distance > 0 && distance < *min)
+		{
+			shape = tmp;
+			*min = distance;
+		}
+		tmp = tmp->next;
+	}
+	return (shape);
+}
 // 
 // static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple pixel, double *min)
 // {
@@ -140,9 +140,12 @@ t_shape	*closest_shape(t_minirt *minirt, t_ray rayon)
 		shape = tmp;
 		shape->distance = min;
 	}
-	// tmp = closest_plan(minirt, pixel, &min);
-	// if (tmp)
-	// 	shape = tmp;
+	tmp = closest_plan(minirt, rayon, &min);
+	if (tmp)
+	{
+		shape = tmp;
+		shape->distance = min;
+	}
 	// tmp = closest_cylinder(minirt, pixel, &min);
 	// if (tmp)
 	// 	shape = tmp;
@@ -173,11 +176,11 @@ void	display(t_minirt *minirt)
 
 double 	lighting(t_light light, t_tuple point, t_tuple eyev, t_tuple normalv)
 {
-	double 	ambient = 0.5;
+	double 	ambient = 0.3;
 	double 	diffuse = 0.9;
 	double 	specular = 0.9;
 	double	effective_color = 1;
-	t_tuple	lightv = vec_normalization2(vec_sub_vec2(light.xyz, point));
+	t_tuple	lightv = vec_normalization2(vec_sub_vec2(point, light.xyz));
 	ambient = effective_color * ambient;
 	double light_dot_normal = dot_product2(lightv, normalv);
 	if (light_dot_normal < 0)
@@ -195,7 +198,7 @@ double 	lighting(t_light light, t_tuple point, t_tuple eyev, t_tuple normalv)
 		else
 		{
 			double factor = pow(reflect_dot_eye, 200.0);
-			specular = 1 * specular * factor; 
+			specular = 1 * specular * factor;
 		}
 	}
 	return (ambient + diffuse + specular);
