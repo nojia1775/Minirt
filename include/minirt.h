@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/09 15:43:30 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/14 10:48:33 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 # define MINIRT_H
 
-# define WIDTH 200
-# define HEIGHT 200
+# define WIDTH 100
+# define HEIGHT 100
 
 # define AZERTY 0
 # define QWERTY 1

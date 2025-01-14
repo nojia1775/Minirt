@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/09 16:05:59 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/14 11:01:58 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,6 @@ static t_shape	*closest_sphere(t_minirt *minirt, t_ray rayon, double *min)
 	
 	shape = NULL;
 	tmp = minirt->sphere;
-	//printf("%f\t%f\t%f\t%f\n%f\t%f\t%f\t%f\n%f\t%f\t%f\t%f\n%f\t%f\t%f\t%f\n", tmp->transform.array[0][0], tmp->transform.array[0][1], tmp->transform.array[0][2], tmp->transform.array[0][3], tmp->transform.array[1][0], tmp->transform.array[1][1], tmp->transform.array[1][2], tmp->transform.array[1][3], tmp->transform.array[2][0], tmp->transform.array[2][1], tmp->transform.array[2][2], tmp->transform.array[2][3], tmp->transform.array[3][0], tmp->transform.array[3][1], tmp->transform.array[3][2], tmp->transform.array[3][3]);
-	//printf("\n");
 	while (tmp)
 	{
 		xs = point_intersection_sphere(rayon, *tmp);
@@ -182,21 +180,14 @@ t_shape	*closest_shape(t_minirt *minirt, t_ray rayon)
 	min = 1000;
 	tmp = closest_sphere(minirt, rayon, &min);
 	if (tmp)
-		shape = tmp;
-	// tmp = closest_plan(minirt, pixel, &min);
-	// if (tmp)
-	// 	shape = tmp;
-	// tmp = closest_cylinder(minirt, pixel, &min);
-	if (tmp)
 	{
 		shape = tmp;
 		shape->distance = min;
 	}
-	if (rayon.direction.coor[0] == -0.705978 || rayon.direction.coor[1] == 0.056478 || rayon.direction.coor[2] == 0.705978)
-	{
-		if (shape) printf("%d\n", shape->rgb[0]);
-		else printf("null\n");
-	}
+	// tmp = closest_plan(minirt, pixel, &min);
+	// if (tmp)
+	// 	shape = tmp;
+	// tmp = closest_cylinder(minirt, pixel, &min);
 	return (shape);
 }
  
@@ -278,10 +269,10 @@ void	display_manual(t_minirt	*minirt)
 			rayon.origin = minirt->camera->xyz;
 			rayon.direction = get_pixel_vector(minirt, x, y);
 			shape = closest_shape(minirt, rayon);
-			//if (!shape)
-			//	printf(" ");
-			//else
-			//	printf("%d", shape->rgb[0] / 100);
+			// if (!shape)
+			// 	printf(" ");
+			// else
+			// 	printf("%d", shape->rgb[0] / 100);
 			//if (x == 0 && y == 46)
 			//	printf("%f %f %f\n", rayon.direction.coor[0], rayon.direction.coor[1], rayon.direction.coor[2]);
 			if (shape)
@@ -295,7 +286,7 @@ void	display_manual(t_minirt	*minirt)
 			}
 			x++;
 		}
-		//printf("\n");
+		// printf("\n");
 		y++;
 	}
 	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);

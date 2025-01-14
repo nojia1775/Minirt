@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   canva.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:55:35 by yrio              #+#    #+#             */
-/*   Updated: 2024/11/29 15:22:28 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/14 11:04:17 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	display_canva(t_canva *can)
 		count2 = 0;
 		while (count2 < can->shape[1])
 		{
-			printf("%f", can->array[count][count2]);
+			printf("%f ", can->array[count][count2]);
 			count2++;
 		}
 		printf("\n");

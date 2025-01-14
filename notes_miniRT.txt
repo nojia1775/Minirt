@@ -16,3 +16,6 @@ c'est un point et lorsqu'elle correspond a un vecteur c'est 0.
 Comment assembler nos deux codes ?
 
 En parler ensemble.
+
+POTENTIEL PROBLEME DANS RAY_UTILS.C
+page 138

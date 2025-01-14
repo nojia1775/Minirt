@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:13:26 by yrio              #+#    #+#             */
-/*   Updated: 2025/01/09 17:01:02 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/14 11:35:37 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,12 @@ t_intersection	*point_intersection_sphere(t_ray rayon, t_shape sphere)
 	double	delta;
 
 	inv_transform_sphere = inverse_matrix_4X4(sphere.transform);
+	/* RAYON NE CHANGE PAS APRES TRANSFORM_RAY */
 	rayon = transform_ray(rayon, inv_transform_sphere);
+	print_coor(&sphere.xyz);
 	sphere.xyz = multiplying_matrix_tuple(sphere.transform, sphere.xyz);
-	//printf("%f %f %f\n", sphere.xyz.coor[0], sphere.xyz.coor[1], sphere.xyz.coor[2]);
+	print_coor(&sphere.xyz);
+	printf("\n");
 	inter1 = create_struct_intersection(0, sphere);
 	inter2 = create_struct_intersection(0, sphere);
 	intersections = aggregating_intersections(inter1, inter2);
