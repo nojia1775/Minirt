@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/09 16:40:58 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/14 16:28:44 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int	main(int argc, char **argv, char **env)
 	mlx_key_hook(minirt.win, key_pressed, &minirt);
 	my_mlx_new_img(&minirt);
 	display_manual(&minirt);
-	printf("DONE\n");
+	ft_putstr_fd("DONE\n", 1);
 	mlx_loop(minirt.mlx);
 	free_minirt(&minirt);
 	return (0);

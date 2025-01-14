@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:13:26 by yrio              #+#    #+#             */
-/*   Updated: 2025/01/14 11:35:37 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/14 17:52:03 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_tuple	position_ray(t_ray rayon, double t)
 	return (point);
 }
 
-t_intersection	*point_intersection_sphere(t_ray rayon, t_shape sphere)
+t_intersection	*point_intersection_sphere(t_minirt *minirt, t_ray rayon, t_shape sphere)
 {
 	t_intersection	*intersections;
 	t_intersection	inter1;
@@ -33,13 +33,10 @@ t_intersection	*point_intersection_sphere(t_ray rayon, t_shape sphere)
 	double	c;
 	double	delta;
 
+	(void)minirt;
 	inv_transform_sphere = inverse_matrix_4X4(sphere.transform);
-	/* RAYON NE CHANGE PAS APRES TRANSFORM_RAY */
 	rayon = transform_ray(rayon, inv_transform_sphere);
-	print_coor(&sphere.xyz);
 	sphere.xyz = multiplying_matrix_tuple(sphere.transform, sphere.xyz);
-	print_coor(&sphere.xyz);
-	printf("\n");
 	inter1 = create_struct_intersection(0, sphere);
 	inter2 = create_struct_intersection(0, sphere);
 	intersections = aggregating_intersections(inter1, inter2);
@@ -58,19 +55,23 @@ t_intersection	*point_intersection_sphere(t_ray rayon, t_shape sphere)
 	delta = pow(b, 2) - 4 * a * c;
 	if (delta < 0)
 	{
-		intersections->count = 0;
+		intersections[0].count = 0;
+		intersections[1].count = 0;
+		
 		return (intersections);
 	}
 	if (delta == 0)
 	{
-		intersections[0].t = -b / 2;
-		intersections[1].t = -b / 2;
-		intersections->count = 1;
+		intersections[0].t = -b / (2 * a);
+		intersections[1].t = -b / (2 * a);
+		intersections[0].count = 1;
+		intersections[1].count = 1;
 		return (intersections);
 	}
 	intersections[0].t = (-b - sqrt(delta)) / (2 * a);
 	intersections[1].t = (-b + sqrt(delta)) / (2 * a);
-	intersections->count = 2;
+	intersections[0].count = 2;
+	intersections[1].count = 2;
 	return (intersections);
 }
 
@@ -86,7 +87,7 @@ t_intersection	*aggregating_intersections(t_intersection i1, t_intersection i2)
 {
 	t_intersection	*inter_agr;
 	
-	inter_agr = malloc(3 * sizeof(t_intersection));
+	inter_agr = malloc(2 * sizeof(t_intersection));
 	inter_agr[0] = i1;
 	inter_agr[1] = i2;
 	inter_agr[0].count = 2;

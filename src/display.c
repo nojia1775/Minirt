@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/14 11:01:58 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/14 17:42:47 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,20 +79,27 @@ static t_shape	*closest_sphere(t_minirt *minirt, t_ray rayon, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
-	t_intersection	*xs;
-	
+	// t_intersection	*xs;
+	double	length;
+
 	shape = NULL;
 	tmp = minirt->sphere;
 	while (tmp)
 	{
-		xs = point_intersection_sphere(rayon, *tmp);
-		if (xs->count > 0)
+		// xs = point_intersection_sphere(minirt, rayon, *tmp);
+		// if (xs->count > 0)
+		// {
+		// 	if (get_min(xs[0].t, xs[1].t) < *min)
+		// 	{
+		// 		shape = tmp;
+		// 		*min = get_min(xs[0].t, xs[1].t); 
+		// 	}
+		// }
+		length = intersec_sphere(minirt, rayon, *tmp);
+		if (length < *min)
 		{
-			if (get_min(xs[0].t, xs[1].t) < *min)
-			{
-				shape = tmp;
-				*min = get_min(xs[0].t, xs[1].t); 
-			}
+			shape = tmp;
+			*min = length;
 		}
 		tmp = tmp->next;
 	}
@@ -269,24 +276,18 @@ void	display_manual(t_minirt	*minirt)
 			rayon.origin = minirt->camera->xyz;
 			rayon.direction = get_pixel_vector(minirt, x, y);
 			shape = closest_shape(minirt, rayon);
-			// if (!shape)
-			// 	printf(" ");
-			// else
-			// 	printf("%d", shape->rgb[0] / 100);
-			//if (x == 0 && y == 46)
-			//	printf("%f %f %f\n", rayon.direction.coor[0], rayon.direction.coor[1], rayon.direction.coor[2]);
 			if (shape)
 			{
-				t_intersection *xs = point_intersection_sphere(rayon, *shape);
+				t_intersection *xs = point_intersection_sphere(minirt, rayon, *shape);
 				t_intersection intersection = hit(xs);
 				t_tuple point = position_ray(rayon, intersection.t);
 				t_tuple normalv = normal_vector_sphere(*shape, point);
 				color = lighting(*minirt->light, point, negate_tuple(rayon.direction), normalv);
-				print_image_precision(minirt, shape, x, y, color);
+				if (xs[0].count > 0)
+					print_image_precision(minirt, shape, x, y, color);	
 			}
 			x++;
 		}
-		// printf("\n");
 		y++;
 	}
 	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);

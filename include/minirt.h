@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/14 10:48:33 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/14 17:52:36 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ int	get_b(int trgb);
 
 //ray_utils
 t_tuple			position_ray(t_ray rayon, double t);
-t_intersection	*point_intersection_sphere(t_ray rayon, t_shape sphere);
+t_intersection	*point_intersection_sphere(t_minirt *minirt, t_ray rayon, t_shape sphere);
 t_intersection	create_struct_intersection(double t, t_shape shape);
 t_intersection	*aggregating_intersections(t_intersection i1, t_intersection i2);
 t_intersection	*aggregating_4_intersections(t_intersection i1, t_intersection i2, t_intersection i3, t_intersection i4);
@@ -330,7 +330,7 @@ t_tuple	vec_cross(t_tuple a, t_tuple b);
 double	double_abs(double x);
 t_tuple	create_tuple2(double x, double y, double z, int w);
 t_tuple	get_pixel_vector(t_minirt *minirt, int x, int y);
-double	intersec_sphere(t_minirt *minirt, t_tuple pixel, t_shape sphere);
+double	intersec_sphere(t_minirt *minirt, t_ray rayon, t_shape sphere);
 double	get_min(double a, double b);
 double	get_max(double a, double b);
 void	display_precision(t_minirt *minirt);

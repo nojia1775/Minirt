@@ -3,40 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2024/12/11 10:49:47 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/14 17:31:01 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-double	intersec_sphere(t_minirt *minirt, t_tuple pixel, t_shape sphere)
+double	intersec_sphere(t_minirt *minirt, t_ray rayon, t_shape sphere)
 {
+	double	a;
 	double	b;
 	double	c;
 	double	delta;
-
+	
+	a = (rayon.direction.coor[0] * rayon.direction.coor[0]) + (rayon.direction.coor[1] * rayon.direction.coor[1]) + (rayon.direction.coor[2] * rayon.direction.coor[2]);
 	b = 2 * ((minirt->camera->xyz.coor[0] - sphere.xyz.coor[0])
-		* pixel.coor[0] + ((minirt->camera->xyz.coor[1]
-		- sphere.xyz.coor[1]) * pixel.coor[1])
+		* rayon.direction.coor[0] + ((minirt->camera->xyz.coor[1]
+		- sphere.xyz.coor[1]) * rayon.direction.coor[1])
 		+ ((minirt->camera->xyz.coor[2] - sphere.xyz.coor[2])
-		* pixel.coor[2]));
+		* rayon.direction.coor[2]));
 	if (b > 0)
 		return (-1);
 	c = pow(minirt->camera->xyz.coor[0] - sphere.xyz.coor[0], 2)
 		+ pow(minirt->camera->xyz.coor[1] - sphere.xyz.coor[1], 2)
 		+ pow(minirt->camera->xyz.coor[2] - sphere.xyz.coor[2], 2)
 		- pow(sphere.diameter / 2, 2);
-	delta = pow(b, 2) - 4 * 1 * c;
+	delta = pow(b, 2) - 4 * a * c;
 	if (delta < 0)
 		return (-1);
 	if (delta == 0)
-		return (-b / 2);
-	return (get_min((-b + sqrt(delta)) / 2, (-b - sqrt(delta))
-		/ 2));
-}
+		return (-b / (2 * a));
+	return (get_min((-b + sqrt(delta)) / (2 * a), (-b - sqrt(delta))
+		/ (2 * a))); 
+} 
 
 double	intersec_plan(t_minirt *minirt, t_tuple pixel, t_shape plan)
 {
