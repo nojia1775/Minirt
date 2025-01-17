@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:56:25 by yrio              #+#    #+#             */
-/*   Updated: 2024/12/10 19:41:35 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/17 19:04:08 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ t_canva	create_matrix_identity(void)
 {
 	t_canva	mat_identity;
 
-	mat_identity = create_canva(4, 4);
+	mat_identity = create_canva_4X4();
 	mat_identity.array[0][0] = 1.0;
 	mat_identity.array[1][1] = 1.0;
 	mat_identity.array[2][2] = 1.0;

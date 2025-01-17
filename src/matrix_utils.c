@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   matrix_utils.c                                           :+:      :+:    :+:   */
+/*   matrix_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 17:33:25 by yrio              #+#    #+#             */
-/*   Updated: 2024/11/19 17:33:56 by yrio             ###   ########.fr       */
+/*   Created: 2025/01/17 18:59:46 by yrio              #+#    #+#             */
+/*   Updated: 2025/01/17 18:59:48 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-t_canva    multiplying_4X4_matrix(t_canva *mat1, t_canva *mat2)
+t_canva    multiplying_4X4_matrix(t_canva mat1, t_canva mat2)
 {
     t_canva result;
     int     count;
     int     count2;
 
     count = 0;
-    result = create_canva(4, 4);
-    while (count < mat1->shape[0])
+    result = create_canva_4X4();
+    while (count < 4)
     {
         count2 = 0;
-        while (count2 < mat2->shape[1])
+        while (count2 < 4)
         {
-            result.array[count][count2] = mat1->array[count][0] * mat2->array[0][count2] +
-                                          mat1->array[count][1] * mat2->array[1][count2] +
-                                          mat1->array[count][2] * mat2->array[2][count2] +
-                                          mat1->array[count][3] * mat2->array[3][count2];
+            result.array[count][count2] = mat1.array[count][0] * mat2.array[0][count2] +
+                                          mat1.array[count][1] * mat2.array[1][count2] +
+                                          mat1.array[count][2] * mat2.array[2][count2] +
+                                          mat1.array[count][3] * mat2.array[3][count2];
             count2++;
         }
         count++;
@@ -36,21 +36,21 @@ t_canva    multiplying_4X4_matrix(t_canva *mat1, t_canva *mat2)
     return (result);
 }
 
-t_tuple multiplying_matrix_tuple(t_canva mat, t_tuple tup)
+t_tuple multiplying_matrix_4X4_tuple(t_canva mat, t_tuple tup)
 {
-    t_tuple *result;
+    t_tuple result;
     int count;
     count = 0;
-    result = create_tuple(0, 0, 0, 0);
-    while (count < mat.shape[0])
+    result = create_tuple2(0, 0, 0, 0);
+    while (count < 4)
     {
-        result->coor[count] = mat.array[count][0] * tup.coor[0] +
+        result.coor[count] = mat.array[count][0] * tup.coor[0] +
                                 mat.array[count][1] * tup.coor[1] +
                                 mat.array[count][2] * tup.coor[2] +
                                 mat.array[count][3] * tup.coor[3];
         count++;
     }
-    return (*result);
+    return (result);
 }
 
 t_canva transpose_4X4_matrix(t_canva mat)
@@ -59,7 +59,7 @@ t_canva transpose_4X4_matrix(t_canva mat)
     int     count;
     int     count2;
 
-    result = create_canva(4, 4);
+    result = create_canva_4X4();
     count = 0;
     count2 = 0;
     while (count < 4)
@@ -81,7 +81,7 @@ int get_determinant_2X2_matrix(t_canva mat)
             (mat.array[0][1] * mat.array[1][0]));
 }
 
-t_canva get_submatrix(t_canva matrix, int row, int column)
+t_canva get_submatrix_2X2(t_canva matrix, int row, int column)
 {
     t_canva submatrix;
     int count;
@@ -89,20 +89,55 @@ t_canva get_submatrix(t_canva matrix, int row, int column)
     int count3;
     int count4;
 
-    submatrix = create_canva(matrix.shape[0] - 1, matrix.shape[1] - 1);
+    submatrix = create_canva_2X2();
     count = 0;
     count2 = 0;
     count3 = 0;
     count4 = 0;
-    while (count < matrix.shape[0])
+    while (count < 3)
     {
         if (count != row)
         {
             count2 = 0;
             count4 = 0;
-            while (count2 < matrix.shape[1])
+            while (count2 < 3)
             {
-                if (count2 != column && count3 < submatrix.shape[0] && count4 < submatrix.shape[1])
+                if (count2 != column && count3 < 2 && count4 < 2)
+                {
+                    submatrix.array[count3][count4] = matrix.array[count][count2];
+                    count4++;
+                }
+                count2++;
+            }
+            count3++;
+        }
+        count++;
+    }
+    return (submatrix);
+}
+
+t_canva get_submatrix_3X3(t_canva matrix, int row, int column)
+{
+    t_canva submatrix;
+    int count;
+    int count2;
+    int count3;
+    int count4;
+
+    submatrix = create_canva_3X3();
+    count = 0;
+    count2 = 0;
+    count3 = 0;
+    count4 = 0;
+    while (count < 4)
+    {
+        if (count != row)
+        {
+            count2 = 0;
+            count4 = 0;
+            while (count2 < 4)
+            {
+                if (count2 != column && count3 < 3 && count4 < 3)
                 {
                     submatrix.array[count3][count4] = matrix.array[count][count2];
                     count4++;
@@ -120,7 +155,7 @@ int get_minor_3X3_matrix(t_canva mat, int row, int column)
 {
     t_canva submatrix;
 
-    submatrix = get_submatrix(mat, row, column);
+    submatrix = get_submatrix_2X2(mat, row, column);
     return (get_determinant_2X2_matrix(submatrix));
 }
 
@@ -157,7 +192,7 @@ int get_minor_4X4_matrix(t_canva mat, int row, int column)
 {
     t_canva submatrix;
 
-    submatrix = get_submatrix(mat, row, column);
+    submatrix = get_submatrix_3X3(mat, row, column);
     return (get_determinant_3X3_matrix(submatrix, row, column));
 }
 
@@ -211,7 +246,9 @@ t_canva inverse_matrix_4X4(t_canva mat)
     int     count2;
     int     determinant;
 
-    result = create_canva(4, 4);
+    if (!matrix_4X4_isinvertible(mat))
+        return (create_matrix_identity());
+    result = create_canva_4X4();
     count = 0;
     while (count < 4)
     {

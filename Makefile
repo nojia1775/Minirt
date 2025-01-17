@@ -20,7 +20,6 @@ SRCS =	src/main.c \
 	src/my_mlx_func.c \
 	src/display.c \
 	src/utils3.c \
-	src/projectile.c \
 	src/color_utils.c \
 	src/canva.c \
 	src/matrix_utils.c \

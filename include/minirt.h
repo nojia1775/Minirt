@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/11 16:41:47 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/17 19:05:11 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 # define MINIRT_H
 
 # define WIDTH 1000
-# define HEIGHT 700
+# define HEIGHT 1000
 
-# define AZERTY 1
-# define QWERTY 0
+# define AZERTY 0
+# define QWERTY 1
 
 # define ESC 65307
 # define A_RIGHT 65363
@@ -100,26 +100,44 @@ typedef struct s_ambient
 	t_uint8		rgb[3];
 }	t_ambient;
 
+typedef struct s_canva
+{
+	int		shape[2];
+	double	array[4][4];
+}	t_canva;
+
 typedef struct s_camera
 {
+	t_canva	transform;
+	t_canva	inverse;
+	t_canva	transpose;
 	t_tuple	xyz;
 	t_tuple	vector_xyz;
+	int		pixel_size;
+	int		wall_size;
+	int		half_height;
 	double	fov_x;
 	double	fov_y;
 	double	focal_length;
 }	t_camera;
-
-typedef struct s_canva
-{
-	int		shape[2];
-	double	**array;
-}	t_canva;
 
 typedef struct s_matrix
 {
 	int	shape[3];
 	int	***array;
 }	t_matrix;
+
+typedef enum e_bool
+{
+	FALSE,
+	TRUE
+}	t_bool;
+
+typedef struct s_sight
+{
+	t_vector	eyev;
+	t_vector	normalv;
+}	t_sight;
 
 typedef struct s_shape
 {
@@ -133,24 +151,46 @@ typedef struct s_shape
 	t_tuple		vector_xyz;
 	t_matrix	*mat;
 	t_canva		transform;
-	struct s_shape	*next;
+	t_canva		inverse;
+	t_canva		transpose;
+	struct s_shape		*next;
 }	t_shape;
+
+typedef struct s_comps
+{
+	float	t;
+	t_shape	*object;
+	t_point	point;
+	t_sight	sight;
+	t_bool	inside;
+	t_tuple	over_point;
+}	t_comps;
+
+typedef	struct s_hit
+{
+	double	distance;
+	t_shape	*objects;
+	struct t_hit	*next;
+}	t_hit;
 
 typedef struct s_minirt
 {
-	void	*mlx;
-	void	*win;
-	void	*addr_img;
-	char	*img;
-	int		bits;
-	int		size_line;
-	int		endian;
+	int			object_count;
+	void		*mlx;
+	void		*win;
+	void		*addr_img;
+	void		*img_ptr;
+	char		*img;
+	int			bits;
+	int			size_line;
+	int			endian;
 	t_shape		*sphere;
 	t_shape		*plan;
 	t_shape		*cylinder;
 	t_camera	*camera;
 	t_light		*light;
 	t_ambient	*ambient;
+	t_hit		*hit;
 }	t_minirt;
 
 typedef	struct s_intersection
@@ -160,18 +200,9 @@ typedef	struct s_intersection
 	int		count;
 }	t_intersection;
 
-typedef	struct s_projectile
-{
-	t_tuple	*position;
-	t_tuple *velocity;
-}	t_projectile;
-
-typedef	struct s_environment
-{
-	t_tuple	*gravity;
-	t_tuple *wind;
-}	t_environment;
-
+//display_yann
+void	make_img(t_minirt *minirt);
+void	write_pixel(t_minirt *minirt, int x, int y, t_uint8 *rgb_shape);
 
 //vector_utils
 t_tuple	*create_tuple(double x, double y, double z, int w);
@@ -179,7 +210,6 @@ t_tuple	*create_tuple(double x, double y, double z, int w);
 //vector_utils2
 t_tuple normal_vector_sphere(t_shape sphere, t_tuple point);
 t_tuple reflect(t_tuple in, t_tuple normal);
-//double  lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_shape *shape);
 double  lighting(t_light light, t_tuple point, t_tuple eyev, t_tuple normalv);
 t_intersection	hit(t_intersection *intersections);
 
@@ -203,6 +233,7 @@ t_intersection	create_struct_intersection(double t, t_shape shape);
 t_intersection	*aggregating_intersections(t_intersection i1, t_intersection i2);
 t_intersection	*aggregating_4_intersections(t_intersection i1, t_intersection i2, t_intersection i3, t_intersection i4);
 t_intersection	hit(t_intersection *intersections);
+t_ray			transform_rayon(t_ray r, t_canva m);
 
 //tuple_operation
 t_tuple		*vec_add_nbr(t_tuple *vec, double nbr);
@@ -222,16 +253,13 @@ t_canva		rotation_z(double radian);
 t_canva		shearing(double x_y, double x_z, double y_x, double y_z, double z_x, double z_y);
 t_ray		transform_ray(t_ray ray, t_canva matrix);
 
-//projectile
-t_projectile	*create_projectile(t_tuple *position, t_tuple *velocity);
-t_environment	*create_environment(t_tuple *gravity, t_tuple *wind);
-t_projectile	*tick(t_environment *env, t_projectile *proj);
-
 //canva
 t_canva		*alloc_canva(t_canva *can, int x, int y);
-t_canva		create_canva(int x, int y);
-void		display_canva(t_canva *can);
-int			compare_2Dmatrix(t_canva *can1, t_canva *can2);
+t_canva		create_canva_2X2(void);
+t_canva		create_canva_3X3(void);
+t_canva		create_canva_4X4(void);
+void		display_canva(t_canva can);
+int			compare_2Dmatrix(t_canva can1, t_canva can2);
 
 //matrix
 t_matrix	*alloc_matrix(t_matrix *mat, int x, int y, int z);
@@ -241,11 +269,12 @@ t_canva		create_matrix_identity(void);
 int			is_matrix_identity(t_canva mat);
 
 //matrix_utils
-t_canva    	multiplying_4X4_matrix(t_canva *mat1, t_canva *mat2);
-t_tuple		multiplying_matrix_tuple(t_canva mat, t_tuple tup);
+t_canva    	multiplying_4X4_matrix(t_canva mat1, t_canva mat2);
+t_tuple		multiplying_matrix_4X4_tuple(t_canva mat, t_tuple tup);
 t_canva		transpose_4X4_matrix(t_canva mat);
 int			get_determinant_2X2_matrix(t_canva mat);
-t_canva		get_submatrix(t_canva matrix, int row, int column);
+t_canva		get_submatrix_2X2(t_canva matrix, int row, int column);
+t_canva		get_submatrix_3X3(t_canva matrix, int row, int column);
 int			get_minor_3X3_matrix(t_canva mat, int row, int column);
 int			get_cofactor_3X3_matrix(t_canva mat, int row, int column);
 int			get_determinant_3X3_matrix(t_canva mat, int row, int column);
@@ -267,7 +296,7 @@ void		test_cofactor_3X3_matrix(void);
 void		test_determinant_3X3_matrix(void);
 void		test_determinant_of_4X4_matrix(void);
 void		test1_invert_4X4_matrix(void);
-// void		test2_invert_4X4_matrix(void);
+void		test2_invert_4X4_matrix(void);
 void		test_multiply_product_by_inverse(void);
 void		test_translation_matrix(void);
 void		test_scaling_matrix(void);
@@ -319,6 +348,7 @@ int		get_cylinder(char **datas, t_minirt *minirt);
 t_shape	*get_this_shape(t_shape *shape, size_t index);
 void	my_mlx_init(t_minirt *minirt);
 void	my_mlx_new_window(t_minirt *minirt, int width, int height, char *title);
+int		show_window(t_minirt *minirt);
 void	display(t_minirt *minirt);
 int		convert_rgb(t_uint8 rgb[3]);
 double	convert_rad(double deg);
@@ -331,6 +361,8 @@ t_tuple	vec_cross(t_tuple a, t_tuple b);
 double	double_abs(double x);
 t_tuple	create_tuple2(double x, double y, double z, int w);
 t_tuple	get_pixel_vector(t_minirt *minirt, int x, int y);
+void	get_pixel_vector2(t_minirt *minirt);
+t_ray	ray_for_pixel(t_camera *camera, float x, float y);
 double	intersec_sphere(t_minirt *minirt, t_tuple pixel, t_shape sphere);
 double	get_min(double a, double b);
 double	get_max(double a, double b);
@@ -348,10 +380,12 @@ double	intersec_cylinder(t_minirt *minirt, t_tuple pixel, t_shape cylinder);
 double	vec_magnitude2(t_tuple vec);
 void	my_mlx_new_img(t_minirt *minirt);
 
+//parsing camera
+t_canva	view_transform(t_tuple from, t_tuple to, t_tuple up);
+
 // display
 void	display(t_minirt *minirt);
 int		put_one_color(t_minirt *minirt, int r, int g, int b);
-void	put_pixel_projectile(t_minirt *minirt, int height, int r, int g, int b);
 void	display_manual(t_minirt	*minirt);
 
 int		convert_rgb(t_uint8 rgb[3]);
@@ -363,5 +397,6 @@ t_tuple	vec_multiplication2(t_tuple vec, double nbr);
 t_tuple	vec_normalization2(t_tuple vec);
 t_tuple	vec_cross(t_tuple a, t_tuple b);
 double	double_abs(double x);
+t_shape	*closest_shape(t_minirt *minirt, t_ray rayon);
 
 #endif
