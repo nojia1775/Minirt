@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_utils.c                                     :+:      :+:    :+:   */
+/*   tuple_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:06:21 by yrio              #+#    #+#             */
-/*   Updated: 2024/12/11 10:49:08 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/09 21:02:11 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,14 @@ t_tuple	get_pixel_vector(t_minirt *minirt, int x, int y)
 	double		x_screen;
 	double		y_screen;
 
-	normal_v_cam = vec_normalization2(minirt->camera->vector_xyz);
-	if (double_abs(normal_v_cam.coor[0]) <= 0.1
-		&& double_abs(normal_v_cam.coor[1]) >= 0.9 && double_abs(normal_v_cam.coor[2]) <= 0.1)
-		U = vec_normalization2(vec_cross(create_tuple2(0, 0, 1, 0), normal_v_cam));
-	else
-		U = vec_normalization2(vec_cross(create_tuple2(0, 1, 0, 0), normal_v_cam));
+	normal_v_cam = vec_normalization2(minirt->camera->tuple_xyz);
+	t_canva transform = rotation_y(PI / 2);
+	// if (double_abs(normal_v_cam.coor[0]) <= 0.1
+	// 	&& double_abs(normal_v_cam.coor[1]) >= 0.9 && double_abs(normal_v_cam.coor[2]) <= 0.1)
+	// 	U = vec_normalization2(vec_cross(create_tuple2(0, 0, 1, 0), normal_v_cam));
+	// else
+	// 	U = vec_normalization2(vec_cross(create_tuple2(0, 1, 0, 0), normal_v_cam));
+	U = vec_normalization2(multiplying_matrix_4X4_tuple(transform, normal_v_cam));
 	V = vec_normalization2(vec_cross(normal_v_cam, U));
 	x_screen = ((double)x / WIDTH - 0.5) * WIDTH;
 	y_screen = (0.5 - (double)y / HEIGHT) * HEIGHT;

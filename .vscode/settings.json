@@ -1,5 +1,6 @@
 {
 	"files.associations": {
-		"cmath": "c"
+		"cmath": "c",
+		"matrix_utils.C": "cpp"
 	}
 }

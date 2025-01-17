@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:26:00 by yrio              #+#    #+#             */
-/*   Updated: 2025/01/17 19:02:47 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/17 19:39:06 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,6 @@ t_canva	rotation_y(double radian)
 
 	mat = create_canva_4X4();
 	mat.array[0][0] = cos(radian);
-	mat.array[0][1] = 0.0;
-	mat.array[0][2] = sin(radian);
-	mat.array[0][3] = 0.0;
 	mat.array[1][0] = 0.0;
 	mat.array[1][1] = 1.0;
 	mat.array[1][2] = 0.0;

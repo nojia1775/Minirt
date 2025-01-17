@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:12:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/10 19:10:27 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/17 19:36:18 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,14 @@ int	get_camera(char **datas, t_minirt *minirt)
 	if (!parse_range(datas[1], -DBL_MAX, DBL_MAX, 3))
 		return (printf("Error : camera : in coordinates\n"), 0);
 	if (!parse_range(datas[2], -1.0, 1.0, 3))
-		return (printf("Error : camera : in vectors\n"), 0);
+		return (printf("Error : camera : in tuples\n"), 0);
 	if (!parse_range(datas[3], 0.0, 180.0, 1))
 		return (printf("Error : camera : in FOV\n"), 0);
 	minirt->camera = (t_camera *)ft_calloc(1, sizeof(t_camera));
 	if (!minirt->camera)
 		return (printf("Error : camera : alloc failed\n"), 0);
 	get_three_double(minirt->camera->xyz.coor, datas[1]);
-	get_three_double(minirt->camera->vector_xyz.coor, datas[2]);
+	get_three_double(minirt->camera->tuple_xyz.coor, datas[2]);
 	minirt->camera->fov_x = atod(datas[3]);
 	rad_fov_x = convert_rad(minirt->camera->fov_x);
 	ratio = WIDTH / HEIGHT;
@@ -96,11 +96,14 @@ int	get_sphere(char **datas, t_minirt *minirt)
 	if (minirt->sphere == NULL)
 		return (printf("Error : sphere : alloc failed\n"), 0);
 	cur = minirt->sphere;
+	cur->type = SPHERE;
 	while (cur->next)
 		cur = cur->next;
 	cur->type = SPHERE;
 	cur->transform = create_matrix_identity();
 	get_three_double(cur->xyz.coor, datas[1]);
+	cur->transform = translation(cur->xyz.coor[0], cur->xyz.coor[1], cur->xyz.coor[2]);
+	//cur->xyz = create_tuple2(0, 0, 0, 1);
 	cur->diameter = atod(datas[2]);
 	get_three_int(cur->rgb, datas[3]);
 	return (1);
@@ -114,8 +117,8 @@ int	get_plan(char **datas, t_minirt *minirt)
 		return (printf("Error : plan : wrong number of information\n"), 0);
 	if (!parse_range(datas[1], -DBL_MAX, DBL_MAX, 3))
 		return (printf("Error : plan : in coordinates\n"), 0);
-	if (!parse_range(datas[2], -1.0, 1.0, 3))
-		return (printf("Error : plan : in vectors\n"), 0);
+	if (parse_range(datas[2], -1.0, 1.0, 3) < 1)
+		return (printf("Error : plan : in tuples\n"), 0);
 	if (!parse_rgb(datas[3]))
 		return (printf("Error : plan : in color\n"), 0);
 	add_list_shape(&minirt->plan);
@@ -126,7 +129,8 @@ int	get_plan(char **datas, t_minirt *minirt)
 		cur = cur->next;
 	cur->type = PLAN;
 	get_three_double(cur->xyz.coor, datas[1]);
-	get_three_double(cur->vector_xyz.coor, datas[2]);
+	get_three_double(cur->tuple_xyz.coor, datas[2]);
+	cur->transform = translation(cur->xyz.coor[0], cur->xyz.coor[1], cur->xyz.coor[0]);
 	get_three_int(cur->rgb, datas[3]);
 	return (1);
 }

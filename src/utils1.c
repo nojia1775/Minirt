@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:57:17 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/15 11:00:44 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/09 20:50:53 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,13 @@ int	parse_rgb(char *line)
 
 int	parse_range(char *line, double min, double max, int nmemb)
 {
-	int	i;
-	int	j;
-	int	comma;
+	int		i;
+	int		j;
+	int		comma;
+	int		index_value;
+	double	values[3];
 
+	index_value = 0;
 	comma = 0;
 	if (char_not_recognized(line, "0123456789.,-") || !parse_nbr_dot(line))
 		return (0); 
@@ -103,8 +106,11 @@ int	parse_range(char *line, double min, double max, int nmemb)
 	{
 		if (atod(line + j + 1) < min || atod(line + j + 1) > max)
 			return (0);
+		values[index_value++] = atod(line + j + 1);
 		while (line[++j] && line[j] != ',')
 			;
 	}
+	if (nmemb == 3 && values[0] == 0 && values[1] == 0 && values[2] == 0)
+		return (-1);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/17 18:58:43 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/17 19:38:16 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	key_pressed(int key, void *param)
 		cam_go_updown(minirt, -1);
 	else if (key == SPACE)
 		cam_go_updown(minirt, 1);
-	else if (key == CTRL)
+	else if (key == P)
 	{
 		mlx_clear_window(minirt->mlx, minirt->win);
 		display_precision(minirt);
@@ -85,7 +85,7 @@ int	main(int argc, char **argv, char **env)
 	mlx_hook(minirt.win, 17, 0, close_win, &minirt);
 	mlx_key_hook(minirt.win, key_pressed, &minirt);
 	my_mlx_new_img(&minirt);
-	display_manual(&minirt);
+	display_precision(&minirt);
 	mlx_loop(minirt.mlx);
 	free_minirt(&minirt);
 	return (0);

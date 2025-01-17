@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/17 19:18:41 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/17 19:44:09 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 # define MINIRT_H
 
-# define WIDTH 1000
-# define HEIGHT 1000
+# define WIDTH 600
+# define HEIGHT 600
 
 # define AZERTY 0
 # define QWERTY 1
@@ -37,6 +37,7 @@
 #  define RIGHT 100
 # endif
 # define CTRL 65508
+# define P 112
 # define SPACE 32
 # define TAB 65289
 
@@ -57,18 +58,8 @@ typedef enum	e_type
 {
 	SPHERE,
 	PLAN,
-	CYLINDER
+	CYLINDER	
 }	t_type;
-
-typedef struct s_point
-{
-	double	coor[3];
-}	t_point;
-
-typedef struct s_vector
-{
-	double coor[3];
-}	t_vector;
 
 typedef struct s_tuple
 {
@@ -108,14 +99,8 @@ typedef struct s_canva
 
 typedef struct s_camera
 {
-	t_canva	transform;
-	t_canva	inverse;
-	t_canva	transpose;
 	t_tuple	xyz;
-	t_tuple	vector_xyz;
-	int		pixel_size;
-	int		wall_size;
-	int		half_height;
+	t_tuple	tuple_xyz;
 	double	fov_x;
 	double	fov_y;
 	double	focal_length;
@@ -127,44 +112,20 @@ typedef struct s_matrix
 	int	***array;
 }	t_matrix;
 
-typedef enum e_bool
-{
-	FALSE,
-	TRUE
-}	t_bool;
-
-typedef struct s_sight
-{
-	t_vector	eyev;
-	t_vector	normalv;
-}	t_sight;
-
 typedef struct s_shape
 {
-	t_type		type;
 	size_t	index;
 	t_tuple	xyz;
-	t_uint8		rgb[3];
-	double		distance;
+	t_uint8	rgb[3];
 	double		height;
 	double		diameter;
-	t_tuple		vector_xyz;
+	t_tuple		tuple_xyz;
 	t_matrix	*mat;
+	struct s_shape	*next;
+	t_type		type;
+	double		distance;
 	t_canva		transform;
-	t_canva		inverse;
-	t_canva		transpose;
-	struct s_shape		*next;
 }	t_shape;
-
-typedef struct s_comps
-{
-	float	t;
-	t_shape	*object;
-	t_point	point;
-	t_sight	sight;
-	t_bool	inside;
-	t_tuple	over_point;
-}	t_comps;
 
 typedef	struct s_hit
 {
@@ -260,6 +221,17 @@ t_canva		create_canva_3X3(void);
 t_canva		create_canva_4X4(void);
 void		display_canva(t_canva can);
 int			compare_2Dmatrix(t_canva can1, t_canva can2);
+// yann
+t_tuple	*create_tuple(double x, double y, double z, int w);
+
+//tuple_operation
+t_tuple	*vec_add_nbr(t_tuple *vec, double nbr);
+t_tuple	*vec_add_vec(t_tuple *vec, t_tuple *add);
+t_tuple	*vec_sub_vec(t_tuple *vec, t_tuple *add);
+double		vec_magnitude(t_tuple *vec);
+double		dot_product(t_tuple *first, t_tuple *second, int length);
+t_tuple	*vec_normalization(t_tuple *vec);
+t_tuple	*vec_multiplication(t_tuple *vec, double scalar);
 
 //matrix
 t_matrix	*alloc_matrix(t_matrix *mat, int x, int y, int z);
@@ -379,6 +351,31 @@ void	cam_go_updown(t_minirt *minirt, int up_down);
 double	intersec_cylinder(t_minirt *minirt, t_ray rayon, t_shape cylinder);
 double	vec_magnitude2(t_tuple vec);
 void	my_mlx_new_img(t_minirt *minirt);
+t_tuple	negate_tuple(t_tuple tuple);
+t_tuple	normal_tuple_sphere(t_shape sphere, t_tuple world_point);
+t_tuple multiplying_matrix_tuple(t_canva mat, t_tuple tup);
+t_canva transpose_4X4_matrix(t_canva mat);
+int	get_determinant_2X2_matrix(t_canva mat);
+t_canva get_submatrix(t_canva matrix, int row, int column);
+int	get_minor_3X3_matrix(t_canva mat, int row, int column);
+int	get_cofactor_3X3_matrix(t_canva mat, int row, int column)
+;
+int	get_determinant_3X3_matrix(t_canva mat, int row, int column);
+int	get_minor_4X4_matrix(t_canva mat, int row, int column);
+int	get_cofactor_4X4_matrix(t_canva mat, int row, int column);
+int	get_determinant_4X4_matrix(t_canva mat, int row);
+int	matrix_4X4_isinvertible(t_canva mat);
+t_canva	inverse_matrix_4X4(t_canva mat);
+t_canva *alloc_canva(t_canva *can, int x, int y);
+t_canva create_canva(int x, int y);
+t_tuple reflect(t_tuple in, t_tuple normal);
+t_canva	translation(double x, double y, double z);
+t_canva	scaling(double x, double y, double z);
+t_canva	rotation_x(double radian);
+t_canva	rotation_y(double radian);
+t_canva	rotation_z(double radian);
+t_canva	shearing(double x_y, double x_z, double y_x, double y_z, double z_x, double z_y);
+t_ray transform_ray(t_ray ray, t_canva matrix);
 
 //parsing camera
 t_canva	view_transform(t_tuple from, t_tuple to, t_tuple up);
