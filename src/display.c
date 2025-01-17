@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/14 17:42:47 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/17 16:19:33 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,27 +79,20 @@ static t_shape	*closest_sphere(t_minirt *minirt, t_ray rayon, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
-	// t_intersection	*xs;
-	double	length;
+	t_intersection	*xs;
 
 	shape = NULL;
 	tmp = minirt->sphere;
 	while (tmp)
 	{
-		// xs = point_intersection_sphere(minirt, rayon, *tmp);
-		// if (xs->count > 0)
-		// {
-		// 	if (get_min(xs[0].t, xs[1].t) < *min)
-		// 	{
-		// 		shape = tmp;
-		// 		*min = get_min(xs[0].t, xs[1].t); 
-		// 	}
-		// }
-		length = intersec_sphere(minirt, rayon, *tmp);
-		if (length < *min)
+		xs = point_intersection_sphere(minirt, rayon, *tmp);
+		if (xs->count > 0)
 		{
-			shape = tmp;
-			*min = length;
+			if (get_min(xs[0].t, xs[1].t) < *min)
+			{
+				shape = tmp;
+				*min = get_min(xs[0].t, xs[1].t); 
+			}
 		}
 		tmp = tmp->next;
 	}
@@ -278,16 +271,18 @@ void	display_manual(t_minirt	*minirt)
 			shape = closest_shape(minirt, rayon);
 			if (shape)
 			{
+				// ft_putstr_fd("0", 1);
 				t_intersection *xs = point_intersection_sphere(minirt, rayon, *shape);
 				t_intersection intersection = hit(xs);
 				t_tuple point = position_ray(rayon, intersection.t);
 				t_tuple normalv = normal_vector_sphere(*shape, point);
 				color = lighting(*minirt->light, point, negate_tuple(rayon.direction), normalv);
-				if (xs[0].count > 0)
-					print_image_precision(minirt, shape, x, y, color);	
+				print_image_precision(minirt, shape, x, y, color);	
 			}
+				// ft_putstr_fd(" ", 1);
 			x++;
 		}
+		// ft_putstr_fd("\n", 1);
 		y++;
 	}
 	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
