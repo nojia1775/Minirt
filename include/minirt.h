@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/17 19:05:11 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/17 19:18:41 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,20 +363,20 @@ t_tuple	create_tuple2(double x, double y, double z, int w);
 t_tuple	get_pixel_vector(t_minirt *minirt, int x, int y);
 void	get_pixel_vector2(t_minirt *minirt);
 t_ray	ray_for_pixel(t_camera *camera, float x, float y);
-double	intersec_sphere(t_minirt *minirt, t_tuple pixel, t_shape sphere);
+double	intersec_sphere(t_minirt *minirt, t_ray rayon, t_shape sphere);
 double	get_min(double a, double b);
 double	get_max(double a, double b);
 void	display_precision(t_minirt *minirt);
 double	dot_product2(t_tuple a, t_tuple b);
 t_tuple	vec_sub_vec2(t_tuple a, t_tuple b);
-double	intersec_plan(t_minirt *minirt, t_tuple pixel, t_shape plan);
+double	intersec_plan(t_minirt *minirt, t_ray rayon, t_shape plan);
 void	cam_look_leftright(t_minirt *minirt, double angle);
 void	cam_look_updown(t_minirt *minirt, double angle);
 void	cam_go_frontback(t_minirt *minirt, int dir);
 void	print_coor(void *coor);
 void	cam_go_leftright(t_minirt *minirt, int left_right);
 void	cam_go_updown(t_minirt *minirt, int up_down);
-double	intersec_cylinder(t_minirt *minirt, t_tuple pixel, t_shape cylinder);
+double	intersec_cylinder(t_minirt *minirt, t_ray rayon, t_shape cylinder);
 double	vec_magnitude2(t_tuple vec);
 void	my_mlx_new_img(t_minirt *minirt);
 

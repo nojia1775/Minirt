@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:55:35 by yrio              #+#    #+#             */
-/*   Updated: 2025/01/17 18:52:31 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/17 19:22:54 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,38 +108,19 @@ void	display_canva(t_canva can)
 	}
 }
 
-void	display_canva(t_canva *can)
-{
-	int	count;
-	int	count2;
-
-	count = 0;
-	while (count < can->shape[0])
-	{
-		count2 = 0;
-		while (count2 < can->shape[1])
-		{
-			printf("%f", can->array[count][count2]);
-			count2++;
-		}
-		printf("\n");
-		count++;
-	}
-}
-
-int	compare_2Dmatrix(t_canva *can1, t_canva *can2)
+int	compare_2Dmatrix(t_canva can1, t_canva can2)
 {
 	int	count;
 	int	count2;
 
 	count = 0;
 	count2 = 0;
-	while (count < can1->shape[0])
+	while (count < can1.shape[0])
 	{
 		count2 = 0;
-		while (count2 < can2->shape[1])
+		while (count2 < can2.shape[1])
 		{
-			if ((int)(can1->array[count][count2] + 0.5) != (int)(can2->array[count][count2] + 0.5))
+			if ((int)(can1.array[count][count2] + 0.5) != (int)(can2.array[count][count2] + 0.5))
 				return (0);
 			count2++;
 		}

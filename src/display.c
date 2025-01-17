@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/12/11 16:47:33 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/17 19:25:00 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y
 	*(int *)(minirt->img + pixel_offset) = color;
 }
 
-static t_shape	*closest_sphere(t_minirt *minirt, t_tuple pixel, double *min)
+static t_shape	*closest_sphere(t_minirt *minirt, t_ray rayon, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -84,7 +84,7 @@ static t_shape	*closest_sphere(t_minirt *minirt, t_tuple pixel, double *min)
 	tmp = minirt->sphere;
 	while (tmp)
 	{
-		distance = intersec_sphere(minirt, pixel, *tmp);
+		distance = intersec_sphere(minirt, rayon, *tmp);
 		if (distance > 0 && distance < *min)
 		{
 			shape = tmp;
@@ -97,7 +97,7 @@ static t_shape	*closest_sphere(t_minirt *minirt, t_tuple pixel, double *min)
 	return (shape);
 }
 
-static t_shape	*closest_plan(t_minirt *minirt, t_tuple pixel, double *min)
+static t_shape	*closest_plan(t_minirt *minirt, t_ray rayon, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -107,7 +107,7 @@ static t_shape	*closest_plan(t_minirt *minirt, t_tuple pixel, double *min)
 	tmp = minirt->plan;
 	while (tmp)
 	{
-		distance = intersec_plan(minirt, pixel, *tmp);
+		distance = intersec_plan(minirt, rayon, *tmp);
 		if (distance > 0 && distance < *min)
 		{
 			shape = tmp;
@@ -120,7 +120,7 @@ static t_shape	*closest_plan(t_minirt *minirt, t_tuple pixel, double *min)
 	return (shape);
 }
 
-static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple pixel, double *min)
+static t_shape	*closest_cylinder(t_minirt *minirt, t_ray rayon, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -130,7 +130,7 @@ static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple pixel, double *min)
 	tmp = minirt->cylinder;
 	while (tmp)
 	{
-		distance = intersec_cylinder(minirt, pixel, *tmp);
+		distance = intersec_cylinder(minirt, rayon, *tmp);
 		if (distance > 0 && distance < *min)
 		{
 			shape = tmp;
@@ -143,7 +143,7 @@ static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple pixel, double *min)
 	return (shape);
 }
 
-t_shape	*closest_shape(t_minirt *minirt, t_tuple pixel)
+t_shape	*closest_shape(t_minirt *minirt, t_ray rayon)
 {
 	double	min;
 	t_shape	*shape;
@@ -151,13 +151,13 @@ t_shape	*closest_shape(t_minirt *minirt, t_tuple pixel)
 
 	shape = NULL;
 	min = 1000;
-	tmp = closest_sphere(minirt, pixel, &min);
+	tmp = closest_sphere(minirt, rayon, &min);
 	if (tmp)
 		shape = tmp;
-	tmp = closest_plan(minirt, pixel, &min);
+	tmp = closest_plan(minirt, rayon, &min);
 	if (tmp)
 		shape = tmp;
-	tmp = closest_cylinder(minirt, pixel, &min);
+	tmp = closest_cylinder(minirt, rayon, &min);
 	if (tmp)
 	{
 		shape = tmp;
@@ -168,26 +168,18 @@ t_shape	*closest_shape(t_minirt *minirt, t_tuple pixel)
  
 void	display(t_minirt *minirt)
 {
-	t_tuple	pixel;
+	t_ray	rayon;
 	t_shape	*shape;
-	t_tuple	intersec;
-	double	color;
 
-	color = 0;
 	int y = 2;
 	while (y < HEIGHT)
 	{
 		int x = 2;
 		while (x < WIDTH)
 		{
-			shape = NULL;
-			pixel = get_pixel_vector(minirt, x, y);
-			shape = closest_shape(minirt, pixel);
-			if (shape)
-			{
-				intersec = vec_multiplication2(pixel, shape->distance);
-				//color = lighting(minirt, intersec, negate_tuple(pixel), shape);
-			}
+			rayon.origin = minirt->camera->xyz;
+			rayon.direction = get_pixel_vector(minirt, x, y);
+			shape = closest_shape(minirt, rayon);
 			print_image(minirt, shape, x, y, 3);
 			x += 5;
 		}
@@ -198,10 +190,11 @@ void	display(t_minirt *minirt)
 
 void	display_precision(t_minirt *minirt)
 {
-	t_tuple	pixel;
+	t_ray	rayon;
 	t_shape	*shape;
-	//t_ray	rayon;
-	//double	color;
+	t_tuple	point;
+	double	color;
+	t_tuple	normalv;
 
 	int y = 0;
 	while (y < HEIGHT)
@@ -209,18 +202,16 @@ void	display_precision(t_minirt *minirt)
 		int x = 0;
 		while (x < WIDTH)
 		{
-			shape = NULL;
-			pixel = get_pixel_vector(minirt, x, y);
-			shape = closest_shape(minirt, pixel);
+			rayon.origin = minirt->camera->xyz;
+			rayon.direction = get_pixel_vector(minirt, x, y);
+			shape = closest_shape(minirt, rayon);
 			if (shape)
 			{
-				//rayon.origin = minirt->camera->xyz;
-				//rayon.direction = pixel;
-				//t_tuple	point = position_ray(rayon, shape->distance);
-				//t_tuple normalv = normal_vector_sphere(*shape, point);
-				//color = lighting(*minirt->light, point, negate_tuple(pixel), normalv);
+				point = vec_multiplication2(rayon.direction, shape->distance);
+				normalv = normal_vector_sphere(*shape, point);
+				color = lighting(*minirt->light, point, negate_tuple(rayon.direction), normalv);
+				print_image_precision(minirt, shape, x, y, color);
 			}
-			print_image_precision(minirt, shape, x, y, 3);
 			x++;
 		}
 		y++;
