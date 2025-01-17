@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/10 16:16:17 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/17 18:27:42 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,27 +104,27 @@ static t_shape	*closest_plan(t_minirt *minirt, t_ray rayon, double *min)
 	}
 	return (shape);
 }
-// 
-// static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple pixel, double *min)
-// {
-// 	t_shape	*tmp;
-// 	t_shape	*shape;
-// 	double	distance;
-// 	
-// 	shape = NULL;
-// 	tmp = minirt->cylinder;
-// 	while (tmp)
-// 	{
-// 		distance = intersec_cylinder(minirt, pixel, *tmp);
-// 		if (distance > 0 && distance < *min)
-// 		{
-// 			shape = tmp;
-// 			*min = distance;
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// 	return (shape);
-// }
+
+static t_shape	*closest_cylinder(t_minirt *minirt, t_ray rayon, double *min)
+{
+	t_shape	*tmp;
+	t_shape	*shape;
+	double	distance;
+	
+	shape = NULL;
+	tmp = minirt->cylinder;
+	while (tmp)
+	{
+		distance = intersec_cylinder(minirt, rayon, *tmp);
+		if (distance > 0 && distance < *min)
+		{
+			shape = tmp;
+			*min = distance;
+		}
+		tmp = tmp->next;
+	}
+	return (shape);
+}
 
 t_shape	*closest_shape(t_minirt *minirt, t_ray rayon)
 {
@@ -146,9 +146,12 @@ t_shape	*closest_shape(t_minirt *minirt, t_ray rayon)
 		shape = tmp;
 		shape->distance = min;
 	}
-	// tmp = closest_cylinder(minirt, pixel, &min);
-	// if (tmp)
-	// 	shape = tmp;
+	tmp = closest_cylinder(minirt, rayon, &min);
+	if (tmp)
+	{
+		shape = tmp;
+		shape->distance = min;
+	}
 	return (shape);
 }
  

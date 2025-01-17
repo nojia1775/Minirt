@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/10 15:44:26 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/17 18:26:27 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,7 @@ void	cam_go_frontback(t_minirt *minirt, int dir);
 void	print_coor(void *coor);
 void	cam_go_leftright(t_minirt *minirt, int left_right);
 void	cam_go_updown(t_minirt *minirt, int up_down);
-double	intersec_cylinder(t_minirt *minirt, t_tuple pixel, t_shape cylinder);
+double	intersec_cylinder(t_minirt *minirt, t_ray rayon, t_shape cylinder);
 double	vec_magnitude2(t_tuple vec);
 void	my_mlx_new_img(t_minirt *minirt);
 t_tuple	negate_tuple(t_tuple tuple);
