@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/17 18:26:27 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/21 16:51:24 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,5 +248,6 @@ t_canva	rotation_y(double radian);
 t_canva	rotation_z(double radian);
 t_canva	shearing(double x_y, double x_z, double y_x, double y_z, double z_x, double z_y);
 t_ray transform_ray(t_ray ray, t_canva matrix);
+double	get_positive_min(double a, double b);
 
 #endif

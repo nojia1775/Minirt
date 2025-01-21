@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extraction2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 16:04:38 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/10 11:36:38 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/21 17:35:56 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	get_cylinder(char **datas, t_minirt *minirt)
 	get_three_double(cur->xyz.coor, datas[1]);
 	get_three_double(cur->tuple_xyz.coor, datas[2]);
 	cur->transform = translation(cur->xyz.coor[0], cur->xyz.coor[1], cur->xyz.coor[0]);
-	cur->xyz = create_tuple2(0, 0, 0, 0);
 	cur->diameter = atod(datas[3]);
 	cur->height = atod(datas[4]);
 	get_three_int(cur->rgb, datas[5]);

@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2025/01/17 18:30:24 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/21 17:57:35 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ double	intersec_plan(t_minirt *minirt, t_ray rayon, t_shape plan)
 {
 	t_tuple	p;
 	t_tuple	o;
-
+	double	distance;
+	
 	p = create_tuple2(plan.xyz.coor[0], plan.xyz.coor[1],
 		plan.xyz.coor[2], 0);
 	o = create_tuple2(minirt->camera->xyz.coor[0],
@@ -52,15 +53,16 @@ double	intersec_plan(t_minirt *minirt, t_ray rayon, t_shape plan)
 		minirt->camera->xyz.coor[2], 0);
 	if (dot_product2(plan.tuple_xyz, rayon.direction) == 0)
 		return (-1);
-	return ((dot_product2(plan.tuple_xyz,
-		vec_sub_vec2(p, o)))
-		/ dot_product2(plan.tuple_xyz, rayon.direction));
+	distance = (dot_product2(plan.tuple_xyz, vec_sub_vec2(p, o))) / dot_product2(plan.tuple_xyz, rayon.direction);
+	if (vec_magnitude2(vec_sub_vec2(plan.xyz, apply_vec_to_nbr(vec_multiplication2(rayon.direction, distance), minirt->camera->xyz))) > plan.diameter)
+		return (-1);
+	return (distance);
 }
 static int	point_in_cylinder(t_shape cy, t_tuple intersec)
 {
 	t_tuple	intersec_proj;
 
-	intersec_proj = vec_add_vec2(*(t_tuple *)&cy.xyz, vec_multiplication2(
+	intersec_proj = vec_add_vec2(cy.xyz, vec_multiplication2(
 		cy.tuple_xyz, dot_product2(create_tuple2(
 		intersec.coor[0] - cy.xyz.coor[0],
 		intersec.coor[1] - cy.xyz.coor[1],
@@ -83,26 +85,24 @@ static void	get_bases_cy(t_shape cy, t_shape *base1, t_shape *base2)
 	base1->xyz.coor[1] = cy.xyz.coor[1];
 	base1->xyz.coor[2] = cy.xyz.coor[2];
 	base1->tuple_xyz = cy.tuple_xyz;
+	base1->diameter = cy.diameter;
 	cy.xyz = apply_vec_to_nbr(vec_multiplication2(cy.tuple_xyz, cy.height), cy.xyz);
 	base2->xyz.coor[0] = cy.xyz.coor[0];
 	base2->xyz.coor[1] = cy.xyz.coor[1];
 	base2->xyz.coor[2] = cy.xyz.coor[2];
 	base2->tuple_xyz = cy.tuple_xyz;
+	base2->diameter = cy.diameter;
 }
 
 static double	intersec_base_cy(t_minirt *minirt, t_ray rayon, t_shape cy)
 {
 	t_shape	b1;
 	t_shape	b2;
-	t_tuple	intersec;
 	double	dist_plan;
 	
 	get_bases_cy(cy, &b1, &b2);
-	dist_plan = get_min(intersec_plan(minirt, rayon, b2), intersec_plan(minirt, rayon, b1));
+	dist_plan = get_positive_min(intersec_plan(minirt, rayon, b2), intersec_plan(minirt, rayon, b1));
 	if (dist_plan < 0)
-		return (-1);
-	intersec = apply_vec_to_nbr(vec_multiplication2(rayon.direction, dist_plan), cy.xyz);
-	if (vec_magnitude2(vec_sub_vec2(*(t_tuple *)&b1.xyz, *(t_tuple *)&intersec)) > cy.diameter / 2)
 		return (-1);
 	return (dist_plan);
 }
@@ -114,8 +114,8 @@ double	intersec_cylinder(t_minirt *minirt, t_ray rayon, t_shape cy)
 	t_tuple	intersec;
 	t_tuple	oc;
 
-	oc = vec_sub_vec2(*(t_tuple *)&minirt->camera->xyz,
-		*(t_tuple *)&cy.xyz);
+	oc = vec_sub_vec2(minirt->camera->xyz,
+		cy.xyz);
 	rayon.direction = vec_normalization2(rayon.direction);
 	quadratic[0] = dot_product2(rayon.direction, rayon.direction) - pow(dot_product2(rayon.direction,
 		vec_normalization2(cy.tuple_xyz)), 2);
@@ -125,7 +125,7 @@ double	intersec_cylinder(t_minirt *minirt, t_ray rayon, t_shape cy)
 	delta = pow(quadratic[1], 2) - 4 * quadratic[0] * quadratic[2];
 	if (delta < 0)
 		return (-1);
-	intersec = apply_vec_to_nbr(vec_multiplication2(rayon.direction, get_min((
+	intersec = apply_vec_to_nbr(vec_multiplication2(rayon.direction, get_positive_min((
 		-quadratic[1] + sqrt(delta)) / (2 * quadratic[0]),
 		(-quadratic[1] - sqrt(delta)) / (2 * quadratic[0]))),
 		minirt->camera->xyz);
