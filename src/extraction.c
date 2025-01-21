@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extraction.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:12:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/21 17:41:07 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/21 19:20:23 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ int	get_light(char **datas, t_minirt *minirt)
 	if (minirt->light == NULL)
 		return (printf("Error : light : alloc failed/n"), 0);
 	get_three_double(minirt->light->xyz.coor, datas[1]);
-	printf("%f %f %f\n", minirt->light->xyz.coor[0], minirt->light->xyz.coor[1], minirt->light->xyz.coor[2]);
 	minirt->light->luminosity = atod(datas[2]);
 	get_three_int(minirt->light->rgb, datas[3]);
 	return (1);

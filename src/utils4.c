@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 16:20:45 by nojia             #+#    #+#             */
-/*   Updated: 2025/01/21 16:47:10 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/21 19:09:13 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,7 @@ t_tuple	negate_tuple(t_tuple tuple)
 
 t_tuple	normal_tuple_sphere(t_shape sphere, t_tuple world_point)
 {
-	t_canva inv_can = inverse_matrix_4X4(sphere.transform);
-	t_tuple result =  multiplying_matrix_tuple(inv_can, world_point);
-	t_canva transpose_inv_can = transpose_4X4_matrix(inv_can);
-	t_tuple result_world = multiplying_matrix_tuple(transpose_inv_can, result);
-	result_world.coor[3] = 0;
+	t_tuple result_world = vec_sub_vec2(world_point, sphere.xyz);
 	t_tuple *normalized_result_world = vec_normalization(&result_world);
 	return (*normalized_result_world);
 }

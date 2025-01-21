@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/21 17:51:28 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/21 19:18:00 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ static void	print_image(t_minirt *minirt, t_shape *shape, int x, int y)
 	int	pixel_offset;
 
 	if (shape)
+	{
 		color = convert_rgb(shape->rgb);
+		shape->diameter = 10;
+	}
 	else
 		color = 0x000000;
 	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
@@ -179,11 +182,11 @@ void	display(t_minirt *minirt)
 
 double 	lighting(t_light light, t_tuple point, t_tuple eyev, t_tuple normalv)
 {
-	double 	ambient = 0.3;
+	double 	ambient = 0.2;
 	double 	diffuse = 0.9;
 	double 	specular = 0.9;
 	double	effective_color = 1;
-	t_tuple	lightv = vec_normalization2(vec_sub_vec2(point, light.xyz));
+	t_tuple	lightv = vec_normalization2(vec_sub_vec2(light.xyz, point));
 	ambient = effective_color * ambient;
 	double light_dot_normal = dot_product2(lightv, normalv);
 	if (light_dot_normal < 0)

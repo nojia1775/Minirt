@@ -74,14 +74,52 @@ t_tuple	vec_sub_vec2(t_tuple a, t_tuple b)
 
 double	vec_magnitude(t_tuple *vec)
 {
+	double	v1;
+	double	v2;
+	double	v3;
+	double	total;
+
 	if (!vec)
 		return (-1);
-	return (sqrt(pow(vec->coor[0], 2) + pow(vec->coor[1], 2) + pow(vec->coor[2], 2)));
+	total = 0;
+	v1 = pow(vec->coor[0], 2);
+	if (v1 != 0)
+		total += v1;
+	v2 = pow(vec->coor[1], 2);
+	if (v2 != 0)
+		total += v2;
+	v3 = pow(vec->coor[2], 2);
+	if (v3 != 0)
+		total += v3;
+	if (total == 0)
+		return (0);
+	else
+		return (sqrt(total));
 }
 
 double	vec_magnitude2(t_tuple vec)
 {
-	return (sqrt(pow(vec.coor[0], 2) + pow(vec.coor[1], 2) + pow(vec.coor[2], 2)));
+	double	v1;
+	double	v2;
+	double	v3;
+	double	total;
+
+	if (!vec.coor[0] || !vec.coor[1] || !vec.coor[2])
+		return (0);
+	total = 0;
+	v1 = pow(vec.coor[0], 2);
+	if (v1 != 0)
+		total += v1;
+	v2 = pow(vec.coor[1], 2);
+	if (v2 != 0)
+		total += v2;
+	v3 = pow(vec.coor[2], 2);
+	if (v3 != 0)
+		total += v3;
+	if (total == 0)
+		return (0);
+	else
+		return (sqrt(total));
 }
 
 double dot_product(t_tuple *first, t_tuple *second, int length)
@@ -107,14 +145,23 @@ double	dot_product2(t_tuple a, t_tuple b)
 
 t_tuple *vec_normalization(t_tuple *vec)
 {
-	double	magnitude;
+	double	length;
 
 	if (!vec)
 		return (NULL);
-	magnitude = vec_magnitude(vec);
-	vec->coor[0] = vec->coor[0] / magnitude;
-	vec->coor[1] = vec->coor[1] / magnitude;
-	vec->coor[2] = vec->coor[2] / magnitude;
+	length = vec_magnitude(vec);
+	if (length == 0)
+	{
+		vec->coor[0] = 0.0;
+		vec->coor[1] = 0.0;
+		vec->coor[2] = 0.0;
+	}
+	else
+	{
+		vec->coor[0] = vec->coor[0] / length;
+		vec->coor[1] = vec->coor[1] / length;
+		vec->coor[2] = vec->coor[2] / length;
+	}
 	return (vec);
 }
 
@@ -124,9 +171,18 @@ t_tuple	vec_normalization2(t_tuple vec)
 	double	length;
 
 	length = vec_magnitude(&vec);
-	normal.coor[0] = vec.coor[0] / length;
-	normal.coor[1] = vec.coor[1] / length;
-	normal.coor[2] = vec.coor[2] / length;
+	if (length == 0)
+	{
+		normal.coor[0] = 0.0;
+		normal.coor[1] = 0.0;
+		normal.coor[2] = 0.0;
+	}
+	else
+	{
+		normal.coor[0] = vec.coor[0] / length;
+		normal.coor[1] = vec.coor[1] / length;
+		normal.coor[2] = vec.coor[2] / length;
+	}
 	return (normal);
 }
 
