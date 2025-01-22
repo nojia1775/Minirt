@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/22 13:05:03 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/22 17:15:38 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static void	print_image(t_minirt *minirt, t_shape *shape, int x, int y)
 	}
 	else
 		color = 0x000000;
-	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
+	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits,
+			&minirt->size_line, &minirt->endian);
 	if (!minirt->img)
 	{
 		free_minirt(minirt);
@@ -46,17 +47,19 @@ static void	print_image(t_minirt *minirt, t_shape *shape, int x, int y)
 	}
 }
 
-static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y, double shading)
+static void	print_image_precision(t_minirt *minirt, t_shape *shape,
+	int x, int y)
 {
-	int	color;
-	int	pixel_offset;
+	int		color;
+	int		pixel_offset;
 	t_uint8	rgb[3];
 
-	rgb[0] = shape->rgb[0] * (shading / 3);
-	rgb[1] = shape->rgb[1] * (shading / 3);
-	rgb[2] = shape->rgb[2] * (shading / 3);
+	rgb[0] = shape->rgb[0] * (minirt->color / 3);
+	rgb[1] = shape->rgb[1] * (minirt->color / 3);
+	rgb[2] = shape->rgb[2] * (minirt->color / 3);
 	color = convert_rgb(rgb);
-	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
+	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits,
+			&minirt->size_line, &minirt->endian);
 	if (!minirt->img)
 	{
 		free_minirt(minirt);
@@ -71,7 +74,7 @@ static t_shape	*closest_sphere(t_minirt *minirt, t_ray rayon, double *min)
 	t_shape	*tmp;
 	t_shape	*shape;
 	double	distance;
-	
+
 	shape = NULL;
 	tmp = minirt->sphere;
 	while (tmp)
@@ -92,7 +95,7 @@ static t_shape	*closest_plan(t_minirt *minirt, t_ray rayon, double *min)
 	t_shape	*tmp;
 	t_shape	*shape;
 	double	distance;
-	
+
 	shape = NULL;
 	tmp = minirt->plan;
 	while (tmp)
@@ -113,7 +116,7 @@ static t_shape	*closest_cylinder(t_minirt *minirt, t_ray rayon, double *min)
 	t_shape	*tmp;
 	t_shape	*shape;
 	double	distance;
-	
+
 	shape = NULL;
 	tmp = minirt->cylinder;
 	while (tmp)
@@ -157,20 +160,24 @@ t_shape	*closest_shape(t_minirt *minirt, t_ray rayon)
 	}
 	return (shape);
 }
- 
+
 void	display(t_minirt *minirt)
 {
 	t_ray	rayon;
 	t_shape	*shape;
+	t_tuple	pixel;
+	int		y;
+	int		x;
 
-	int y = 2;
+	y = 2;
 	while (y < HEIGHT)
 	{
-		int x = 2;
+		x = 2;
 		while (x < WIDTH)
 		{
+			pixel = create_tuple2(0.0, 0.0, 0.0, 0);
 			rayon.origin = minirt->camera->xyz;
-			rayon.direction = get_pixel_tuple(minirt, x, y);
+			rayon.direction = get_pixel_tuple(minirt, pixel, x, y);
 			shape = closest_shape(minirt, rayon);
 			print_image(minirt, shape, x, y);
 			x += 5;
@@ -180,15 +187,36 @@ void	display(t_minirt *minirt)
 	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
 }
 
-double 	lighting(t_light light, t_tuple point, t_tuple eyev, t_tuple normalv)
+double	compute_specular(t_tuple lightv, t_tuple normalv, t_tuple eyev)
 {
-	double 	ambient = 0.2;
-	double 	diffuse = 0.9;
-	double 	specular = 0.9;
-	double	effective_color = 1;
-	t_tuple	lightv = vec_normalization2(vec_sub_vec2(light.xyz, point));
-	ambient = effective_color * ambient;
-	double light_dot_normal = dot_product2(lightv, normalv);
+	double	reflect_dot_eye;
+	double	factor;
+	t_tuple	reflectv;
+
+	reflectv = reflect(negate_tuple(lightv), normalv);
+	reflect_dot_eye = dot_product2(reflectv, eyev);
+	if (reflect_dot_eye <= 0)
+		return (0.0);
+	else
+	{
+		factor = pow(reflect_dot_eye, 200.0);
+		return (0.9 * factor);
+	}
+}
+
+double	lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_tuple normalv)
+{
+	double	ambient;
+	double	diffuse;
+	double	specular;
+	double	light_dot_normal;
+	t_tuple	lightv;
+
+	ambient = 0.2;
+	diffuse = 0.9;
+	lightv = vec_normalization2(vec_sub_vec2(minirt->light->xyz, point));
+	ambient = minirt->light->luminosity * ambient;
+	light_dot_normal = dot_product2(lightv, normalv);
 	if (light_dot_normal < 0)
 	{
 		diffuse = 0;
@@ -196,47 +224,47 @@ double 	lighting(t_light light, t_tuple point, t_tuple eyev, t_tuple normalv)
 	}
 	else
 	{
-		diffuse = effective_color * diffuse * light_dot_normal;
-		t_tuple reflectv = reflect(negate_tuple(lightv), normalv);
-		double  reflect_dot_eye = dot_product2(reflectv, eyev);
-		if (reflect_dot_eye <= 0)
-			specular = 0;
-		else
-		{
-			double factor = pow(reflect_dot_eye, 200.0);
-			specular = 1 * specular * factor;
-		}
+		diffuse = minirt->light->luminosity * diffuse * light_dot_normal;
+		specular = compute_specular(lightv, normalv, eyev);
 	}
 	return (ambient + diffuse + specular);
+}
+
+void	compute_pixel(t_minirt *minirt, t_ray rayon, t_shape shape,
+	int *coor)
+{
+	t_tuple	point;
+	t_tuple	normalv;
+
+	point = vec_multiplication2(rayon.direction, shape.distance);
+	normalv = normal_tuple_sphere(shape, point);
+	minirt->color = lighting(minirt, point, negate_tuple(rayon.direction),
+			normalv);
+	print_image_precision(minirt, &shape, coor[0], coor[1]);
 }
 
 void	display_precision(t_minirt *minirt)
 {
 	t_ray	rayon;
 	t_shape	*shape;
-	t_tuple	point;
-	double	color;
-	t_tuple	normalv;
+	t_tuple	pixel;
+	int		coor[2];
 
-	int y = 0;
-	while (y < HEIGHT)
+	coor[1] = 0;
+	while (coor[1] < HEIGHT)
 	{
-		int x = 0;
-		while (x < WIDTH)
+		coor[0] = 0;
+		while (coor[0] < WIDTH)
 		{
+			pixel = create_tuple2(0.0, 0.0, 0.0, 0);
 			rayon.origin = minirt->camera->xyz;
-			rayon.direction = get_pixel_tuple(minirt, x, y);
+			rayon.direction = get_pixel_tuple(minirt, pixel, coor[0], coor[1]);
 			shape = closest_shape(minirt, rayon);
 			if (shape)
-			{
-				point = vec_multiplication2(rayon.direction, shape->distance);
-				normalv = normal_tuple_sphere(*shape, point);
-				color = lighting(*minirt->light, point, negate_tuple(rayon.direction), normalv);
-				print_image_precision(minirt, shape, x, y, color);
-			}
-			x++;
+				compute_pixel(minirt, rayon, *shape, coor);
+			coor[0]++;
 		}
-		y++;
+		coor[1]++;
 	}
 	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
 }

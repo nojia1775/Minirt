@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/22 13:02:50 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/22 16:48:28 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	close_win(void *param)
 {
 	t_minirt	*minirt;
-	
+
 	minirt = (t_minirt *)param;
 	free_minirt(minirt);
 	exit(0);
@@ -71,6 +71,7 @@ void	init_minirt(t_minirt *minirt)
 	minirt->img = NULL;
 	minirt->bits = 0;
 	minirt->size_line = 0;
+	minirt->color = 0.0;
 }
 
 int	main(int argc, char **argv, char **env)

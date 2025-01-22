@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 16:20:45 by nojia             #+#    #+#             */
-/*   Updated: 2025/01/21 19:09:13 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/22 17:05:29 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ t_tuple	negate_tuple(t_tuple tuple)
 
 t_tuple	normal_tuple_sphere(t_shape sphere, t_tuple world_point)
 {
-	t_tuple result_world = vec_sub_vec2(world_point, sphere.xyz);
-	t_tuple *normalized_result_world = vec_normalization(&result_world);
+	t_tuple	result_world;
+	t_tuple	*normalized_result_world;
+
+	result_world = vec_sub_vec2(world_point, sphere.xyz);
+	normalized_result_world = vec_normalization(&result_world);
 	return (*normalized_result_world);
 }

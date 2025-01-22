@@ -12,7 +12,7 @@
 
 #include "../include/minirt.h"
 
-t_tuple *vec_add_nbr(t_tuple *vec, double nbr)
+t_tuple	*vec_add_nbr(t_tuple *vec, double nbr)
 {
 	if (!vec)
 		return (NULL);
@@ -25,14 +25,14 @@ t_tuple *vec_add_nbr(t_tuple *vec, double nbr)
 t_tuple	apply_vec_to_nbr(t_tuple vec, t_tuple point)
 {
 	t_tuple	result;
-	
+
 	result.coor[0] = point.coor[0] + vec.coor[0];
 	result.coor[1] = point.coor[1] + vec.coor[1];
 	result.coor[2] = point.coor[2] + vec.coor[2];
 	return (result);
 }
 
-t_tuple *vec_add_vec(t_tuple *vec, t_tuple *add)
+t_tuple	*vec_add_vec(t_tuple *vec, t_tuple *add)
 {
 	if (!vec || !add)
 		return (NULL);
@@ -42,7 +42,7 @@ t_tuple *vec_add_vec(t_tuple *vec, t_tuple *add)
 	return (vec);
 }
 
-t_tuple vec_add_vec2(t_tuple vec, t_tuple add)
+t_tuple	vec_add_vec2(t_tuple vec, t_tuple add)
 {
 	t_tuple	result;
 
@@ -52,7 +52,7 @@ t_tuple vec_add_vec2(t_tuple vec, t_tuple add)
 	return (result);
 }
 
-t_tuple *vec_sub_vec(t_tuple *vec, t_tuple *add)
+t_tuple	*vec_sub_vec(t_tuple *vec, t_tuple *add)
 {
 	if (!vec || !add)
 		return (NULL);
@@ -74,29 +74,17 @@ t_tuple	vec_sub_vec2(t_tuple a, t_tuple b)
 
 double	vec_magnitude(t_tuple *vec)
 {
-	double	v1;
-	double	v2;
-	double	v3;
 	double	total;
 
 	if (!vec)
 		return (-1);
 	total = 0;
 	if (vec->coor[0] != 0.0)
-	{
-		v1 = pow(vec->coor[0], 2);
-		total += v1;
-	}
+		total += pow(vec->coor[0], 2);
 	if (vec->coor[1] != 0.0)
-	{
-		v2 = pow(vec->coor[1], 2);
-		total += v2;
-	}
+		total += pow(vec->coor[1], 2);
 	if (vec->coor[2] != 0.0)
-	{
-		v3 = pow(vec->coor[2], 2);
-		total += v3;
-	}
+		total += pow(vec->coor[2], 2);
 	if (total == 0)
 		return (0);
 	else
@@ -128,7 +116,7 @@ double	vec_magnitude2(t_tuple vec)
 		return (sqrt(total));
 }
 
-double dot_product(t_tuple *first, t_tuple *second, int length)
+double	dot_product(t_tuple *first, t_tuple *second, int length)
 {
 	double	result;
 	int		count;
@@ -145,11 +133,11 @@ double dot_product(t_tuple *first, t_tuple *second, int length)
 
 double	dot_product2(t_tuple a, t_tuple b)
 {
-	return (a.coor[0] * b.coor[0] + a.coor[1] * b.coor[1]
-		+ a.coor[2] * b.coor[2]);
+	return (a.coor[0] * b.coor[0] + a.coor[1] * b.coor[1] + a.coor[2]
+		* b.coor[2]);
 }
 
-t_tuple *vec_normalization(t_tuple *vec)
+t_tuple	*vec_normalization(t_tuple *vec)
 {
 	double	length;
 
@@ -194,9 +182,9 @@ t_tuple	vec_normalization2(t_tuple vec)
 	return (normal);
 }
 
-t_tuple *vec_multiplication(t_tuple *vec, double scalar)
+t_tuple	*vec_multiplication(t_tuple *vec, double scalar)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	while (count < 3)
@@ -207,9 +195,9 @@ t_tuple *vec_multiplication(t_tuple *vec, double scalar)
 	return (vec);
 }
 
-t_tuple vec_multiplication2(t_tuple vec, double nbr)
+t_tuple	vec_multiplication2(t_tuple vec, double nbr)
 {
-	int count;
+	int		count;
 	t_tuple	result;
 
 	count = 0;

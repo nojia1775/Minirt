@@ -9,7 +9,6 @@ SRCS =	src/main.c \
 	src/vector_operation.c \
 	src/vector_utils.c \
 	src/matrix.c \
-	src/sphere.c \
 	src/free.c \
 	src/extraction.c \
 	src/utils.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 15:44:39 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/15 13:45:09 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/22 16:48:15 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	free_list_data(t_file_rt **list)
 {
 	t_file_rt	*cur;
 	t_file_rt	*rm;
-	int		i;
-	
+	int			i;
+
 	cur = *list;
 	if (!cur)
 		return ;
@@ -77,7 +77,6 @@ void	add_list_shape(t_shape **shape)
 		cur = cur->next;
 	cur->next = new;
 	new->index = cur->index + 1;
-
 }
 
 void	free_list_shape(t_shape **shape)
