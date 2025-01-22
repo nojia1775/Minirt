@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:12:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/21 19:20:23 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/22 12:16:08 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	get_ambient(char **datas, t_minirt *minirt)
 int	get_camera(char **datas, t_minirt *minirt)
 {
 	double	rad_fov_x;
-	double	ratio;
 	
 	if (minirt->camera != NULL)
 		return (printf("Error : camera : defined more than 1 time\n"), 0);
@@ -50,10 +49,10 @@ int	get_camera(char **datas, t_minirt *minirt)
 		return (printf("Error : camera : alloc failed\n"), 0);
 	get_three_double(minirt->camera->xyz.coor, datas[1]);
 	get_three_double(minirt->camera->tuple_xyz.coor, datas[2]);
+	minirt->camera->tuple_xyz.coor[3] = 0;
 	minirt->camera->fov_x = atod(datas[3]);
 	rad_fov_x = convert_rad(minirt->camera->fov_x);
-	ratio = WIDTH / HEIGHT;
-	minirt->camera->fov_y = 2 * atan((tan(rad_fov_x / 2) / ratio));
+	minirt->camera->fov_y = 2 * atan((tan(rad_fov_x / 2) / (WIDTH / HEIGHT)));
 	minirt->camera->fov_y = minirt->camera->fov_y * 180 / PI;
 	minirt->camera->focal_length = (WIDTH / 2) / tan(convert_rad(minirt->camera->fov_x / 2));
 	return (1);

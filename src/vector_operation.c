@@ -82,15 +82,21 @@ double	vec_magnitude(t_tuple *vec)
 	if (!vec)
 		return (-1);
 	total = 0;
-	v1 = pow(vec->coor[0], 2);
-	if (v1 != 0)
+	if (vec->coor[0] != 0.0)
+	{
+		v1 = pow(vec->coor[0], 2);
 		total += v1;
-	v2 = pow(vec->coor[1], 2);
-	if (v2 != 0)
+	}
+	if (vec->coor[1] != 0.0)
+	{
+		v2 = pow(vec->coor[1], 2);
 		total += v2;
-	v3 = pow(vec->coor[2], 2);
-	if (v3 != 0)
+	}
+	if (vec->coor[2] != 0.0)
+	{
+		v3 = pow(vec->coor[2], 2);
 		total += v3;
+	}
 	if (total == 0)
 		return (0);
 	else
@@ -162,6 +168,7 @@ t_tuple *vec_normalization(t_tuple *vec)
 		vec->coor[1] = vec->coor[1] / length;
 		vec->coor[2] = vec->coor[2] / length;
 	}
+	vec->coor[3] = 0;
 	return (vec);
 }
 
@@ -183,6 +190,7 @@ t_tuple	vec_normalization2(t_tuple vec)
 		normal.coor[1] = vec.coor[1] / length;
 		normal.coor[2] = vec.coor[2] / length;
 	}
+	normal.coor[3] = 0;
 	return (normal);
 }
 

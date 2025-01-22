@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/21 16:51:24 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/22 12:58:07 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ typedef struct s_matrix
 typedef struct	s_canva
 {
 	int		shape[2];
-	double	**array;
+	double	array[4][4];
 }	t_canva;
 
 typedef struct s_shape
@@ -155,10 +155,16 @@ double		dot_product(t_tuple *first, t_tuple *second, int length);
 t_tuple	*vec_normalization(t_tuple *vec);
 t_tuple	*vec_multiplication(t_tuple *vec, double scalar);
 
+//canva
+t_canva create_canva_2X2(void);
+t_canva create_canva_3X3(void);
+t_canva create_canva_4X4(void);
+
 //matrix
 t_matrix	*alloc_matrix(t_matrix *mat, int x, int y, int z);
 t_matrix	create_matrix(int x, int y, int z);
 void		display_mat2d(t_matrix *mat, int axis_1, int axis_2, int slice_axis_3);
+t_canva	create_matrix_identity(void);
 
 //sphere
 t_shape		create_sphere(int height);
@@ -223,13 +229,12 @@ void	my_mlx_new_img(t_minirt *minirt);
 t_tuple	negate_tuple(t_tuple tuple);
 t_tuple	normal_tuple_sphere(t_shape sphere, t_tuple world_point);
 t_canva    multiplying_4X4_matrix(t_canva *mat1, t_canva *mat2);
-t_tuple multiplying_matrix_tuple(t_canva mat, t_tuple tup);
+t_tuple multiplying_matrix_4X4_tuple(t_canva mat, t_tuple tup);
 t_canva transpose_4X4_matrix(t_canva mat);
 int	get_determinant_2X2_matrix(t_canva mat);
 t_canva get_submatrix(t_canva matrix, int row, int column);
 int	get_minor_3X3_matrix(t_canva mat, int row, int column);
-int	get_cofactor_3X3_matrix(t_canva mat, int row, int column)
-;
+int	get_cofactor_3X3_matrix(t_canva mat, int row, int column);
 int	get_determinant_3X3_matrix(t_canva mat, int row, int column);
 int	get_minor_4X4_matrix(t_canva mat, int row, int column);
 int	get_cofactor_4X4_matrix(t_canva mat, int row, int column);
