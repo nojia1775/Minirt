@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/01/24 11:28:33 by nojia            ###   ########.fr       */
+/*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
+/*   Updated: 2025/01/24 11:54:11 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # define MINIRT_H
 
-# define WIDTH 1000
-# define HEIGHT 1000
+# define WIDTH 400
+# define HEIGHT 400
 
 # define AZERTY 0
 # define QWERTY 1
