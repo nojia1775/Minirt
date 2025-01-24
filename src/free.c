@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:01:09 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/15 12:24:03 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/22 13:02:31 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	secured_free(void **data)
 
 void	free_minirt(t_minirt *minirt)
 {
+	if (minirt->addr_img)
+		mlx_destroy_image(minirt->mlx, minirt->addr_img);
 	if (minirt->win)
 		mlx_destroy_window(minirt->mlx, minirt->win);
 	if (minirt->mlx)

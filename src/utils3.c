@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 22:32:29 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/19 18:51:02 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/21 17:23:30 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,20 @@ double	get_min(double a, double b)
 	if (a > b)
 		return (b);
 	return (a);
+}
+
+double	get_positive_min(double a, double b)
+{
+	if (a < 0 && b < 0)
+		return (-1);
+	else if (a >= 0 && b < 0)
+		return (a);
+	else if (b >= 0 && a < 0)
+		return (b);
+	else if (a < b)
+		return (a);
+	else
+		return (b);
 }
 
 double	get_max(double a, double b)

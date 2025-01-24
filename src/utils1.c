@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:57:17 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/15 11:00:44 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/22 17:00:08 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	char_not_recognized(char *str, char *set)
 	{
 		if (!ft_strchr(set, str[i]))
 			return (1);
-		i++;	
+		i++;
 	}
 	return (0);
 }
@@ -59,7 +59,7 @@ int	parse_rgb(char *line)
 
 	comma = 0;
 	if (char_not_recognized(line, "0123456789,") || (ft_strlen(line) < 5
-		|| ft_strlen(line) > 11))
+			|| ft_strlen(line) > 11))
 		return (0);
 	i = -1;
 	while (line[++i])
@@ -91,7 +91,7 @@ int	parse_range(char *line, double min, double max, int nmemb)
 	index_value = 0;
 	comma = 0;
 	if (char_not_recognized(line, "0123456789.,-") || !parse_nbr_dot(line))
-		return (0); 
+		return (0);
 	i = -1;
 	while (line[++i])
 		if (line[i] == ',' && ++comma)

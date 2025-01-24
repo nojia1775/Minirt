@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/14 16:28:44 by nojia            ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/01/24 11:29:24 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../include/minirt.h"
 
@@ -47,7 +48,7 @@
 static int	close_win(void *param)
 {
 	t_minirt	*minirt;
-	
+
 	minirt = (t_minirt *)param;
 	free_minirt(minirt);
 	exit(0);
@@ -81,7 +82,7 @@ static int	key_pressed(int key, void *param)
 		cam_go_updown(minirt, -1);
 	else if (key == SPACE)
 		cam_go_updown(minirt, 1);
-	else if (key == CTRL)
+	else if (key == P)
 	{
 		mlx_clear_window(minirt->mlx, minirt->win);
 		display_manual(minirt);
@@ -103,28 +104,8 @@ void	init_minirt(t_minirt *minirt)
 	minirt->img = NULL;
 	minirt->bits = 0;
 	minirt->size_line = 0;
+	minirt->color = 0.0;
 }
-
-//int	main(int argc, char **argv, char **env)
-//{
-//	t_minirt	minirt;
-//	int			width;
-//	int			height;
-//	width = 900;
-//	height = 550;
-//	init_minirt(&minirt);
-//	if (!parsing(argc, argv, env, &minirt))
-//		return (free_minirt(&minirt), 1);
-//	my_mlx_init(&minirt);
-//	my_mlx_new_window(&minirt, width, height, "MINIRT");
-//	mlx_hook(minirt.win, 17, 0, close_win, &minirt);
-//	mlx_key_hook(minirt.win, key_pressed, &minirt);
-//	put_pixel_projectile(&minirt, height, 45, 23, 210);
-//	 put_one_color(&minirt, 45, 23, 210);
-//	mlx_loop(minirt.mlx);
-//	free_minirt(&minirt);
-//	return (0);
-//}
 
 int	main(int argc, char **argv, char **env)
 {
@@ -138,8 +119,8 @@ int	main(int argc, char **argv, char **env)
 	mlx_hook(minirt.win, 17, 0, close_win, &minirt);
 	mlx_key_hook(minirt.win, key_pressed, &minirt);
 	my_mlx_new_img(&minirt);
-	display_manual(&minirt);
-	ft_putstr_fd("DONE\n", 1);
+	display_precision(&minirt);
+	printf("done\n");
 	mlx_loop(minirt.mlx);
 	free_minirt(&minirt);
 	return (0);
