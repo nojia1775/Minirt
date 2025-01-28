@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/24 11:54:25 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/28 14:14:17 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,40 +51,6 @@
 // 	}
 // }
 
-static void	print_image_precision(t_minirt *minirt, t_shape *shape, int x, int y, double shading)
-{
-	int	color;
-	int	pixel_offset;
-	t_uint8	rgb[3];
-
-	if (shape)
-	{
-		color = convert_rgb(shape->rgb);
-		shape->diameter = 10;
-	}
-	else
-		color = 0x000000;
-	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits,
-			&minirt->size_line, &minirt->endian);
-	if (!minirt->img)
-	{
-		free_minirt(minirt);
-		exit(1);
-	}
-	i = y - 2;
-	while (i < 5 + y - 2)
-	{
-		j = x - 2;
-		while (j < 5 + x - 2)
-		{
-			pixel_offset = i * minirt->size_line + j * (minirt->bits / 8);
-			*(int *)(minirt->img + pixel_offset) = color;
-			j++;
-		}
-		i++;
-	}
-}
-
 static void	print_image_precision(t_minirt *minirt, t_shape *shape,
 	int x, int y)
 {
@@ -107,29 +73,25 @@ static void	print_image_precision(t_minirt *minirt, t_shape *shape,
 	*(int *)(minirt->img + pixel_offset) = color;
 }
 
+
 static t_shape	*closest_sphere(t_minirt *minirt, t_ray rayon, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
-	t_intersection	*xs;
+	double	distance;
 
 	shape = NULL;
 	tmp = minirt->sphere;
 	while (tmp)
 	{
-		xs = point_intersection_sphere(minirt, rayon, *tmp);
-		if (xs->count > 0)
+		distance = intersec_sphere(minirt, rayon, *tmp);
+		if (distance > 0 && distance < *min)
 		{
-			if (get_min(xs[0].t, xs[1].t) < *min)
-			{
-				shape = tmp;
-				*min = get_min(xs[0].t, xs[1].t); 
-			}
+			shape = tmp;
+			*min = distance;
 		}
 		tmp = tmp->next;
 	}
-	if (shape)
-		shape->distance = *min;
 	return (shape);
 }
 
@@ -204,31 +166,31 @@ t_shape	*closest_shape(t_minirt *minirt, t_ray rayon)
 	return (shape);
 }
 
-void	display(t_minirt *minirt)
-{
-	t_ray	rayon;
-	t_shape	*shape;
-	t_tuple	pixel;
-	int		y;
-	int		x;
+// void	display(t_minirt *minirt)
+// {
+// 	t_ray	rayon;
+// 	t_shape	*shape;
+// 	t_tuple	pixel;
+// 	int		y;
+// 	int		x;
 
-	y = 2;
-	while (y < HEIGHT)
-	{
-		x = 2;
-		while (x < WIDTH)
-		{
-			pixel = create_tuple2(0.0, 0.0, 0.0, 0);
-			rayon.origin = minirt->camera->xyz;
-			rayon.direction = get_pixel_tuple(minirt, pixel, x, y);
-			shape = closest_shape(minirt, rayon);
-			print_image(minirt, shape, x, y);
-			x += 5;
-		}
-		y += 5;
-	}
-	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
-}
+// 	y = 2;
+// 	while (y < HEIGHT)
+// 	{
+// 		x = 2;
+// 		while (x < WIDTH)
+// 		{
+// 			pixel = create_tuple2(0.0, 0.0, 0.0, 0);
+// 			rayon.origin = minirt->camera->xyz;
+// 			rayon.direction = get_pixel_tuple(minirt, pixel, x, y);
+// 			shape = closest_shape(minirt, rayon);
+// 			print_image(minirt, shape, x, y);
+// 			x += 5;
+// 		}
+// 		y += 5;
+// 	}
+// 	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
+// }
 
 double	compute_specular(t_tuple lightv, t_tuple normalv, t_tuple eyev)
 {
@@ -304,20 +266,10 @@ void	display_precision(t_minirt *minirt)
 			rayon.direction = get_pixel_tuple(minirt, pixel, coor[0], coor[1]);
 			shape = closest_shape(minirt, rayon);
 			if (shape)
-			{
-				// ft_putstr_fd("0", 1);
-				t_intersection *xs = point_intersection_sphere(minirt, rayon, *shape);
-				t_intersection intersection = hit(xs);
-				t_tuple point = position_ray(rayon, intersection.t);
-				t_tuple normalv = normal_vector_sphere(*shape, point);
-				color = lighting(*minirt->light, point, negate_tuple(rayon.direction), normalv);
-				print_image_precision(minirt, shape, x, y, color);	
-			}
-				// ft_putstr_fd(" ", 1);
-			x++;
+				compute_pixel(minirt, rayon, *shape, coor);
+			coor[0]++;
 		}
-		// ft_putstr_fd("\n", 1);
-		y++;
+		coor[1]++;
 	}
 	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
-}
+}	

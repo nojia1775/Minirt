@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cam_movement.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 12:16:41 by nojia             #+#    #+#             */
-/*   Updated: 2025/01/24 11:28:59 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/28 14:15:13 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	cam_look_leftright(t_minirt *minirt, double angle)
 	minirt->camera->tuple_xyz.coor[0] = x * cos(angle) + z * sin(angle);
 	minirt->camera->tuple_xyz.coor[2] = -x * sin(angle) + z * cos(angle);
 	mlx_clear_window(minirt->mlx, minirt->win);
-	display_manual(minirt);
+	display_precision(minirt);
 }
 
 void	cam_look_updown(t_minirt *minirt, double angle)
@@ -49,7 +49,7 @@ void	cam_look_updown(t_minirt *minirt, double angle)
 		+ up.coor[2] * sin(angle);
 	minirt->camera->tuple_xyz = vec_normalization2(minirt->camera->tuple_xyz);
 	mlx_clear_window(minirt->mlx, minirt->win);
-	display_manual(minirt);
+	display_precision(minirt);
 }
 
 void	cam_go_frontback(t_minirt *minirt, int dir)
@@ -58,7 +58,7 @@ void	cam_go_frontback(t_minirt *minirt, int dir)
 				vec_normalization2(minirt->camera->tuple_xyz), 5 * dir),
 			minirt->camera->xyz);
 	mlx_clear_window(minirt->mlx, minirt->win);
-	display_manual(minirt);
+	display_precision(minirt);
 }
 
 void	cam_go_leftright(t_minirt *minirt, int left_right)
@@ -78,7 +78,7 @@ void	cam_go_leftright(t_minirt *minirt, int left_right)
 	right = vec_multiplication2(right, left_right * 5);
 	minirt->camera->xyz = apply_vec_to_nbr(right, minirt->camera->xyz);
 	mlx_clear_window(minirt->mlx, minirt->win);
-	display_manual(minirt);
+	display_precision(minirt);
 }
 
 void	cam_go_updown(t_minirt *minirt, int up_down)
@@ -91,5 +91,5 @@ void	cam_go_updown(t_minirt *minirt, int up_down)
 	minirt->camera->xyz = apply_vec_to_nbr(vec_multiplication2(up, up_down),
 			minirt->camera->xyz);
 	mlx_clear_window(minirt->mlx, minirt->win);
-	display_manual(minirt);
+	display_precision(minirt);
 }

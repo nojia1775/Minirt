@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/24 11:54:36 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/28 13:57:17 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static int	key_pressed(int key, void *param)
 	else if (key == P)
 	{
 		mlx_clear_window(minirt->mlx, minirt->win);
-		display_manual(minirt);
+		display_precision(minirt);
 	}
 	return (1);
 }

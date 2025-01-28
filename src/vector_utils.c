@@ -45,29 +45,29 @@ t_tuple	get_pixel_tuple(t_minirt *minirt, t_tuple pixel, int x, int y)
 	t_canva	transform;
 	double	x_y_screen[2];
 
-	normal_v_cam = vec_normalization2(minirt->camera->vector_xyz);
-	t_canva transform = rotation_y(PI / 2);
+	normal_v_cam = vec_normalization2(minirt->camera->tuple_xyz);
+	transform = rotation_y(PI / 2);
 	// if (double_abs(normal_v_cam.coor[0]) <= 0.1
 	// 	&& double_abs(normal_v_cam.coor[1]) >= 0.9 && double_abs(normal_v_cam.coor[2]) <= 0.1)
 	// 	U = vec_normalization2(vec_cross(create_tuple2(0, 0, 1, 0), normal_v_cam));
 	// else
 	// 	U = vec_normalization2(vec_cross(create_tuple2(0, 1, 0, 0), normal_v_cam));
-	U = vec_normalization2(multiplying_matrix_tuple(transform, normal_v_cam));
-	V = vec_normalization2(vec_cross(normal_v_cam, U));
+	u = vec_normalization2(multiplying_matrix_tuple(transform, normal_v_cam));
+	v = vec_normalization2(vec_cross(normal_v_cam, u));
 	// U = vec_normalization2(vec_cross(V, normal_v_cam));
-	x_screen = ((double)x / WIDTH - 0.5) * WIDTH;
-	y_screen = (0.5 - (double)y / HEIGHT) * HEIGHT;
+	x_y_screen[0] = ((double)x / WIDTH - 0.5) * WIDTH;
+	x_y_screen[1] = (0.5 - (double)y / HEIGHT) * HEIGHT;
 	pixel.coor[0] = normal_v_cam.coor[0] * minirt->camera->focal_length
 		+ u.coor[0] * x_y_screen[0] + v.coor[0] * x_y_screen[1];
 	pixel.coor[1] = normal_v_cam.coor[1] * minirt->camera->focal_length
 		+ u.coor[1] * x_y_screen[0] + v.coor[1] * x_y_screen[1];
 	pixel.coor[2] = normal_v_cam.coor[2] * minirt->camera->focal_length
-		+ U.coor[2] * x_screen + V.coor[2] * y_screen;
-	if (x_screen == 0 && y_screen == 0)
+		+ u.coor[2] * x_y_screen[0] + v.coor[2] * x_y_screen[1];
+	if (x_y_screen[0] == 0 && x_y_screen[1] == 0)
 	{
 		printf("cam = %.2f %.2f %.2f\n", normal_v_cam.coor[0], normal_v_cam.coor[1], normal_v_cam.coor[2]);
-		printf("U = %.2f %.2f %.2f\n", U.coor[0], U.coor[1], U.coor[2]);
-		printf("V = %.2f %.2f %.2f\n", V.coor[0], V.coor[1], V.coor[2]);
+		printf("U = %.2f %.2f %.2f\n", u.coor[0], u.coor[1], u.coor[2]);
+		printf("V = %.2f %.2f %.2f\n", v.coor[0], v.coor[1], v.coor[2]);
 		
 	}
 	return (vec_normalization2(pixel));

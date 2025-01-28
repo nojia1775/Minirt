@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/01/24 11:29:32 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/28 14:14:55 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ double	intersec_sphere(t_minirt *minirt, t_ray rayon, t_shape sphere)
 	double	b;
 	double	c;
 	double	delta;
-	double	a;
 
 	a = dot_product2(rayon.direction, rayon.direction);
 	b = 2 * ((minirt->camera->xyz.coor[0] - sphere.xyz.coor[0])
