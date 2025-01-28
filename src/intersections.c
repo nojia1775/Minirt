@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2025/01/22 16:47:43 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/28 15:56:00 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ double	intersec_plan(t_minirt *minirt, t_ray rayon, t_shape plan)
 		/ dot_product2(plan.tuple_xyz, rayon.direction);
 	if (vec_magnitude2(vec_sub_vec2(plan.xyz,
 				apply_vec_to_nbr(vec_multiplication2(rayon.direction,
-						distance), minirt->camera->xyz))) > plan.diameter)
+						distance), minirt->camera->xyz))) > plan.diameter / 2)
 		return (-1);
 	return (distance);
 }

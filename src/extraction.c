@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extraction.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:12:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/22 16:33:54 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/28 15:58:00 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	get_plan(char **datas, t_minirt *minirt)
 	while (cur->next)
 		cur = cur->next;
 	cur->type = PLAN;
-	cur->diameter = 1000;
+	cur->diameter = 2000;
 	get_three_double(cur->xyz.coor, datas[1]);
 	get_three_double(cur->tuple_xyz.coor, datas[2]);
 	cur->transform = translation(cur->xyz.coor[0], cur->xyz.coor[1],
