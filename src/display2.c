@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:35:24 by yrio              #+#    #+#             */
-/*   Updated: 2025/01/23 15:36:27 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/29 16:25:27 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static t_shape	*closest_cylinder(t_minirt *minirt, t_ray rayon, double *min)
 	tmp = minirt->cylinder;
 	while (tmp)
 	{
-		distance = intersec_cylinder(minirt, rayon, *tmp);
+		distance = intersec_cylinder(minirt, rayon, tmp);
 		if (distance > 0 && distance < *min)
 		{
 			shape = tmp;

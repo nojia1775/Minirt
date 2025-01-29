@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/23 15:40:54 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/29 16:26:30 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@
 # define P 112
 # define SPACE 32
 # define TAB 65289
+
+# define EPSILON 0.00001
 
 # define PI 3.14159265358979323846
 
@@ -116,6 +118,8 @@ typedef struct s_shape
 	t_matrix			*mat;
 	struct s_shape		*next;
 	t_type				type;
+	int					close;
+	double				caps_dist;
 	double				distance;
 	t_canva				transform;
 }						t_shape;
@@ -146,6 +150,10 @@ typedef struct s_file_rt
 
 // yann
 t_tuple					*create_tuple(double x, double y, double z, int w);
+
+//intersection2
+int intersect_caps(t_shape cy, t_ray rayon);
+t_tuple normal_tuple_cylindre(t_shape cy, t_tuple point);
 
 // tuple_operation
 t_tuple					*vec_add_nbr(t_tuple *vec, double nbr);
@@ -230,7 +238,7 @@ void					print_coor(void *coor);
 void					cam_go_leftright(t_minirt *minirt, int left_right);
 void					cam_go_updown(t_minirt *minirt, int up_down);
 double					intersec_cylinder(t_minirt *minirt, t_ray rayon,
-							t_shape cylinder);
+							t_shape *cylinder);
 double					vec_magnitude2(t_tuple vec);
 void					my_mlx_new_img(t_minirt *minirt);
 t_tuple					negate_tuple(t_tuple tuple);
