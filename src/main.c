@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/17 19:38:16 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/22 16:48:28 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	close_win(void *param)
 {
 	t_minirt	*minirt;
-	
+
 	minirt = (t_minirt *)param;
 	free_minirt(minirt);
 	exit(0);
@@ -71,6 +71,7 @@ void	init_minirt(t_minirt *minirt)
 	minirt->img = NULL;
 	minirt->bits = 0;
 	minirt->size_line = 0;
+	minirt->color = 0.0;
 }
 
 int	main(int argc, char **argv, char **env)
@@ -86,39 +87,8 @@ int	main(int argc, char **argv, char **env)
 	mlx_key_hook(minirt.win, key_pressed, &minirt);
 	my_mlx_new_img(&minirt);
 	display_precision(&minirt);
+	printf("done\n");
 	mlx_loop(minirt.mlx);
 	free_minirt(&minirt);
 	return (0);
 }
-
-// int	main(void)
-// {
-// 	// test_multiply_matrix();
-// 	// test_multiply_matrix_4X4_by_tuple();
-// 	// transposing_matrix_4X4();
-// 	// test_determinant_2X2_matrix();
-// 	// test_submatrix_of_3X3_matrix();
-// 	// test_submatrix_of_4X4_matrix();
-// 	// test_minor_3X3_matrix();
-// 	// test_cofactor_3X3_matrix();
-// 	// test_determinant_3X3_matrix();
-// 	// test_determinant_of_4X4_matrix();
-// 	// test1_invert_4X4_matrix();
-// 	// test_multiply_product_by_inverse();
-// 	test_translation_matrix();
-// 	// test_scaling_matrix();
-// 	// test_rotation_matrix();
-// 	// test_shearing_matrix();
-// 	// test_chaining_matrix();
-// 	test_normal_at_sphere();
-// 	//test_reflect_function();
-// 	test_lighting_function();
-// 	test_rayon_position();
-// 	test_intersection_sphere();
-// 	test_encapsulates_t_shape();
-// 	test_hit_function();
-// 	test_transform_ray();
-// 	test_transformation_sphere_operation();
-
-// 	return (0);
-// }

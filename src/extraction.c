@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:12:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/17 19:36:18 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/28 18:26:12 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ int	get_ambient(char **datas, t_minirt *minirt)
 int	get_camera(char **datas, t_minirt *minirt)
 {
 	double	rad_fov_x;
-	double	ratio;
-	
+
 	if (minirt->camera != NULL)
 		return (printf("Error : camera : defined more than 1 time\n"), 0);
 	if (size_double_tab(datas) != 4)
@@ -50,12 +49,13 @@ int	get_camera(char **datas, t_minirt *minirt)
 		return (printf("Error : camera : alloc failed\n"), 0);
 	get_three_double(minirt->camera->xyz.coor, datas[1]);
 	get_three_double(minirt->camera->tuple_xyz.coor, datas[2]);
+	minirt->camera->tuple_xyz.coor[3] = 0;
 	minirt->camera->fov_x = atod(datas[3]);
 	rad_fov_x = convert_rad(minirt->camera->fov_x);
-	ratio = WIDTH / HEIGHT;
-	minirt->camera->fov_y = 2 * atan((tan(rad_fov_x / 2) / ratio));
+	minirt->camera->fov_y = 2 * atan((tan(rad_fov_x / 2) / (WIDTH / HEIGHT)));
 	minirt->camera->fov_y = minirt->camera->fov_y * 180 / PI;
-	minirt->camera->focal_length = (WIDTH / 2) / tan(convert_rad(minirt->camera->fov_x / 2));
+	minirt->camera->focal_length = (WIDTH / 2)
+		/ tan(convert_rad(minirt->camera->fov_x / 2));
 	return (1);
 }
 
@@ -99,11 +99,9 @@ int	get_sphere(char **datas, t_minirt *minirt)
 	cur->type = SPHERE;
 	while (cur->next)
 		cur = cur->next;
-	cur->type = SPHERE;
-	cur->transform = create_matrix_identity();
 	get_three_double(cur->xyz.coor, datas[1]);
-	cur->transform = translation(cur->xyz.coor[0], cur->xyz.coor[1], cur->xyz.coor[2]);
-	//cur->xyz = create_tuple2(0, 0, 0, 1);
+	cur->transform = translation(cur->xyz.coor[0], cur->xyz.coor[1],
+			cur->xyz.coor[2]);
 	cur->diameter = atod(datas[2]);
 	get_three_int(cur->rgb, datas[3]);
 	return (1);
@@ -128,9 +126,11 @@ int	get_plan(char **datas, t_minirt *minirt)
 	while (cur->next)
 		cur = cur->next;
 	cur->type = PLAN;
+	cur->diameter = 1000;
 	get_three_double(cur->xyz.coor, datas[1]);
 	get_three_double(cur->tuple_xyz.coor, datas[2]);
-	cur->transform = translation(cur->xyz.coor[0], cur->xyz.coor[1], cur->xyz.coor[0]);
+	cur->transform = translation(cur->xyz.coor[0], cur->xyz.coor[1],
+			cur->xyz.coor[0]);
 	get_three_int(cur->rgb, datas[3]);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:05:18 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/17 19:40:18 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/22 16:58:07 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	free_split(char **split)
 static int	create_data(char *tmp, t_file_rt **data)
 {
 	char	**line;
-	
+
 	if (!is_not_empty(tmp))
 		return (1);
 	if (char_not_recognized(tmp, "ACLplcys0123456789-., \t\n"))
@@ -51,9 +51,9 @@ static int	create_data(char *tmp, t_file_rt **data)
 
 int	extract_file(char *file, t_file_rt **data)
 {
-	int	fd;
+	int		fd;
 	char	*tmp;
-	
+
 	(void)data;
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
@@ -62,7 +62,7 @@ int	extract_file(char *file, t_file_rt **data)
 	{
 		tmp = get_next_line(fd);
 		if (tmp == NULL)
- 			break ;
+			break ;
 		if (!create_data(tmp, data))
 			return (0);
 		free(tmp);
@@ -90,7 +90,7 @@ static int	parse_datas(t_file_rt *data, t_minirt *minirt)
 			success = get_sphere(cur->line, minirt);
 		else if (!ft_strncmp(cur->line[0], "pl", 3))
 			success = get_plan(cur->line, minirt);
-		else if  (!ft_strncmp(cur->line[0], "cy", 3))
+		else if (!ft_strncmp(cur->line[0], "cy", 3))
 			success = get_cylinder(cur->line, minirt);
 		if (!success)
 			return (free_minirt(minirt), 0);

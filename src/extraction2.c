@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 16:04:38 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/17 19:36:32 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/29 15:12:27 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,9 @@ int	get_cylinder(char **datas, t_minirt *minirt)
 	cur->type = CYLINDER;
 	get_three_double(cur->xyz.coor, datas[1]);
 	get_three_double(cur->tuple_xyz.coor, datas[2]);
-	cur->transform = translation(cur->xyz.coor[0], cur->xyz.coor[1], cur->xyz.coor[0]);
-	cur->xyz = create_tuple2(0, 0, 0, 0);
 	cur->diameter = atod(datas[3]);
 	cur->height = atod(datas[4]);
-	get_three_int(cur->rgb, datas[5]);
-	return (1);
+	cur->close = 0;
+	cur->caps_dist = -1;
+	return (get_three_int(cur->rgb, datas[5]), 1);
 }

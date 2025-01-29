@@ -7,9 +7,10 @@ OBJS_DIR = obj
 SRCS =	src/main.c \
 	src/parsing.c \
 	src/vector_operation.c \
+	src/vector_operation2.c \
+	src/vector_operation3.c \
 	src/vector_utils.c \
 	src/matrix.c \
-	src/sphere.c \
 	src/free.c \
 	src/extraction.c \
 	src/utils.c \
@@ -19,20 +20,19 @@ SRCS =	src/main.c \
 	src/extraction2.c \
 	src/my_mlx_func.c \
 	src/display.c \
+	src/display2.c \
+	src/color.c \
 	src/utils3.c \
-	src/color_utils.c \
-	src/canva.c \
-	src/matrix_utils.c \
-	src/test_matrix.c \
-	src/matrix_transformation.c \
 	src/intersections.c \
+	src/intersections2.c \
 	src/cam_movement.c \
 	src/utils4.c \
-	src/vector_utils2.c \
-	src/ray_utils.c \
-	src/test2_matrix.c
+	src/canva.c \
+	src/matrix_transformation.c \
+	src/matrix_utils.c
 
 DEPS = $(OBJS:.o=.d)
+
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 

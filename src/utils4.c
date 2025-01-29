@@ -6,11 +6,25 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 16:20:45 by nojia             #+#    #+#             */
-/*   Updated: 2025/01/17 19:48:02 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/23 15:42:20 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
+
+double	get_positive_min(double a, double b)
+{
+	if (a < 0 && b < 0)
+		return (-1);
+	else if (a >= 0 && b < 0)
+		return (a);
+	else if (b >= 0 && a < 0)
+		return (b);
+	else if (a < b)
+		return (a);
+	else
+		return (b);
+}
 
 void	print_coor(void *coor)
 {
@@ -20,13 +34,20 @@ void	print_coor(void *coor)
 	printf("%f %f %f\n", vec->coor[0], vec->coor[1], vec->coor[2]);
 }
 
+t_tuple	negate_tuple(t_tuple tuple)
+{
+	tuple.coor[0] = -tuple.coor[0];
+	tuple.coor[1] = -tuple.coor[1];
+	tuple.coor[2] = -tuple.coor[2];
+	return (tuple);
+}
+
 t_tuple	normal_tuple_sphere(t_shape sphere, t_tuple world_point)
 {
-	t_canva inv_can = inverse_matrix_4X4(sphere.transform);
-	t_tuple result =  multiplying_matrix_4X4_tuple(inv_can, world_point);
-	t_canva transpose_inv_can = transpose_4X4_matrix(inv_can);
-	t_tuple result_world = multiplying_matrix_4X4_tuple(transpose_inv_can, result);
-	result_world.coor[3] = 0;
-	t_tuple *normalized_result_world = vec_normalization(&result_world);
+	t_tuple	result_world;
+	t_tuple	*normalized_result_world;
+
+	result_world = vec_sub_vec2(world_point, sphere.xyz);
+	normalized_result_world = vec_normalization(&result_world);
 	return (*normalized_result_world);
 }

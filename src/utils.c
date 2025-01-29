@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:15:06 by nadjemia          #+#    #+#             */
-/*   Updated: 2024/11/14 15:57:10 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/22 16:58:50 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ size_t	strlen_to_space(char *str)
 
 static long	modified_atoi(const char *nptr, int *decimal)
 {
-	int	i;
+	int		i;
 	long	result;
-	int	sign;
+	int		sign;
 
 	sign = 1;
 	i = 0;
@@ -57,14 +57,14 @@ static long	modified_atoi(const char *nptr, int *decimal)
 
 double	atod(char *nptr)
 {
-	int	decimal;
+	int		decimal;
 	double	result;
-	
+
 	decimal = 0;
 	result = (double)modified_atoi(nptr, &decimal);
 	if (decimal == 0)
 		return (result);
-	return (result / pow(10, decimal)); 
+	return (result / pow(10, decimal));
 }
 
 char	**tabdup(char **tab)
@@ -72,7 +72,7 @@ char	**tabdup(char **tab)
 	int		i;
 	int		tmp;
 	char	**arr;
-	
+
 	i = 0;
 	while (tab[i])
 		i++;
