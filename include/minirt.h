@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/30 17:03:40 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:18:41 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,7 @@ double					get_max(double a, double b);
 void					display_precision(t_minirt *minirt);
 double					dot_product2(t_tuple a, t_tuple b);
 t_tuple					vec_sub_vec2(t_tuple a, t_tuple b);
-double					intersec_plan(t_minirt *minirt, t_ray rayon,
+double					intersec_plan(t_tuple source, t_ray rayon,
 							t_shape plan);
 void					cam_look_leftright(t_minirt *minirt, double angle);
 void					cam_look_updown(t_minirt *minirt, double angle);
@@ -237,7 +237,7 @@ void					cam_go_frontback(t_minirt *minirt, int dir);
 void					print_coor(void *coor);
 void					cam_go_leftright(t_minirt *minirt, int left_right);
 void					cam_go_updown(t_minirt *minirt, int up_down);
-double					intersec_cylinder(t_minirt *minirt, t_ray rayon,
+double					intersec_cylinder(t_tuple source, t_ray rayon,
 							t_shape cylinder);
 double					vec_magnitude2(t_tuple vec);
 void					my_mlx_new_img(t_minirt *minirt);

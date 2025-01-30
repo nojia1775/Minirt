@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:35:24 by yrio              #+#    #+#             */
-/*   Updated: 2025/01/30 17:03:57 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:19:25 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static t_shape	*closest_sphere(t_minirt *minirt, t_tuple source, t_ray rayon, do
 	return (shape);
 }
 
-static t_shape	*closest_plan(t_minirt *minirt, t_ray rayon, double *min)
+static t_shape	*closest_plan(t_minirt *minirt, t_tuple source, t_ray rayon, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -43,7 +43,7 @@ static t_shape	*closest_plan(t_minirt *minirt, t_ray rayon, double *min)
 	tmp = minirt->plan;
 	while (tmp)
 	{
-		distance = intersec_plan(minirt, rayon, *tmp);
+		distance = intersec_plan(source, rayon, *tmp);
 		if (distance > 0 && distance < *min)
 		{
 			shape = tmp;
@@ -54,7 +54,7 @@ static t_shape	*closest_plan(t_minirt *minirt, t_ray rayon, double *min)
 	return (shape);
 }
 
-static t_shape	*closest_cylinder(t_minirt *minirt, t_ray rayon, double *min)
+static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple source, t_ray rayon, double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -64,7 +64,7 @@ static t_shape	*closest_cylinder(t_minirt *minirt, t_ray rayon, double *min)
 	tmp = minirt->cylinder;
 	while (tmp)
 	{
-		distance = intersec_cylinder(minirt, rayon, *tmp);
+		distance = intersec_cylinder(source, rayon, *tmp);
 		if (distance > 0 && distance < *min)
 		{
 			shape = tmp;
@@ -89,13 +89,13 @@ t_shape	*closest_shape(t_minirt *minirt, t_tuple source, t_ray rayon)
 		shape = tmp;
 		shape->distance = min;
 	}
-	tmp = closest_plan(minirt, rayon, &min);
+	tmp = closest_plan(minirt, source, rayon, &min);
 	if (tmp)
 	{
 		shape = tmp;
 		shape->distance = min;
 	}
-	tmp = closest_cylinder(minirt, rayon, &min);
+	tmp = closest_cylinder(minirt, source, rayon, &min);
 	if (tmp)
 	{
 		shape = tmp;

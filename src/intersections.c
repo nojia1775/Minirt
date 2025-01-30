@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2025/01/30 17:06:33 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:17:26 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ double	intersec_sphere(t_tuple source, t_ray rayon, t_shape sphere)
 			/ (2 * a)));
 }
 
-double	intersec_plan(t_minirt *minirt, t_ray rayon, t_shape plan)
+double	intersec_plan(t_tuple source, t_ray rayon, t_shape plan)
 {
 	t_tuple	p;
 	t_tuple	o;
@@ -47,16 +47,16 @@ double	intersec_plan(t_minirt *minirt, t_ray rayon, t_shape plan)
 
 	p = create_tuple2(plan.xyz.coor[0], plan.xyz.coor[1],
 			plan.xyz.coor[2], 0);
-	o = create_tuple2(minirt->camera->xyz.coor[0],
-			minirt->camera->xyz.coor[1],
-			minirt->camera->xyz.coor[2], 0);
+	o = create_tuple2(source.coor[0],
+			source.coor[1],
+			source.coor[2], 0);
 	if (dot_product2(plan.tuple_xyz, rayon.direction) == 0)
 		return (-1);
 	distance = (dot_product2(plan.tuple_xyz, vec_sub_vec2(p, o)))
 		/ dot_product2(plan.tuple_xyz, rayon.direction);
 	if (vec_magnitude2(vec_sub_vec2(plan.xyz,
 				apply_vec_to_nbr(vec_multiplication2(rayon.direction,
-						distance), minirt->camera->xyz))) > plan.diameter / 2)
+						distance), source))) > plan.diameter / 2)
 		return (-1);
 	return (distance);
 }
@@ -98,28 +98,28 @@ static void	get_bases_cy(t_shape cy, t_shape *base1, t_shape *base2)
 	base2->diameter = cy.diameter;
 }
 
-static double	intersec_base_cy(t_minirt *minirt, t_ray rayon, t_shape cy)
+static double	intersec_base_cy(t_tuple source, t_ray rayon, t_shape cy)
 {
 	t_shape	b1;
 	t_shape	b2;
 	double	dist_plan;
 
 	get_bases_cy(cy, &b1, &b2);
-	dist_plan = get_positive_min(intersec_plan(minirt, rayon, b2),
-			intersec_plan(minirt, rayon, b1));
+	dist_plan = get_positive_min(intersec_plan(source, rayon, b2),
+			intersec_plan(source, rayon, b1));
 	if (dist_plan < 0)
 		return (-1);
 	return (dist_plan);
 }
 
-double	intersec_cylinder(t_minirt *minirt, t_ray rayon, t_shape cy)
+double	intersec_cylinder(t_tuple source, t_ray rayon, t_shape cy)
 {
 	double	quadratic[3];
 	double	delta;
 	t_tuple	intersec;
 	t_tuple	oc;
 
-	oc = vec_sub_vec2(minirt->camera->xyz,
+	oc = vec_sub_vec2(source,
 			cy.xyz);
 	rayon.direction = vec_normalization2(rayon.direction);
 	quadratic[0] = dot_product2(rayon.direction, rayon.direction) - pow(
@@ -134,9 +134,9 @@ double	intersec_cylinder(t_minirt *minirt, t_ray rayon, t_shape cy)
 	intersec = apply_vec_to_nbr(vec_multiplication2(rayon.direction,
 				get_positive_min((-quadratic[1] + sqrt(delta)) / (2 * quadratic[0]),
 					(-quadratic[1] - sqrt(delta)) / (2 * quadratic[0]))),
-			minirt->camera->xyz);
+			source);
 	if (!point_in_cylinder(cy, intersec))
-		return (intersec_base_cy(minirt, rayon, cy));
+		return (intersec_base_cy(source, rayon, cy));
 	return (get_min((-quadratic[1] + sqrt(delta)) / (2 * quadratic[0]),
 			(-quadratic[1] - sqrt(delta)) / (2 * quadratic[0])));
 }

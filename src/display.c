@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/30 17:04:48 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:23:28 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@
 
 
 static void	print_image_precision(t_minirt *minirt, t_shape *shape,
-	int x, int y, t_tuple point)
+	int x, int y)
 {
 	int		color;
 	int		pixel_offset;
@@ -93,10 +93,7 @@ static void	print_image_precision(t_minirt *minirt, t_shape *shape,
 		exit(1);
 	}
 	pixel_offset = y * minirt->size_line + x * (minirt->bits / 8);
-	if (point.coor[0] >= -0.2 && point.coor[0] <= 0.2 && point.coor[1] >= -10.2 && point.coor[1] <= -9.8 && point.coor[2] >= 29.8 && point.coor[2] <= 30.2)
-		*(int *)(minirt->img + pixel_offset) = 0xFF0000;
-	else
-		*(int *)(minirt->img + pixel_offset) = color;
+	*(int *)(minirt->img + pixel_offset) = color;
 }
 
 // void	display(t_minirt *minirt)
@@ -135,7 +132,7 @@ void	compute_pixel(t_minirt *minirt, t_ray rayon, t_shape shape,
 	normalv = normal_tuple_sphere(shape, point);
 	minirt->color = lighting(minirt, point, negate_tuple(rayon.direction),
 			normalv);
-	print_image_precision(minirt, &shape, coor[0], coor[1], point);
+	print_image_precision(minirt, &shape, coor[0], coor[1]);
 }
 
 void	display_precision(t_minirt *minirt)
