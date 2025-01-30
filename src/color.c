@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:38:15 by yrio              #+#    #+#             */
-/*   Updated: 2025/01/30 17:04:19 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/30 19:31:48 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,12 @@ double	lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_tuple normalv)
 	compute_shadow.origin = minirt->light->xyz;
 	compute_shadow.direction = vec_normalization2(vec_sub_vec2(point, minirt->light->xyz));
 	shape = closest_shape(minirt, minirt->light->xyz, compute_shadow);
-	if (light_dot_normal < 0 || (shape && shape->type == SPHERE))
+	t_ray cam_ray = {
+		.direction = vec_sub_vec2(point, minirt->camera->xyz),
+		.origin = minirt->camera->xyz,
+	};
+	t_shape *point_shape = closest_shape(minirt, minirt->camera->xyz, cam_ray);
+	if (light_dot_normal < 0 || shape != point_shape)
 	{
 		diffuse = 0;
 		specular = 0;
