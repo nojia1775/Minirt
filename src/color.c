@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:38:15 by yrio              #+#    #+#             */
-/*   Updated: 2025/01/30 15:59:46 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:04:19 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,8 @@ double	lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_tuple normalv)
 	light_dot_normal = dot_product2(lightv, normalv);
 	compute_shadow.origin = minirt->light->xyz;
 	compute_shadow.direction = vec_normalization2(vec_sub_vec2(point, minirt->light->xyz));
-	printf("BEGIN ");
-	shape = closest_shape(minirt, compute_shadow);
-	printf(" END\n");
-	if (light_dot_normal < 0)
+	shape = closest_shape(minirt, minirt->light->xyz, compute_shadow);
+	if (light_dot_normal < 0 || (shape && shape->type == SPHERE))
 	{
 		diffuse = 0;
 		specular = 0;

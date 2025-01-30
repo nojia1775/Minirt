@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/30 15:37:10 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:04:48 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ void	display_precision(t_minirt *minirt)
 			pixel = create_tuple2(0.0, 0.0, 0.0, 0);
 			rayon.origin = minirt->camera->xyz;
 			rayon.direction = get_pixel_tuple(minirt, pixel, coor[0], coor[1]);
-			shape = closest_shape(minirt, rayon);
+			shape = closest_shape(minirt, minirt->camera->xyz, rayon);
 			if (shape)
 				compute_pixel(minirt, rayon, *shape, coor);
 			coor[0]++;

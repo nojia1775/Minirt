@@ -6,17 +6,16 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/30 15:20:18 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:03:40 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINIRT_H
 
 # define MINIRT_H
 
-# define WIDTH 500
-# define HEIGHT 500
+# define WIDTH 1000
+# define HEIGHT 1000
 
 # define AZERTY 0
 # define QWERTY 1
@@ -40,6 +39,8 @@
 # define P 112
 # define SPACE 32
 # define TAB 65289
+
+# define EPSILON 0.00001
 
 # define PI 3.14159265358979323846
 
@@ -117,6 +118,8 @@ typedef struct s_shape
 	t_matrix			*mat;
 	struct s_shape		*next;
 	t_type				type;
+	int					close;
+	double				caps_dist;
 	double				distance;
 	t_canva				transform;
 }						t_shape;
@@ -148,6 +151,10 @@ typedef struct s_file_rt
 // yann
 t_tuple					*create_tuple(double x, double y, double z, int w);
 
+//intersection2
+int intersect_caps(t_shape cy, t_ray rayon);
+t_tuple normal_tuple_cylindre(t_shape cy, t_tuple point);
+
 // tuple_operation
 t_tuple					*vec_add_nbr(t_tuple *vec, double nbr);
 t_tuple					*vec_add_vec(t_tuple *vec, t_tuple *add);
@@ -164,7 +171,7 @@ t_canva					create_canva(void);
 t_canva					create_matrix_identity(void);
 
 // display
-t_shape					*closest_shape(t_minirt *minirt, t_ray rayon);
+t_shape					*closest_shape(t_minirt* minirt, t_tuple source, t_ray rayon);
 
 // color
 double					lighting(t_minirt *minirt, t_tuple point, t_tuple eyev,
@@ -215,7 +222,7 @@ double					double_abs(double x);
 t_tuple					create_tuple2(double x, double y, double z, int w);
 t_tuple					get_pixel_tuple(t_minirt *minirt, t_tuple pixel, int x,
 							int y);
-double					intersec_sphere(t_minirt *minirt, t_ray rayon,
+double					intersec_sphere(t_tuple source, t_ray rayon,
 							t_shape sphere);
 double					get_min(double a, double b);
 double					get_max(double a, double b);
