@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/30 09:31:20 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/30 15:20:18 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # define MINIRT_H
 
-# define WIDTH 400
-# define HEIGHT 400
+# define WIDTH 500
+# define HEIGHT 500
 
 # define AZERTY 0
 # define QWERTY 1

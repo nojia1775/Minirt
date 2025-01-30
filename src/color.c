@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:38:15 by yrio              #+#    #+#             */
-/*   Updated: 2025/01/23 15:38:32 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/30 15:59:46 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,19 @@ double	lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_tuple normalv)
 	double	specular;
 	double	light_dot_normal;
 	t_tuple	lightv;
+	t_shape	*shape;
+	t_ray	compute_shadow;
 
-	ambient = 0.2;
+	ambient = minirt->ambient->ambient;
 	diffuse = 0.9;
 	lightv = vec_normalization2(vec_sub_vec2(minirt->light->xyz, point));
 	ambient = minirt->light->luminosity * ambient;
 	light_dot_normal = dot_product2(lightv, normalv);
+	compute_shadow.origin = minirt->light->xyz;
+	compute_shadow.direction = vec_normalization2(vec_sub_vec2(point, minirt->light->xyz));
+	printf("BEGIN ");
+	shape = closest_shape(minirt, compute_shadow);
+	printf(" END\n");
 	if (light_dot_normal < 0)
 	{
 		diffuse = 0;

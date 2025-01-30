@@ -63,13 +63,6 @@ t_tuple	get_pixel_tuple(t_minirt *minirt, t_tuple pixel, int x, int y)
 		+ u.coor[1] * x_y_screen[0] + v.coor[1] * x_y_screen[1];
 	pixel.coor[2] = normal_v_cam.coor[2] * minirt->camera->focal_length
 		+ u.coor[2] * x_y_screen[0] + v.coor[2] * x_y_screen[1];
-	if (x_y_screen[0] == 0 && x_y_screen[1] == 0)
-	{
-		printf("cam = %.2f %.2f %.2f\n", normal_v_cam.coor[0], normal_v_cam.coor[1], normal_v_cam.coor[2]);
-		printf("U = %.2f %.2f %.2f\n", u.coor[0], u.coor[1], u.coor[2]);
-		printf("V = %.2f %.2f %.2f\n", v.coor[0], v.coor[1], v.coor[2]);
-		
-	}
 	return (vec_normalization2(pixel));
 }
 

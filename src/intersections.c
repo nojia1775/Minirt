@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2025/01/30 09:31:41 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/30 15:02:05 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ double	intersec_sphere(t_minirt *minirt, t_ray rayon, t_shape sphere)
 					- sphere.xyz.coor[1]) * rayon.direction.coor[1])
 			+ ((minirt->camera->xyz.coor[2] - sphere.xyz.coor[2])
 				* rayon.direction.coor[2]));
-	if (b > 0)
-		return (-1);
 	c = pow(minirt->camera->xyz.coor[0] - sphere.xyz.coor[0], 2)
 		+ pow(minirt->camera->xyz.coor[1] - sphere.xyz.coor[1], 2)
 		+ pow(minirt->camera->xyz.coor[2] - sphere.xyz.coor[2], 2)

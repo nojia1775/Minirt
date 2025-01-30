@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:35:24 by yrio              #+#    #+#             */
-/*   Updated: 2025/01/23 15:36:27 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/30 15:59:24 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ t_shape	*closest_shape(t_minirt *minirt, t_ray rayon)
 	tmp = closest_sphere(minirt, rayon, &min);
 	if (tmp)
 	{
+		if (rayon.direction.coor[0] >= -0.1 && rayon.direction.coor[0] <= 0.1 && rayon.direction.coor[1] >= -1.0 && rayon.direction.coor[1] <= -0.8 && rayon.direction.coor[2] >= -0.5 && rayon.direction.coor[2] <= -0.3)
+			printf("ICI\n");
 		shape = tmp;
 		shape->distance = min;
 	}
