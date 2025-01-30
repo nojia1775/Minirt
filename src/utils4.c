@@ -3,15 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/01/24 11:50:55 by nojia            ###   ########.fr       */
+/*   Created: 2024/11/21 16:20:45 by nojia             #+#    #+#             */
+/*   Updated: 2025/01/30 09:31:52 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../include/minirt.h"
+
+double	get_positive_min(double a, double b)
+{
+	if (a < 0 && b < 0)
+		return (-1);
+	else if (a >= 0 && b < 0)
+		return (a);
+	else if (b >= 0 && a < 0)
+		return (b);
+	else if (a < b)
+		return (a);
+	else
+		return (b);
+}
 
 void	print_coor(void *coor)
 {

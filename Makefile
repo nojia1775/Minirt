@@ -7,6 +7,8 @@ OBJS_DIR = obj
 SRCS =	src/main.c \
 	src/parsing.c \
 	src/vector_operation.c \
+	src/vector_operation2.c \
+	src/vector_operation3.c \
 	src/vector_utils.c \
 	src/matrix.c \
 	src/free.c \
@@ -18,6 +20,8 @@ SRCS =	src/main.c \
 	src/extraction2.c \
 	src/my_mlx_func.c \
 	src/display.c \
+	src/display2.c \
+	src/color.c \
 	src/utils3.c \
 	src/projectile.c \
 	src/color_utils.c \

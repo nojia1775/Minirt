@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/24 11:54:11 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/30 09:31:20 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,13 @@ t_tuple					*vec_multiplication(t_tuple *vec, double scalar);
 t_canva					create_canva(void);
 
 t_canva					create_matrix_identity(void);
+
+// display
+t_shape					*closest_shape(t_minirt *minirt, t_ray rayon);
+
+// color
+double					lighting(t_minirt *minirt, t_tuple point, t_tuple eyev,
+							t_tuple normalv);
 
 // noah
 int						parsing(int argc, char **argv, char **env,

@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/28 14:14:17 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:31:28 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,166 +73,30 @@ static void	print_image_precision(t_minirt *minirt, t_shape *shape,
 	*(int *)(minirt->img + pixel_offset) = color;
 }
 
-
-static t_shape	*closest_sphere(t_minirt *minirt, t_ray rayon, double *min)
+void	display(t_minirt *minirt)
 {
-	t_shape	*tmp;
+	t_ray	rayon;
 	t_shape	*shape;
-	double	distance;
+	t_tuple	pixel;
+	int		y;
+	int		x;
 
-	shape = NULL;
-	tmp = minirt->sphere;
-	while (tmp)
+	y = 2;
+	while (y < HEIGHT)
 	{
-		distance = intersec_sphere(minirt, rayon, *tmp);
-		if (distance > 0 && distance < *min)
+		x = 2;
+		while (x < WIDTH)
 		{
-			shape = tmp;
-			*min = distance;
+			pixel = create_tuple2(0.0, 0.0, 0.0, 0);
+			rayon.origin = minirt->camera->xyz;
+			rayon.direction = get_pixel_tuple(minirt, pixel, x, y);
+			shape = closest_shape(minirt, rayon);
+			print_image(minirt, shape, x, y);
+			x += 5;
 		}
-		tmp = tmp->next;
+		y += 5;
 	}
-	return (shape);
-}
-
-static t_shape	*closest_plan(t_minirt *minirt, t_ray rayon, double *min)
-{
-	t_shape	*tmp;
-	t_shape	*shape;
-	double	distance;
-
-	shape = NULL;
-	tmp = minirt->plan;
-	while (tmp)
-	{
-		distance = intersec_plan(minirt, rayon, *tmp);
-		if (distance > 0 && distance < *min)
-		{
-			shape = tmp;
-			*min = distance;
-		}
-		tmp = tmp->next;
-	}
-	return (shape);
-}
-
-static t_shape	*closest_cylinder(t_minirt *minirt, t_ray rayon, double *min)
-{
-	t_shape	*tmp;
-	t_shape	*shape;
-	double	distance;
-
-	shape = NULL;
-	tmp = minirt->cylinder;
-	while (tmp)
-	{
-		distance = intersec_cylinder(minirt, rayon, *tmp);
-		if (distance > 0 && distance < *min)
-		{
-			shape = tmp;
-			*min = distance;
-		}
-		tmp = tmp->next;
-	}
-	return (shape);
-}
-
-t_shape	*closest_shape(t_minirt *minirt, t_ray rayon)
-{
-	double	min;
-	t_shape	*shape;
-	t_shape	*tmp;
-
-	shape = NULL;
-	min = 1000;
-	tmp = closest_sphere(minirt, rayon, &min);
-	if (tmp)
-	{
-		shape = tmp;
-		shape->distance = min;
-	}
-	tmp = closest_plan(minirt, rayon, &min);
-	if (tmp)
-	{
-		shape = tmp;
-		shape->distance = min;
-	}
-	tmp = closest_cylinder(minirt, rayon, &min);
-	if (tmp)
-	{
-		shape = tmp;
-		shape->distance = min;
-	}
-	return (shape);
-}
-
-// void	display(t_minirt *minirt)
-// {
-// 	t_ray	rayon;
-// 	t_shape	*shape;
-// 	t_tuple	pixel;
-// 	int		y;
-// 	int		x;
-
-// 	y = 2;
-// 	while (y < HEIGHT)
-// 	{
-// 		x = 2;
-// 		while (x < WIDTH)
-// 		{
-// 			pixel = create_tuple2(0.0, 0.0, 0.0, 0);
-// 			rayon.origin = minirt->camera->xyz;
-// 			rayon.direction = get_pixel_tuple(minirt, pixel, x, y);
-// 			shape = closest_shape(minirt, rayon);
-// 			print_image(minirt, shape, x, y);
-// 			x += 5;
-// 		}
-// 		y += 5;
-// 	}
-// 	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
-// }
-
-double	compute_specular(t_tuple lightv, t_tuple normalv, t_tuple eyev)
-{
-	double	reflect_dot_eye;
-	double	factor;
-	t_tuple	reflectv;
-
-	reflectv = reflect(negate_tuple(lightv), normalv);
-	reflect_dot_eye = dot_product2(reflectv, eyev);
-	if (reflect_dot_eye <= 0)
-		return (0.0);
-	else
-	{
-		factor = pow(reflect_dot_eye, 200.0);
-		return (0.9 * factor);
-	}
-}
-
-double	lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_tuple normalv)
-{
-	double	ambient;
-	double	diffuse;
-	double	specular;
-	double	light_dot_normal;
-	t_tuple	lightv;
-
-	ambient = 0.2;
-	diffuse = 0.9;
-	lightv = vec_normalization2(vec_sub_vec2(minirt->light->xyz, point));
-	ambient = minirt->light->luminosity * ambient;
-	light_dot_normal = dot_product2(lightv, normalv);
-	if (light_dot_normal < 0)
-	{
-		diffuse = 0;
-		specular = 0;
-	}
-	else
-	{
-		diffuse = minirt->light->luminosity * diffuse * light_dot_normal;
-		specular = compute_specular(lightv, normalv, eyev);
-	}
-	return (ambient + diffuse + specular);
+	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
 }
 
 void	compute_pixel(t_minirt *minirt, t_ray rayon, t_shape shape,
