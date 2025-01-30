@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2025/01/29 16:24:54 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/30 18:48:01 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,56 +62,56 @@ double	intersec_plan(t_minirt *minirt, t_ray rayon, t_shape plan)
 	return (distance);
 }
 
-// static int	point_in_cylinder(t_shape cy, t_tuple intersec)
-// {
-// 	t_tuple	intersec_proj;
+static int	point_in_cylinder(t_shape cy, t_tuple intersec)
+{
+	t_tuple	intersec_proj;
 
-// 	intersec_proj = vec_add_vec2(cy.xyz, vec_multiplication2(
-// 				cy.tuple_xyz, dot_product2(create_tuple2(
-// 						intersec.coor[0] - cy.xyz.coor[0],
-// 						intersec.coor[1] - cy.xyz.coor[1],
-// 						intersec.coor[2] - cy.xyz.coor[2], 0), cy.tuple_xyz)));
-// 	if (dot_product2(create_tuple2(intersec_proj.coor[0] - cy.xyz.coor[0],
-// 				intersec_proj.coor[1] - cy.xyz.coor[1],
-// 				intersec_proj.coor[2] - cy.xyz.coor[2], 0), cy.tuple_xyz) < 0)
-// 		return (0);
-// 	if (vec_magnitude2(create_tuple2(
-// 				intersec_proj.coor[0] - cy.xyz.coor[0],
-// 				intersec_proj.coor[1] - cy.xyz.coor[1],
-// 				intersec_proj.coor[2] - cy.xyz.coor[2], 0)) > cy.height)
-// 		return (0);
-// 	return (1);
-// }
+	intersec_proj = vec_add_vec2(cy.xyz, vec_multiplication2(
+				cy.tuple_xyz, dot_product2(create_tuple2(
+						intersec.coor[0] - cy.xyz.coor[0],
+						intersec.coor[1] - cy.xyz.coor[1],
+						intersec.coor[2] - cy.xyz.coor[2], 0), cy.tuple_xyz)));
+	if (dot_product2(create_tuple2(intersec_proj.coor[0] - cy.xyz.coor[0],
+				intersec_proj.coor[1] - cy.xyz.coor[1],
+				intersec_proj.coor[2] - cy.xyz.coor[2], 0), cy.tuple_xyz) < 0)
+		return (0);
+	if (vec_magnitude2(create_tuple2(
+				intersec_proj.coor[0] - cy.xyz.coor[0],
+				intersec_proj.coor[1] - cy.xyz.coor[1],
+				intersec_proj.coor[2] - cy.xyz.coor[2], 0)) > cy.height)
+		return (0);
+	return (1);
+}
 
-// static void	get_bases_cy(t_shape cy, t_shape *base1, t_shape *base2)
-// {
-// 	base1->xyz.coor[0] = cy.xyz.coor[0];
-// 	base1->xyz.coor[1] = cy.xyz.coor[1];
-// 	base1->xyz.coor[2] = cy.xyz.coor[2];
-// 	base1->tuple_xyz = cy.tuple_xyz;
-// 	base1->diameter = cy.diameter;
-// 	cy.xyz = apply_vec_to_nbr(vec_multiplication2(cy.tuple_xyz,
-// 				cy.height), cy.xyz);
-// 	base2->xyz.coor[0] = cy.xyz.coor[0];
-// 	base2->xyz.coor[1] = cy.xyz.coor[1];
-// 	base2->xyz.coor[2] = cy.xyz.coor[2];
-// 	base2->tuple_xyz = cy.tuple_xyz;
-// 	base2->diameter = cy.diameter;
-// }
+static void	get_bases_cy(t_shape cy, t_shape *base1, t_shape *base2)
+{
+	base1->xyz.coor[0] = cy.xyz.coor[0];
+	base1->xyz.coor[1] = cy.xyz.coor[1];
+	base1->xyz.coor[2] = cy.xyz.coor[2];
+	base1->tuple_xyz = cy.tuple_xyz;
+	base1->diameter = cy.diameter;
+	cy.xyz = apply_vec_to_nbr(vec_multiplication2(cy.tuple_xyz,
+				cy.height), cy.xyz);
+	base2->xyz.coor[0] = cy.xyz.coor[0];
+	base2->xyz.coor[1] = cy.xyz.coor[1];
+	base2->xyz.coor[2] = cy.xyz.coor[2];
+	base2->tuple_xyz = cy.tuple_xyz;
+	base2->diameter = cy.diameter;
+}
 
-// static double	intersec_base_cy(t_minirt *minirt, t_ray rayon, t_shape cy)
-// {
-// 	t_shape	b1;
-// 	t_shape	b2;
-// 	double	dist_plan;
+static double	intersec_base_cy(t_minirt *minirt, t_ray rayon, t_shape cy)
+{
+	t_shape	b1;
+	t_shape	b2;
+	double	dist_plan;
 
-// 	get_bases_cy(cy, &b1, &b2);
-// 	dist_plan = get_positive_min(intersec_plan(minirt, rayon, b2),
-// 			intersec_plan(minirt, rayon, b1));
-// 	if (dist_plan < 0)
-// 		return (-1);
-// 	return (dist_plan);
-// }
+	get_bases_cy(cy, &b1, &b2);
+	dist_plan = get_positive_min(intersec_plan(minirt, rayon, b2),
+			intersec_plan(minirt, rayon, b1));
+	if (dist_plan < 0)
+		return (-1);
+	return (dist_plan);
+}
 
 int	truncate_cylinder(t_shape cy, t_ray rayon, double t0, double t1)
 {
@@ -139,31 +139,35 @@ double	intersec_cylinder(t_minirt *minirt, t_ray rayon, t_shape *cy)
 {
 	double	quadratic[3];
 	double	delta;
+	t_tuple	intersec;
 	t_tuple	oc;
 
 	delta = 0;
+	cy->close = 0;
 	oc = vec_sub_vec2(minirt->camera->xyz,
 			cy->xyz);
 	rayon.direction = vec_normalization2(rayon.direction);
 	quadratic[0] = dot_product2(rayon.direction, rayon.direction) - pow(
 			dot_product2(rayon.direction, vec_normalization2(cy->tuple_xyz)), 2);
-	if (quadratic[0] == 0)
-		cy->caps_dist = intersect_caps(*cy, rayon);
-	else
-	{
-		quadratic[1] = 2 * (dot_product2(rayon.direction, oc) - dot_product2(
+	quadratic[1] = 2 * (dot_product2(rayon.direction, oc) - dot_product2(
 				rayon.direction, vec_normalization2(cy->tuple_xyz)) * dot_product2(oc, vec_normalization2(cy->tuple_xyz)));
-		quadratic[2] = dot_product2(oc, oc) - pow(dot_product2(oc, vec_normalization2(cy->tuple_xyz)), 2)
-			- pow(cy->diameter / 2, 2);
-		delta = pow(quadratic[1], 2) - 4 * quadratic[0] * quadratic[2];
-		if (delta < 0)
-			return (-1);
-		if (!truncate_cylinder(*cy, rayon, (-quadratic[1] - sqrt(delta)) / (2 * quadratic[0]),\
-			(-quadratic[1] + sqrt(delta)) / (2 * quadratic[0])))
-			return (0);
-		cy->caps_dist = intersect_caps(*cy, rayon);
+	quadratic[2] = dot_product2(oc, oc) - pow(dot_product2(oc, vec_normalization2(cy->tuple_xyz)), 2)
+		- pow(cy->diameter / 2, 2);
+	delta = pow(quadratic[1], 2) - 4 * quadratic[0] * quadratic[2];
+	if (delta < 0)
+		return (-1);
+	if (!truncate_cylinder(*cy, rayon, (-quadratic[1] - sqrt(delta)) / (2 * quadratic[0]),\
+		(-quadratic[1] + sqrt(delta)) / (2 * quadratic[0])))
+		return (0);
+	intersec = apply_vec_to_nbr(vec_multiplication2(rayon.direction,
+				get_positive_min((-quadratic[1] + sqrt(delta)) / (2 * quadratic[0]),
+					(-quadratic[1] - sqrt(delta)) / (2 * quadratic[0]))),
+			minirt->camera->xyz);
+	if (!point_in_cylinder(*cy, intersec))
+	{
+		cy->close = 1;
+		return (intersec_base_cy(minirt, rayon, *cy));
 	}
 	return (get_min((-quadratic[1] + sqrt(delta)) / (2 * quadratic[0]),
 			(-quadratic[1] - sqrt(delta)) / (2 * quadratic[0])));
-	return (0);
 }
