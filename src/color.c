@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:38:15 by yrio              #+#    #+#             */
-/*   Updated: 2025/01/23 15:38:32 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/31 18:31:34 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ double	lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_tuple normalv)
 	double	light_dot_normal;
 	t_tuple	lightv;
 
-	ambient = 0.2;
+	ambient = 0.3;
 	diffuse = 0.9;
 	lightv = vec_normalization2(vec_sub_vec2(minirt->light->xyz, point));
 	ambient = minirt->light->luminosity * ambient;

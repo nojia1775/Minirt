@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/30 18:37:49 by yrio             ###   ########.fr       */
+/*   Updated: 2025/01/31 18:30:56 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,14 +103,13 @@ void	compute_pixel(t_minirt *minirt, t_ray rayon, t_shape shape,
 
 	point = vec_multiplication2(rayon.direction, shape.distance);
 	if (shape.type == CYLINDER && shape.close == 1)
-	{
 		normalv = normal_tuple_cylindre(shape, point);
-		// printf("normalv x : %f, y : %f, z : %f\n", normalv.coor[0], normalv.coor[1], normalv.coor[2]);
-	}
 	else
 		normalv = normal_tuple_sphere(shape, point);
 	minirt->color = lighting(minirt, point, negate_tuple(rayon.direction),
 				normalv);
+	if (shape.type == PLAN)
+		minirt->color = minirt->light->luminosity * 3;
 	print_image_precision(minirt, &shape, coor[0], coor[1]);
 }
 
