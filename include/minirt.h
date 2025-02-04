@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/31 19:23:36 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/04 17:15:42 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # define WIDTH 500
 # define HEIGHT 500
 
-# define AZERTY 1
-# define QWERTY 0
+# define AZERTY 0
+# define QWERTY 1
 
 # define ESC 65307
 # define A_RIGHT 65363
@@ -39,6 +39,8 @@
 # define P 112
 # define SPACE 32
 # define TAB 65289
+
+# define EPSILON 0.00001
 
 # define EPSILON 0.00001
 
@@ -120,6 +122,8 @@ typedef struct s_shape
 	t_type				type;
 	int					close;
 	double				caps_dist;
+	int					close;
+	double				caps_dist;
 	double				distance;
 	t_canva				transform;
 }						t_shape;
@@ -150,6 +154,10 @@ typedef struct s_file_rt
 
 // yann
 t_tuple					*create_tuple(double x, double y, double z, int w);
+
+//intersection2
+int intersect_caps(t_shape cy, t_ray rayon);
+t_tuple normal_tuple_cylindre(t_shape cy, t_tuple point);
 
 //intersection2
 int intersect_caps(t_shape cy, t_ray rayon);

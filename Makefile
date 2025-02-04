@@ -1,6 +1,10 @@
 CC = cc
 
+<<<<<<<<< Temporary merge branch 1
+CFLAGS = -Wall -Wextra -Werror -O3
+=========
 CFLAGS = -Wall -Wextra -Werror -g -MMD -O3
+>>>>>>>>> Temporary merge branch 2
 
 OBJS_DIR = obj
 
@@ -23,13 +27,8 @@ SRCS =	src/main.c \
 	src/display2.c \
 	src/color.c \
 	src/utils3.c \
-	src/projectile.c \
-	src/color_utils.c \
-	src/canva.c \
-	src/matrix_utils.c \
-	src/test_matrix.c \
-	src/matrix_transformation.c \
 	src/intersections.c \
+	src/intersections2.c \
 	src/cam_movement.c \
 	src/utils4.c \
 	src/canva.c \
@@ -38,7 +37,6 @@ SRCS =	src/main.c \
 
 DEPS = $(OBJS:.o=.d)
 
-DEPS = $(OBJS:.o=.d)
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 

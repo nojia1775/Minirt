@@ -39,7 +39,6 @@ t_tuple	*vec_add_vec(t_tuple *vec, t_tuple *add)
 	vec->coor[0] = vec->coor[0] + add->coor[0];
 	vec->coor[1] = vec->coor[1] + add->coor[1];
 	vec->coor[2] = vec->coor[2] + add->coor[2];
-	vec->coor[3] = vec->coor[3] + add->coor[3];
 	return (vec);
 }
 
@@ -60,6 +59,5 @@ t_tuple	*vec_sub_vec(t_tuple *vec, t_tuple *add)
 	vec->coor[0] = vec->coor[0] - add->coor[0];
 	vec->coor[1] = vec->coor[1] - add->coor[1];
 	vec->coor[2] = vec->coor[2] - add->coor[2];
-	vec->coor[3] = vec->coor[3] - add->coor[3];
 	return (vec);
 }
