@@ -1,10 +1,6 @@
 CC = cc
 
-<<<<<<<<< Temporary merge branch 1
-CFLAGS = -Wall -Wextra -Werror -O3
-=========
 CFLAGS = -Wall -Wextra -Werror -g -MMD -O3
->>>>>>>>> Temporary merge branch 2
 
 OBJS_DIR = obj
 

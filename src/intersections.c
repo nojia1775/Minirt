@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2025/02/04 17:25:02 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/04 18:15:20 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ int	truncate_cylinder(t_shape cy, t_ray rayon, double t0, double t1)
 	return (0);
 }
 
-double	intersec_cylinder(t_minirt *minirt, t_ray rayon, t_shape *cy)
+double	intersec_cylinder(t_tuple source, t_ray rayon, t_shape cy)
 {
 	double	quadratic[3];
 	double	delta;
@@ -142,30 +142,30 @@ double	intersec_cylinder(t_minirt *minirt, t_ray rayon, t_shape *cy)
 	t_tuple	oc;
 
 	delta = 0;
-	cy->close = 0;
-	oc = vec_sub_vec2(minirt->camera->xyz,
-			cy->xyz);
+	cy.close = 0;
+	oc = vec_sub_vec2(source,
+			cy.xyz);
 	rayon.direction = vec_normalization2(rayon.direction);
 	quadratic[0] = dot_product2(rayon.direction, rayon.direction) - pow(
-			dot_product2(rayon.direction, vec_normalization2(cy->tuple_xyz)), 2);
+			dot_product2(rayon.direction, vec_normalization2(cy.tuple_xyz)), 2);
 	quadratic[1] = 2 * (dot_product2(rayon.direction, oc) - dot_product2(
-				rayon.direction, vec_normalization2(cy->tuple_xyz)) * dot_product2(oc, vec_normalization2(cy->tuple_xyz)));
-	quadratic[2] = dot_product2(oc, oc) - pow(dot_product2(oc, vec_normalization2(cy->tuple_xyz)), 2)
-		- pow(cy->diameter / 2, 2);
+				rayon.direction, vec_normalization2(cy.tuple_xyz)) * dot_product2(oc, vec_normalization2(cy.tuple_xyz)));
+	quadratic[2] = dot_product2(oc, oc) - pow(dot_product2(oc, vec_normalization2(cy.tuple_xyz)), 2)
+		- pow(cy.diameter / 2, 2);
 	delta = pow(quadratic[1], 2) - 4 * quadratic[0] * quadratic[2];
 	if (delta < 0)
 		return (-1);
-	if (!truncate_cylinder(*cy, rayon, (-quadratic[1] - sqrt(delta)) / (2 * quadratic[0]),\
+	if (!truncate_cylinder(cy, rayon, (-quadratic[1] - sqrt(delta)) / (2 * quadratic[0]),\
 		(-quadratic[1] + sqrt(delta)) / (2 * quadratic[0])))
 		return (0);
 	intersec = apply_vec_to_nbr(vec_multiplication2(rayon.direction,
 				get_positive_min((-quadratic[1] + sqrt(delta)) / (2 * quadratic[0]),
 					(-quadratic[1] - sqrt(delta)) / (2 * quadratic[0]))),
 			source);
-	if (!point_in_cylinder(*cy, intersec))
+	if (!point_in_cylinder(cy, intersec))
 	{
-		cy->close = 1;
-		return (intersec_base_cy(source, rayon, *cy));
+		cy.close = 1;
+		return (intersec_base_cy(source, rayon, cy));
 	}
 	return (get_min((-quadratic[1] + sqrt(delta)) / (2 * quadratic[0]),
 			(-quadratic[1] - sqrt(delta)) / (2 * quadratic[0])));

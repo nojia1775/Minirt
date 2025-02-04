@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/04 17:15:42 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/04 18:32:55 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,6 @@
 # define QWERTY 1
 
 # define ESC 65307
-# define A_RIGHT 65363
-# define A_UP 65362
-# define A_LEFT 65361
-# define A_DOWN 65364
-# if AZERTY
-#  define UP 122
-#  define DOWN 115
-#  define LEFT 113
-#  define RIGHT 100
-# elif QWERTY
-#  define UP 119
-#  define DOWN 115
-#  define LEFT 97
-#  define RIGHT 100
-# endif
-# define P 112
-# define SPACE 32
-# define TAB 65289
-
-# define EPSILON 0.00001
 
 # define EPSILON 0.00001
 
@@ -120,8 +100,6 @@ typedef struct s_shape
 	t_matrix			*mat;
 	struct s_shape		*next;
 	t_type				type;
-	int					close;
-	double				caps_dist;
 	int					close;
 	double				caps_dist;
 	double				distance;

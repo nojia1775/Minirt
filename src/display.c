@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/04 17:21:47 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/04 18:30:42 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,99 +96,6 @@ static void	print_image_precision(t_minirt *minirt, t_shape *shape,
 	*(int *)(minirt->img + pixel_offset) = color;
 }
 
-<<<<<<<<< Temporary merge branch 1
-static t_shape	*closest_sphere(t_minirt *minirt, t_tuple pixel, double *min)
-{
-	t_shape	*tmp;
-	t_shape	*shape;
-	double	distance;
-	
-	shape = NULL;
-	tmp = minirt->sphere;
-	while (tmp)
-	{
-		distance = intersec_sphere(minirt, pixel, *tmp);
-		if (distance > 0 && distance < *min)
-		{
-			shape = tmp;
-			*min = distance;
-		}
-		tmp = tmp->next;
-	}
-	if (shape)
-		shape->distance = *min;
-	return (shape);
-}
-
-static t_shape	*closest_plan(t_minirt *minirt, t_tuple pixel, double *min)
-{
-	t_shape	*tmp;
-	t_shape	*shape;
-	double	distance;
-	
-	shape = NULL;
-	tmp = minirt->plan;
-	while (tmp)
-	{
-		distance = intersec_plan(minirt, pixel, *tmp);
-		if (distance > 0 && distance < *min)
-		{
-			shape = tmp;
-			*min = distance;
-		}
-		tmp = tmp->next;
-	}
-	if (shape)
-		shape->distance = *min;
-	return (shape);
-}
-
-static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple pixel, double *min)
-{
-	t_shape	*tmp;
-	t_shape	*shape;
-	double	distance;
-	
-	shape = NULL;
-	tmp = minirt->cylinder;
-	while (tmp)
-	{
-		distance = intersec_cylinder(minirt, pixel, *tmp);
-		if (distance > 0 && distance < *min)
-		{
-			shape = tmp;
-			*min = distance;
-		}
-		tmp = tmp->next;
-	}
-	if (shape)
-		shape->distance = *min;
-	return (shape);
-}
-
-t_shape	*closest_shape(t_minirt *minirt, t_tuple pixel)
-{
-	double	min;
-	t_shape	*shape;
-	t_shape	*tmp;
-
-	shape = NULL;
-	min = 1000;
-	tmp = closest_sphere(minirt, pixel, &min);
-	if (tmp)
-		shape = tmp;
-	tmp = closest_plan(minirt, pixel, &min);
-	if (tmp)
-		shape = tmp;
-	tmp = closest_cylinder(minirt, pixel, &min);
-	if (tmp)
-	{
-		shape = tmp;
-		shape->distance = min;
-	}
-	return (shape);
-}
-
 void	compute_pixel(t_minirt *minirt, t_ray rayon, t_shape shape,
 	int *coor)
 {
@@ -202,8 +109,8 @@ void	compute_pixel(t_minirt *minirt, t_ray rayon, t_shape shape,
 		normalv = normal_tuple_sphere(shape, point);
 	minirt->color = lighting(minirt, point, negate_tuple(rayon.direction),
 				normalv);
-	if (shape.type == PLAN)
-		minirt->color = minirt->light->luminosity * 3;
+	// if (shape.type == PLAN)
+	// 	minirt->color = minirt->light->luminosity * 3;
 	print_image_precision(minirt, &shape, coor[0], coor[1]);
 }
 
@@ -231,4 +138,4 @@ void	display_precision(t_minirt *minirt)
 		coor[1]++;
 	}
 	mlx_put_image_to_window(minirt->mlx, minirt->win, minirt->addr_img, 0, 0);
-}	
+}
