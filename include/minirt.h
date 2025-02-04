@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/30 19:04:45 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/31 19:23:36 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # define WIDTH 500
 # define HEIGHT 500
 
-# define AZERTY 0
-# define QWERTY 1
+# define AZERTY 1
+# define QWERTY 0
 
 # define ESC 65307
 # define A_RIGHT 65363
