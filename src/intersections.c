@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2025/02/04 18:15:20 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/06 11:46:51 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,9 @@ static void	get_bases_cy(t_shape cy, t_shape *base1, t_shape *base2)
 	base1->xyz.coor[2] = cy.xyz.coor[2];
 	base1->tuple_xyz = cy.tuple_xyz;
 	base1->diameter = cy.diameter;
+	base1->rgb[0] = cy.rgb[0];
+	base1->rgb[1] = cy.rgb[1];
+	base1->rgb[2] = cy.rgb[2];
 	cy.xyz = apply_vec_to_nbr(vec_multiplication2(cy.tuple_xyz,
 				cy.height), cy.xyz);
 	base2->xyz.coor[0] = cy.xyz.coor[0];
@@ -96,20 +99,35 @@ static void	get_bases_cy(t_shape cy, t_shape *base1, t_shape *base2)
 	base2->xyz.coor[2] = cy.xyz.coor[2];
 	base2->tuple_xyz = cy.tuple_xyz;
 	base2->diameter = cy.diameter;
+	base2->rgb[0] = cy.rgb[0];
+	base2->rgb[1] = cy.rgb[1];
+	base2->rgb[2] = cy.rgb[2];
 }
 
-static double	intersec_base_cy(t_tuple source, t_ray rayon, t_shape cy)
+static t_cy_part	intersec_base_cy(t_tuple source, t_ray rayon, t_shape cy)
 {
 	t_shape	b1;
 	t_shape	b2;
 	double	dist_plan;
+	t_cy_part	cy_part1;
+	t_cy_part	cy_part2;
 
 	get_bases_cy(cy, &b1, &b2);
-	dist_plan = get_positive_min(intersec_plan(source, rayon, b2),
-			intersec_plan(source, rayon, b1));
+	cy_part1.shape = &b1;
+	cy_part1.distance = intersec_plan(source, rayon, b1);
+	cy_part2.shape = &b2;
+	cy_part2.distance = intersec_plan(source, rayon, b2);
+	dist_plan = get_positive_min(intersec_plan(source, rayon, *cy_part2.shape),
+			intersec_plan(source, rayon, *cy_part1.shape));
 	if (dist_plan < 0)
-		return (-1);
-	return (dist_plan);
+	{
+		cy_part1.shape = NULL;
+		cy_part1.distance = -1;
+		return (cy_part1);
+	}
+	if (dist_plan == cy_part1.distance)
+		return (cy_part1);
+	return (cy_part2);
 }
 
 int	truncate_cylinder(t_shape cy, t_ray rayon, double t0, double t1)
@@ -134,13 +152,16 @@ int	truncate_cylinder(t_shape cy, t_ray rayon, double t0, double t1)
 	return (0);
 }
 
-double	intersec_cylinder(t_tuple source, t_ray rayon, t_shape cy)
+t_cy_part	intersec_cylinder(t_tuple source, t_ray rayon, t_shape cy)
 {
 	double	quadratic[3];
 	double	delta;
 	t_tuple	intersec;
 	t_tuple	oc;
-
+	t_cy_part	cy_part;
+	
+	cy_part.shape = NULL;
+	cy_part.distance = -1;
 	delta = 0;
 	cy.close = 0;
 	oc = vec_sub_vec2(source,
@@ -154,10 +175,10 @@ double	intersec_cylinder(t_tuple source, t_ray rayon, t_shape cy)
 		- pow(cy.diameter / 2, 2);
 	delta = pow(quadratic[1], 2) - 4 * quadratic[0] * quadratic[2];
 	if (delta < 0)
-		return (-1);
+		return (cy_part);
 	if (!truncate_cylinder(cy, rayon, (-quadratic[1] - sqrt(delta)) / (2 * quadratic[0]),\
 		(-quadratic[1] + sqrt(delta)) / (2 * quadratic[0])))
-		return (0);
+		return (cy_part);
 	intersec = apply_vec_to_nbr(vec_multiplication2(rayon.direction,
 				get_positive_min((-quadratic[1] + sqrt(delta)) / (2 * quadratic[0]),
 					(-quadratic[1] - sqrt(delta)) / (2 * quadratic[0]))),
@@ -167,6 +188,8 @@ double	intersec_cylinder(t_tuple source, t_ray rayon, t_shape cy)
 		cy.close = 1;
 		return (intersec_base_cy(source, rayon, cy));
 	}
-	return (get_min((-quadratic[1] + sqrt(delta)) / (2 * quadratic[0]),
-			(-quadratic[1] - sqrt(delta)) / (2 * quadratic[0])));
+	cy_part.shape = &cy;
+	cy_part.distance = get_min((-quadratic[1] + sqrt(delta)) / (2 * quadratic[0]),
+			(-quadratic[1] - sqrt(delta)) / (2 * quadratic[0]));
+	return (cy_part);
 }

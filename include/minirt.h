@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/04 18:32:55 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/06 11:44:04 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@
 # include <unistd.h>
 
 typedef unsigned char	t_uint8;
-
 typedef enum e_type
 {
 	SPHERE,
@@ -106,6 +105,12 @@ typedef struct s_shape
 	t_canva				transform;
 }						t_shape;
 
+typedef struct	s_cy_part
+{
+	t_shape	*shape;
+	double	distance;
+}
+	t_cy_part;
 typedef struct s_minirt
 {
 	void				*mlx;
@@ -223,7 +228,7 @@ void					cam_go_frontback(t_minirt *minirt, int dir);
 void					print_coor(void *coor);
 void					cam_go_leftright(t_minirt *minirt, int left_right);
 void					cam_go_updown(t_minirt *minirt, int up_down);
-double					intersec_cylinder(t_tuple source, t_ray rayon,
+t_cy_part				intersec_cylinder(t_tuple source, t_ray rayon,
 							t_shape cylinder);
 double					vec_magnitude2(t_tuple vec);
 void					my_mlx_new_img(t_minirt *minirt);

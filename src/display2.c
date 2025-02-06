@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:35:24 by yrio              #+#    #+#             */
-/*   Updated: 2025/02/04 17:22:37 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/06 11:41:03 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,17 @@ static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple source, t_ray rayon, 
 {
 	t_shape	*tmp;
 	t_shape	*shape;
-	double	distance;
-
+	t_cy_part	cy_part;
+	
 	shape = NULL;
 	tmp = minirt->cylinder;
 	while (tmp)
 	{
-		distance = intersec_cylinder(source, rayon, *tmp);
-		if (distance > 0 && distance < *min)
+		cy_part = intersec_cylinder(source, rayon, *tmp);
+		if (cy_part.distance > 0 && cy_part.distance < *min)
 		{
-			shape = tmp;
-			*min = distance;
+			shape = cy_part.shape;
+			*min = cy_part.distance;
 		}
 		tmp = tmp->next;
 	}
