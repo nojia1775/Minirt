@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:15:32 by nadjemia          #+#    #+#             */
-/*   Updated: 2023/11/18 11:43:51 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/02/07 11:06:41 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	ft_fill(char *result, int n, int *i)
 char	*ft_min(int n)
 {
 	char	*result;
-	int	i;
+	int		i;
 
 	i = 1;
 	result = (char *)malloc(sizeof(char) * 12);

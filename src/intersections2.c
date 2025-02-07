@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:36:14 by yrio              #+#    #+#             */
-/*   Updated: 2025/02/06 10:44:54 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/07 14:58:33 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 
 t_tuple	normal_tuple_cylindre(t_shape cy, t_tuple point)
 {
-	double dist;
+	double	dist;
 
 	dist = pow(point.coor[0], 2) + pow(point.coor[2], 2);
 	if (dist < (cy.diameter / 2) && point.coor[1] >= cy.height - EPSILON)
 		return (create_tuple2(0, 1, 0, 0));
-	else if (dist < (cy.diameter / 2) && point.coor[1] <= cy.xyz.coor[1] + EPSILON)
+	else if (dist < (cy.diameter / 2) && point.coor[1] <= cy.xyz.coor[1]
+		+ EPSILON)
 		return (create_tuple2(0, -1, 0, 0));
 	point.coor[1] = 0;
 	point.coor[3] = 0;
@@ -28,8 +29,8 @@ t_tuple	normal_tuple_cylindre(t_shape cy, t_tuple point)
 
 int	check_cap(t_ray rayon, int t, int diametre)
 {
-	double x;
-	double z;
+	double	x;
+	double	z;
 
 	x = rayon.origin.coor[0] + t * rayon.direction.coor[0];
 	z = rayon.origin.coor[2] + t * rayon.direction.coor[2];
@@ -41,11 +42,11 @@ int	check_cap(t_ray rayon, int t, int diametre)
 
 int	intersect_caps(t_shape cy, t_ray rayon)
 {
-	double  test_cap;
-	int     axis_index;
-	double  minimum;
-	double  maximum;
-	
+	int		axis_index;
+	double	test_cap;
+	double	minimum;
+	double	maximum;
+
 	axis_index = 1;
 	if (cy.tuple_xyz.coor[0] == 1)
 		axis_index = 0;

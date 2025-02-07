@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extraction2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 16:04:38 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/04 17:23:18 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/07 15:01:39 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,5 @@ int	get_cylinder(char **datas, t_minirt *minirt)
 	cur->diameter = atod(datas[3]);
 	cur->height = atod(datas[4]);
 	cur->close = 0;
-	// cur->caps_dist = -1;
 	return (get_three_int(cur->rgb, datas[5]), 1);
 }

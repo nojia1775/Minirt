@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   display2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:35:24 by yrio              #+#    #+#             */
-/*   Updated: 2025/02/06 11:41:03 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/07 12:31:14 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-static t_shape	*closest_sphere(t_minirt *minirt, t_tuple source, t_ray rayon, double *min)
+static t_shape	*closest_sphere(t_minirt *minirt, t_tuple source, t_ray rayon,
+	double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -33,7 +34,8 @@ static t_shape	*closest_sphere(t_minirt *minirt, t_tuple source, t_ray rayon, do
 	return (shape);
 }
 
-static t_shape	*closest_plan(t_minirt *minirt, t_tuple source, t_ray rayon, double *min)
+static t_shape	*closest_plan(t_minirt *minirt, t_tuple source, t_ray rayon,
+	double *min)
 {
 	t_shape	*tmp;
 	t_shape	*shape;
@@ -54,12 +56,13 @@ static t_shape	*closest_plan(t_minirt *minirt, t_tuple source, t_ray rayon, doub
 	return (shape);
 }
 
-static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple source, t_ray rayon, double *min)
+static t_shape	*closest_cylinder(t_minirt *minirt, t_tuple source, t_ray rayon,
+	double *min)
 {
-	t_shape	*tmp;
-	t_shape	*shape;
+	t_shape		*tmp;
+	t_shape		*shape;
 	t_cy_part	cy_part;
-	
+
 	shape = NULL;
 	tmp = minirt->cylinder;
 	while (tmp)
