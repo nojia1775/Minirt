@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:38:15 by yrio              #+#    #+#             */
-/*   Updated: 2025/02/07 16:34:39 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/02/07 17:54:33 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static t_shadow	compute_shadow(t_minirt *minirt, t_tuple point)
 	t_ray	light_to_point;
 	t_ray	cam_to_point;
 	t_shadow	shapes;
+
 	light_to_point.origin = minirt->light->xyz;
 	light_to_point.direction = vec_normalization2(
 			vec_sub_vec2(point, minirt->light->xyz));

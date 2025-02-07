@@ -6,73 +6,11 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/07 12:15:20 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/02/07 17:31:12 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../include/minirt.h"
-
-// static void	print_image(t_minirt *minirt, t_shape *shape, int x, int y, double shading)
-// {
-// 	int	i;
-// 	int	j;
-// 	int	pixel_offset;
-// 	// t_uint8	rgb[3];
-// 	int	color;
-// 
-// 	if (shape)
-// 	{
-// 		color = shading;
-// 		// rgb[0] = shape->rgb[0] * (shading / 3);
-// 		// rgb[1] = shape->rgb[1] * (shading / 3);
-// 		// rgb[2] = shape->rgb[2] * (shading / 3);
-// 		// color = convert_rgb(rgb);
-// 	}
-// 	else
-// 		color = 0x000000;
-// 	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits, &minirt->size_line, &minirt->endian);
-// 	if (!minirt->img)
-// 	{
-// 		free_minirt(minirt);
-// 		exit(1);
-// 	}
-// 	i = y - 2;
-// 	while (i < 5 + y - 2)
-// 	{
-// 		j = x - 2;
-// 		while (j < 5 + x - 2)
-// 		{
-// 			pixel_offset = i * minirt->size_line + j * (minirt->bits / 8);
-// 			*(int *)(minirt->img + pixel_offset) = color;
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }
-
-// static void	print_image_precision(t_minirt *minirt, t_shape *shape,
-// 	int x, int y)
-// {
-// 	int		color;
-// 	int		pixel_offset;
-// 	t_uint8	rgb[3];
-
-// 	rgb[0] = shape->rgb[0] * (minirt->color / 3);
-// 	rgb[1] = shape->rgb[1] * (minirt->color / 3);
-// 	rgb[2] = shape->rgb[2] * (minirt->color / 3);
-// 	color = convert_rgb(rgb);
-// 	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits,
-// 			&minirt->size_line, &minirt->endian);
-// 	if (!minirt->img)
-// 	{
-// 		free_minirt(minirt);
-// 		exit(1);
-// 	}
-// 	pixel_offset = y * minirt->size_line + x * (minirt->bits / 8);
-// 	*(int *)(minirt->img + pixel_offset) = color;
-// }
-
 
 static void	print_image_precision(t_minirt *minirt, t_shape *shape,
 	int x, int y)
@@ -109,8 +47,8 @@ void	compute_pixel(t_minirt *minirt, t_ray rayon, t_shape shape,
 		normalv = normal_tuple_sphere(shape, point);
 	minirt->color = lighting(minirt, point, negate_tuple(rayon.direction),
 				normalv);
-	// if (shape.type == PLAN)
-	// 	minirt->color = minirt->light->luminosity * 3;
+	if (shape.type == PLAN)
+		minirt->color = minirt->light->luminosity * 3;
 	print_image_precision(minirt, &shape, coor[0], coor[1]);
 }
 

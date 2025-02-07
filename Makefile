@@ -25,7 +25,6 @@ SRCS =	src/main.c \
 	src/utils3.c \
 	src/intersections.c \
 	src/intersections2.c \
-	src/cam_movement.c \
 	src/utils4.c \
 	src/canva.c \
 	src/matrix_transformation.c \
