@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/07 17:31:12 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/02/07 20:56:20 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ void	compute_pixel(t_minirt *minirt, t_ray rayon, t_shape shape,
 		normalv = normal_tuple_sphere(shape, point);
 	minirt->color = lighting(minirt, point, negate_tuple(rayon.direction),
 				normalv);
-	if (shape.type == PLAN)
-		minirt->color = minirt->light->luminosity * 3;
 	print_image_precision(minirt, &shape, coor[0], coor[1]);
 }
 
