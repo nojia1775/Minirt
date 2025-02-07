@@ -3,33 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2025/01/30 18:48:01 by yrio             ###   ########.fr       */
+/*   Updated: 2025/02/07 16:06:02 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../include/minirt.h"
 
-double	intersec_sphere(t_minirt *minirt, t_ray rayon, t_shape sphere)
+double	intersec_sphere(t_tuple source, t_ray rayon, t_shape sphere)
 {
+	double	a;
 	double	b;
 	double	c;
 	double	delta;
-	double	a;
 
 	a = dot_product2(rayon.direction, rayon.direction);
-	b = 2 * ((minirt->camera->xyz.coor[0] - sphere.xyz.coor[0])
-			* rayon.direction.coor[0] + ((minirt->camera->xyz.coor[1]
+	b = 2 * ((source.coor[0] - sphere.xyz.coor[0])
+			* rayon.direction.coor[0] + ((source.coor[1]
 					- sphere.xyz.coor[1]) * rayon.direction.coor[1])
-			+ ((minirt->camera->xyz.coor[2] - sphere.xyz.coor[2])
+			+ ((source.coor[2] - sphere.xyz.coor[2])
 				* rayon.direction.coor[2]));
-	if (b > 0)
-		return (-1);
-	c = pow(minirt->camera->xyz.coor[0] - sphere.xyz.coor[0], 2)
-		+ pow(minirt->camera->xyz.coor[1] - sphere.xyz.coor[1], 2)
-		+ pow(minirt->camera->xyz.coor[2] - sphere.xyz.coor[2], 2)
+	c = pow(source.coor[0] - sphere.xyz.coor[0], 2)
+		+ pow(source.coor[1] - sphere.xyz.coor[1], 2)
+		+ pow(source.coor[2] - sphere.xyz.coor[2], 2)
 		- pow(sphere.diameter / 2, 2);
 	delta = pow(b, 2) - 4 * a * c;
 	if (delta < 0)
@@ -40,7 +39,7 @@ double	intersec_sphere(t_minirt *minirt, t_ray rayon, t_shape sphere)
 			/ (2 * a)));
 }
 
-double	intersec_plan(t_minirt *minirt, t_ray rayon, t_shape plan)
+double	intersec_plan(t_tuple source, t_ray rayon, t_shape plan)
 {
 	t_tuple	p;
 	t_tuple	o;
@@ -48,16 +47,16 @@ double	intersec_plan(t_minirt *minirt, t_ray rayon, t_shape plan)
 
 	p = create_tuple2(plan.xyz.coor[0], plan.xyz.coor[1],
 			plan.xyz.coor[2], 0);
-	o = create_tuple2(minirt->camera->xyz.coor[0],
-			minirt->camera->xyz.coor[1],
-			minirt->camera->xyz.coor[2], 0);
+	o = create_tuple2(source.coor[0],
+			source.coor[1],
+			source.coor[2], 0);
 	if (dot_product2(plan.tuple_xyz, rayon.direction) == 0)
 		return (-1);
 	distance = (dot_product2(plan.tuple_xyz, vec_sub_vec2(p, o)))
 		/ dot_product2(plan.tuple_xyz, rayon.direction);
 	if (vec_magnitude2(vec_sub_vec2(plan.xyz,
 				apply_vec_to_nbr(vec_multiplication2(rayon.direction,
-						distance), minirt->camera->xyz))) > plan.diameter)
+						distance), source))) > plan.diameter / 2)
 		return (-1);
 	return (distance);
 }
@@ -99,15 +98,15 @@ static void	get_bases_cy(t_shape cy, t_shape *base1, t_shape *base2)
 	base2->diameter = cy.diameter;
 }
 
-static double	intersec_base_cy(t_minirt *minirt, t_ray rayon, t_shape cy)
+static double	intersec_base_cy(t_tuple source, t_ray rayon, t_shape cy)
 {
 	t_shape	b1;
 	t_shape	b2;
 	double	dist_plan;
 
 	get_bases_cy(cy, &b1, &b2);
-	dist_plan = get_positive_min(intersec_plan(minirt, rayon, b2),
-			intersec_plan(minirt, rayon, b1));
+	dist_plan = get_positive_min(intersec_plan(source, rayon, b2),
+			intersec_plan(source, rayon, b1));
 	if (dist_plan < 0)
 		return (-1);
 	return (dist_plan);
@@ -135,7 +134,7 @@ int	truncate_cylinder(t_shape cy, t_ray rayon, double t0, double t1)
 	return (0);
 }
 
-double	intersec_cylinder(t_minirt *minirt, t_ray rayon, t_shape *cy)
+double	intersec_cylinder(t_tuple source, t_ray rayon, t_shape cy)
 {
 	double	quadratic[3];
 	double	delta;
@@ -143,30 +142,30 @@ double	intersec_cylinder(t_minirt *minirt, t_ray rayon, t_shape *cy)
 	t_tuple	oc;
 
 	delta = 0;
-	cy->close = 0;
-	oc = vec_sub_vec2(minirt->camera->xyz,
-			cy->xyz);
+	cy.close = 0;
+	oc = vec_sub_vec2(source,
+			cy.xyz);
 	rayon.direction = vec_normalization2(rayon.direction);
 	quadratic[0] = dot_product2(rayon.direction, rayon.direction) - pow(
-			dot_product2(rayon.direction, vec_normalization2(cy->tuple_xyz)), 2);
+			dot_product2(rayon.direction, vec_normalization2(cy.tuple_xyz)), 2);
 	quadratic[1] = 2 * (dot_product2(rayon.direction, oc) - dot_product2(
-				rayon.direction, vec_normalization2(cy->tuple_xyz)) * dot_product2(oc, vec_normalization2(cy->tuple_xyz)));
-	quadratic[2] = dot_product2(oc, oc) - pow(dot_product2(oc, vec_normalization2(cy->tuple_xyz)), 2)
-		- pow(cy->diameter / 2, 2);
+				rayon.direction, vec_normalization2(cy.tuple_xyz)) * dot_product2(oc, vec_normalization2(cy.tuple_xyz)));
+	quadratic[2] = dot_product2(oc, oc) - pow(dot_product2(oc, vec_normalization2(cy.tuple_xyz)), 2)
+		- pow(cy.diameter / 2, 2);
 	delta = pow(quadratic[1], 2) - 4 * quadratic[0] * quadratic[2];
 	if (delta < 0)
 		return (-1);
-	if (!truncate_cylinder(*cy, rayon, (-quadratic[1] - sqrt(delta)) / (2 * quadratic[0]),\
+	if (!truncate_cylinder(cy, rayon, (-quadratic[1] - sqrt(delta)) / (2 * quadratic[0]),\
 		(-quadratic[1] + sqrt(delta)) / (2 * quadratic[0])))
 		return (0);
 	intersec = apply_vec_to_nbr(vec_multiplication2(rayon.direction,
 				get_positive_min((-quadratic[1] + sqrt(delta)) / (2 * quadratic[0]),
 					(-quadratic[1] - sqrt(delta)) / (2 * quadratic[0]))),
-			minirt->camera->xyz);
-	if (!point_in_cylinder(*cy, intersec))
+			source);
+	if (!point_in_cylinder(cy, intersec))
 	{
-		cy->close = 1;
-		return (intersec_base_cy(minirt, rayon, *cy));
+		cy.close = 1;
+		return (intersec_base_cy(source, rayon, cy));
 	}
 	return (get_min((-quadratic[1] + sqrt(delta)) / (2 * quadratic[0]),
 			(-quadratic[1] - sqrt(delta)) / (2 * quadratic[0])));

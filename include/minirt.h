@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/31 18:31:08 by yrio             ###   ########.fr       */
+/*   Updated: 2025/02/07 16:06:37 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,13 @@
 
 # define MINIRT_H
 
-# define WIDTH 1000
-# define HEIGHT 1000
+# define WIDTH 500
+# define HEIGHT 500
 
 # define AZERTY 0
 # define QWERTY 1
 
 # define ESC 65307
-# define A_RIGHT 65363
-# define A_UP 65362
-# define A_LEFT 65361
-# define A_DOWN 65364
-# if AZERTY
-#  define UP 122
-#  define DOWN 115
-#  define LEFT 113
-#  define RIGHT 100
-# elif QWERTY
-#  define UP 119
-#  define DOWN 115
-#  define LEFT 97
-#  define RIGHT 100
-# endif
-# define P 112
-# define SPACE 32
-# define TAB 65289
 
 # define EPSILON 0.00001
 
@@ -155,6 +137,10 @@ t_tuple					*create_tuple(double x, double y, double z, int w);
 int intersect_caps(t_shape cy, t_ray rayon);
 t_tuple normal_tuple_cylindre(t_shape cy, t_tuple point);
 
+//intersection2
+int intersect_caps(t_shape cy, t_ray rayon);
+t_tuple normal_tuple_cylindre(t_shape cy, t_tuple point);
+
 // tuple_operation
 t_tuple					*vec_add_nbr(t_tuple *vec, double nbr);
 t_tuple					*vec_add_vec(t_tuple *vec, t_tuple *add);
@@ -171,7 +157,7 @@ t_canva					create_canva(void);
 t_canva					create_matrix_identity(void);
 
 // display
-t_shape					*closest_shape(t_minirt *minirt, t_ray rayon);
+t_shape					*closest_shape(t_minirt* minirt, t_tuple source, t_ray rayon);
 
 // color
 double					lighting(t_minirt *minirt, t_tuple point, t_tuple eyev,
@@ -222,14 +208,14 @@ double					double_abs(double x);
 t_tuple					create_tuple2(double x, double y, double z, int w);
 t_tuple					get_pixel_tuple(t_minirt *minirt, t_tuple pixel, int x,
 							int y);
-double					intersec_sphere(t_minirt *minirt, t_ray rayon,
+double					intersec_sphere(t_tuple source, t_ray rayon,
 							t_shape sphere);
 double					get_min(double a, double b);
 double					get_max(double a, double b);
 void					display_precision(t_minirt *minirt);
 double					dot_product2(t_tuple a, t_tuple b);
 t_tuple					vec_sub_vec2(t_tuple a, t_tuple b);
-double					intersec_plan(t_minirt *minirt, t_ray rayon,
+double					intersec_plan(t_tuple source, t_ray rayon,
 							t_shape plan);
 void					cam_look_leftright(t_minirt *minirt, double angle);
 void					cam_look_updown(t_minirt *minirt, double angle);
@@ -237,8 +223,8 @@ void					cam_go_frontback(t_minirt *minirt, int dir);
 void					print_coor(void *coor);
 void					cam_go_leftright(t_minirt *minirt, int left_right);
 void					cam_go_updown(t_minirt *minirt, int up_down);
-double					intersec_cylinder(t_minirt *minirt, t_ray rayon,
-							t_shape *cylinder);
+double					intersec_cylinder(t_tuple source, t_ray rayon,
+							t_shape cylinder);
 double					vec_magnitude2(t_tuple vec);
 void					my_mlx_new_img(t_minirt *minirt);
 t_tuple					negate_tuple(t_tuple tuple);
