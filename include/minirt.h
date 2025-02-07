@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/06 11:44:04 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/06 17:56:46 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,13 @@ typedef enum e_type
 	PLAN,
 	CYLINDER
 }						t_type;
+
+typedef enum	s_components_light
+{
+	AMBIENT,
+	DIFFUSE,
+	SPECULAR
+}	t_components_light;
 
 typedef struct s_tuple
 {

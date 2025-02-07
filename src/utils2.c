@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:12:35 by nojia             #+#    #+#             */
-/*   Updated: 2025/02/04 17:27:21 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/06 17:51:20 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	parse_nbr_dot(char *str)
 			dot++;
 			if (i == 0 || !ft_isdigit(str[i - 1]) || str[i + 1] == '\0'
 				|| !ft_isdigit(str[i + 1]))
-				return (printf("%s %c %c %c\n", str, str[i - 1], str[i], str[i + 1]), 0);
+				return (0);
 		}
 		if (str[i] == ',')
 		{
