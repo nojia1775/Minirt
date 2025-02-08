@@ -48,6 +48,7 @@ t_tuple	get_pixel_tuple(t_minirt *minirt, t_tuple pixel, int x, int y)
 	normal_v_cam = vec_normalization2(minirt->camera->tuple_xyz);
 	transform = rotation_y(PI / 2);
 	u = vec_normalization2(multiplying_matrix_tuple(transform, normal_v_cam));
+	u.coor[1] = 0;
 	v = vec_normalization2(vec_cross(normal_v_cam, u));
 	x_y_screen[0] = ((double)x / WIDTH - 0.5) * WIDTH;
 	x_y_screen[1] = (0.5 - (double)y / HEIGHT) * HEIGHT;
