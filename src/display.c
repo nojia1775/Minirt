@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/07 17:31:12 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/02/08 20:11:04 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,18 @@ void	compute_pixel(t_minirt *minirt, t_ray rayon, t_shape shape,
 {
 	t_tuple	point;
 	t_tuple	normalv;
+	t_tuple	vpoint;
 
-	point = vec_multiplication2(rayon.direction, shape.distance);
+	vpoint = vec_multiplication2(rayon.direction, shape.distance);
+	point = apply_vec_to_nbr(vpoint, minirt->camera->xyz);
 	if (shape.type == CYLINDER && shape.close == 1)
 		normalv = normal_tuple_cylindre(shape, point);
 	else
 		normalv = normal_tuple_sphere(shape, point);
 	minirt->color = lighting(minirt, point, negate_tuple(rayon.direction),
 				normalv);
-	if (shape.type == PLAN)
-		minirt->color = minirt->light->luminosity * 3;
+	// if (shape.type == PLAN)
+	// 	minirt->color = minirt->light->luminosity * 3;
 	print_image_precision(minirt, &shape, coor[0], coor[1]);
 }
 

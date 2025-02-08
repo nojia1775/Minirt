@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:38:15 by yrio              #+#    #+#             */
-/*   Updated: 2025/02/07 17:54:33 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/02/08 20:27:43 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ double	lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_tuple normalv)
 	components[DIFFUSE] = 0.9;
 	lightv = vec_normalization2(vec_sub_vec2(minirt->light->xyz, point));
 	components[AMBIENT] = minirt->light->luminosity * components[AMBIENT];
-	light_dot_normal = dot_product2(lightv, normalv);
+	light_dot_normal = dot_product2(lightv, normalv) + 0.5;
 	shapes = compute_shadow(minirt, point);
 	if (light_dot_normal < 0 || shapes.shape1 != shapes.shape2)
 	{
