@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:35:32 by nojia             #+#    #+#             */
-/*   Updated: 2025/02/08 18:48:23 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/08 21:17:11 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ double	intersec_plan(t_tuple source, t_ray rayon, t_shape plan)
 	t_tuple	p;
 	t_tuple	o;
 	double	distance;
+	t_tuple	vpoint;
+	t_tuple	point;
 
 	p = create_tuple2(plan.xyz.coor[0], plan.xyz.coor[1],
 			plan.xyz.coor[2], 0);
@@ -54,9 +56,11 @@ double	intersec_plan(t_tuple source, t_ray rayon, t_shape plan)
 		return (-1);
 	distance = (dot_product2(plan.tuple_xyz, vec_sub_vec2(p, o)))
 		/ dot_product2(plan.tuple_xyz, rayon.direction);
-	if (vec_magnitude2(vec_sub_vec2(plan.xyz,
-				apply_vec_to_nbr(vec_multiplication2(rayon.direction,
-						distance), source))) > plan.diameter / 2)
+	if (distance < 0)
+		return (-1);
+	vpoint = vec_multiplication2(rayon.direction, distance);
+	point = apply_vec_to_nbr(vpoint, source);
+	if (vec_magnitude2(vec_sub_vec2(point, plan.xyz)) > plan.diameter / 2)
 		return (-1);
 	return (distance);
 }
@@ -104,7 +108,7 @@ static void	get_bases_cy(t_shape cy, t_shape *base1, t_shape *base2)
 	base2->rgb[2] = cy.rgb[2];
 }
 
-static t_cy_part	intersec_base_cy(t_tuple source, t_ray rayon, t_shape cy)
+static t_cy_part	 intersec_base_cy(t_tuple source, t_ray rayon, t_shape cy)
 {
 	t_shape	b1;
 	t_shape	b2;
