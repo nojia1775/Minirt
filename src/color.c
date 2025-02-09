@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:38:15 by yrio              #+#    #+#             */
-/*   Updated: 2025/02/09 17:26:07 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/09 18:20:04 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,15 @@ double	compute_specular(t_tuple lightv, t_tuple normalv, t_tuple eyev)
 
 static t_shadow	compute_shadow(t_minirt *minirt, t_tuple point)
 {
-	t_ray	light_to_point;
-	t_ray	cam_to_point;
+	t_ray		light_to_point;
+	t_ray		cam_to_point;
 	t_shadow	shapes;
 
 	light_to_point.origin = minirt->light->xyz;
 	light_to_point.direction = vec_normalization2(
 			vec_sub_vec2(point, minirt->light->xyz));
-	shapes.shape1 = closest_shape(minirt, light_to_point.origin, light_to_point);
+	shapes.shape1 = closest_shape(minirt, light_to_point.origin,
+			light_to_point);
 	cam_to_point.origin = minirt->camera->xyz;
 	cam_to_point.direction = vec_normalization2(
 			vec_sub_vec2(point, minirt->camera->xyz));
@@ -48,9 +49,9 @@ static t_shadow	compute_shadow(t_minirt *minirt, t_tuple point)
 
 double	lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_tuple normalv)
 {
-	double	components[3];
-	double	light_dot_normal;
-	t_tuple	lightv;
+	double		light_dot_normal;
+	double		components[3];
+	t_tuple		lightv;
 	t_shadow	shapes;
 
 	components[AMBIENT] = minirt->ambient->ambient;
@@ -66,7 +67,8 @@ double	lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_tuple normalv)
 	}
 	else
 	{
-		components[DIFFUSE] = minirt->light->luminosity * components[DIFFUSE] * light_dot_normal;
+		components[DIFFUSE] = minirt->light->luminosity
+			* components[DIFFUSE] * light_dot_normal;
 		components[SPECULAR] = compute_specular(lightv, normalv, eyev);
 	}
 	return (components[AMBIENT] + components[DIFFUSE] + components[SPECULAR]);

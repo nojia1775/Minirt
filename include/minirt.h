@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/09 17:26:20 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/09 19:22:56 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,5 +278,6 @@ t_canva					rotation_y(double radian);
 t_canva					rotation_z(double radian);
 t_ray					transform_ray(t_ray ray, t_canva matrix);
 double					get_positive_min(double a, double b);
+void					clean_window(t_minirt *minirt);
 
 #endif

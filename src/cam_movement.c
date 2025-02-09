@@ -6,30 +6,11 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 12:16:41 by nojia             #+#    #+#             */
-/*   Updated: 2025/02/08 20:50:37 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/09 18:18:55 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
-
-static void	clean_window(t_minirt *minirt)
-{
-	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits,
-			&minirt->size_line, &minirt->endian);
-	if (!minirt->img)
-	{
-		free_minirt(minirt);
-		exit(1);
-	}
-	for (size_t i = 0 ; i < HEIGHT ; i++)
-	{
-		for (size_t j = 0 ; j < WIDTH ; j++)
-		{
-			int pixel_offset = i * minirt->size_line + j * (minirt->bits / 8);
-			*(int *)(minirt->img + pixel_offset) = 0x000000;
-		}
-	}
-}
 
 void	cam_look_leftright(t_minirt *minirt, double angle)
 {

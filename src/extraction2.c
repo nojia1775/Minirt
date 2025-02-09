@@ -3,14 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   extraction2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 16:04:38 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/07 15:01:39 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/02/09 19:49:01 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
+
+static int	add_bases(t_minirt *minirt)
+{
+	t_shape	*cy;
+	t_shape	*plan;
+
+	cy = minirt->cylinder;
+	while (cy->next)
+		cy = cy->next;
+	plan = minirt->plan;
+	add_list_shape(&minirt->plan);
+	while (plan->next)
+		plan = plan->next;
+	plan->diameter = cy->diameter;
+	plan->xyz = cy->xyz;
+	ft_memcpy(&plan->rgb, &cy->rgb, sizeof(plan->rgb));
+	plan->tuple_xyz = cy->tuple_xyz;
+	plan->type = PLAN;
+	add_list_shape(&minirt->plan);
+	plan = plan->next;
+	plan->diameter = cy->diameter;
+	plan->xyz = apply_vec_to_nbr(vec_multiplication2(cy->tuple_xyz, cy->height), cy->xyz);
+	ft_memcpy(&plan->rgb, &cy->rgb, sizeof(plan->rgb));
+	plan->tuple_xyz = cy->tuple_xyz;
+	plan->type = PLAN;
+	return (1);
+}
 
 int	get_cylinder(char **datas, t_minirt *minirt)
 {
@@ -38,6 +65,9 @@ int	get_cylinder(char **datas, t_minirt *minirt)
 	get_three_double(cur->tuple_xyz.coor, datas[2]);
 	cur->diameter = atod(datas[3]);
 	cur->height = atod(datas[4]);
+	get_three_int(cur->rgb, datas[5]);
 	cur->close = 0;
-	return (get_three_int(cur->rgb, datas[5]), 1);
+	if (!add_bases(minirt))
+		return (0);
+	return (1);
 }
