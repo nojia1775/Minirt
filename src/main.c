@@ -6,10 +6,9 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/08 20:44:43 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/09 20:16:32 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../include/minirt.h"
 
@@ -23,14 +22,9 @@ static int	close_win(void *param)
 	return (1);
 }
 
-static int	key_pressed(int key, void *param)
+static void	direction(t_minirt *minirt, int key)
 {
-	t_minirt	*minirt;
-
-	minirt = (t_minirt *)param;
-	if (key == ESC)
-		close_win(minirt);
-	else if (key == A_RIGHT)
+	if (key == A_RIGHT)
 		cam_go_leftright(minirt, 1);
 	else if (key == A_LEFT)
 		cam_go_leftright(minirt, -1);
@@ -38,6 +32,16 @@ static int	key_pressed(int key, void *param)
 		cam_go_frontback(minirt, 1);
 	else if (key == A_DOWN)
 		cam_go_frontback(minirt, -1);
+}
+
+static int	key_pressed(int key, void *param)
+{
+	t_minirt	*minirt;
+
+	minirt = (t_minirt *)param;
+	direction(minirt, key);
+	if (key == ESC)
+		close_win(minirt);
 	else if (key == UP)
 		cam_look_updown(minirt, -PI / 8.0);
 	else if (key == DOWN)

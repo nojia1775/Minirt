@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/09 19:22:56 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/09 20:20:23 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,11 +137,6 @@ typedef struct s_shadow
 	t_shape	*shape2;
 }	t_shadow;
 
-typedef struct s_cy_part
-{
-	t_shape	*shape;
-	double	distance;
-}	t_cy_part;
 typedef struct s_minirt
 {
 	void				*mlx;
@@ -260,7 +255,7 @@ void					cam_go_frontback(t_minirt *minirt, int dir);
 void					print_coor(void *coor);
 void					cam_go_leftright(t_minirt *minirt, int left_right);
 void					cam_go_updown(t_minirt *minirt, int up_down);
-t_cy_part				intersec_cylinder(t_tuple source, t_ray rayon,
+double					intersec_cylinder(t_tuple source, t_ray rayon,
 							t_shape cylinder);
 double					vec_magnitude2(t_tuple vec);
 void					my_mlx_new_img(t_minirt *minirt);
@@ -279,5 +274,6 @@ t_canva					rotation_z(double radian);
 t_ray					transform_ray(t_ray ray, t_canva matrix);
 double					get_positive_min(double a, double b);
 void					clean_window(t_minirt *minirt);
+int						parse_range2(char *line, double min, double max, int nmemb);
 
 #endif

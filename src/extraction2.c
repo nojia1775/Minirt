@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 16:04:38 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/09 19:49:01 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/09 20:15:36 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,16 @@ static int	add_bases(t_minirt *minirt)
 	add_list_shape(&minirt->plan);
 	plan = plan->next;
 	plan->diameter = cy->diameter;
-	plan->xyz = apply_vec_to_nbr(vec_multiplication2(cy->tuple_xyz, cy->height), cy->xyz);
+	plan->xyz = apply_vec_to_nbr(vec_multiplication2(
+				cy->tuple_xyz, cy->height), cy->xyz);
 	ft_memcpy(&plan->rgb, &cy->rgb, sizeof(plan->rgb));
 	plan->tuple_xyz = cy->tuple_xyz;
 	plan->type = PLAN;
 	return (1);
 }
 
-int	get_cylinder(char **datas, t_minirt *minirt)
+static int	check_cylinder(char **datas)
 {
-	t_shape	*cur;
-
 	if (size_double_tab(datas) != 6
 		|| !parse_range(datas[1], -DBL_MAX, DBL_MAX, 3))
 		return (printf("Error : cylinder : number or coordinates\n"), 0);
@@ -54,6 +53,15 @@ int	get_cylinder(char **datas, t_minirt *minirt)
 		return (printf("Error : cylinder : in height\n"), 0);
 	if (!parse_rgb(datas[5]))
 		return (printf("Error : cylinder : in color\n"), 0);
+	return (1);
+}
+
+int	get_cylinder(char **datas, t_minirt *minirt)
+{
+	t_shape	*cur;
+
+	if (!check_cylinder(datas))
+		return (0);
 	add_list_shape(&minirt->cylinder);
 	if (minirt->cylinder == NULL)
 		return (printf("Error : cylinder : alloc failed\n"), 0);
@@ -66,7 +74,6 @@ int	get_cylinder(char **datas, t_minirt *minirt)
 	cur->diameter = atod(datas[3]);
 	cur->height = atod(datas[4]);
 	get_three_int(cur->rgb, datas[5]);
-	cur->close = 0;
 	if (!add_bases(minirt))
 		return (0);
 	return (1);

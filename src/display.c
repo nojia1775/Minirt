@@ -6,7 +6,7 @@
 /*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/09 19:17:09 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/09 20:21:17 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	compute_pixel(t_minirt *minirt, t_ray rayon, t_shape shape,
 	else
 		normalv = normal_tuple_sphere(shape, point);
 	minirt->color = lighting(minirt, point, negate_tuple(rayon.direction),
-				normalv);
+			normalv);
 	print_image_precision(minirt, &shape, coor[0], coor[1]);
 }
 
