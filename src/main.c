@@ -5,11 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/11 13:15:01 by nadjemia         ###   ########.fr       */
+/*   Created: 2025/02/11 13:19:22 by nadjemia          #+#    #+#             */
+/*   Updated: 2025/02/11 13:19:23 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../include/minirt.h"
 

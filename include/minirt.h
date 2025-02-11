@@ -5,11 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/11 13:14:17 by nadjemia         ###   ########.fr       */
+/*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
+/*   Updated: 2025/02/11 13:27:00 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINIRT_H
 
@@ -18,10 +17,28 @@
 # define WIDTH 500
 # define HEIGHT 500
 
-# define AZERTY 1
-# define QWERTY 0
+# define AZERTY 0
+# define QWERTY 1
 
 # define ESC 65307
+# define A_RIGHT 65363
+# define A_UP 65362
+# define A_LEFT 65361
+# define A_DOWN 65364
+# if AZERTY
+#  define UP 122
+#  define DOWN 115
+#  define LEFT 113
+#  define RIGHT 100
+# elif QWERTY
+#  define UP 119
+#  define DOWN 115
+#  define LEFT 97
+#  define RIGHT 100
+# endif
+# define P 112
+# define SPACE 32
+# define TAB 65289
 
 # define EPSILON 0.00001
 
@@ -151,10 +168,6 @@ t_tuple					*create_tuple(double x, double y, double z, int w);
 int						intersect_caps(t_shape cy, t_ray rayon);
 t_tuple					normal_tuple_cylindre(t_shape cy, t_tuple point);
 
-//intersection2
-int						intersect_caps(t_shape cy, t_ray rayon);
-t_tuple					normal_tuple_cylindre(t_shape cy, t_tuple point);
-
 // tuple_operation
 t_tuple					*vec_add_nbr(t_tuple *vec, double nbr);
 t_tuple					*vec_add_vec(t_tuple *vec, t_tuple *add);
@@ -210,7 +223,6 @@ t_shape					*get_this_shape(t_shape *shape, size_t index);
 void					my_mlx_init(t_minirt *minirt);
 void					my_mlx_new_window(t_minirt *minirt, int width,
 							int height, char *title);
-void					display(t_minirt *minirt);
 int						convert_rgb(t_uint8 rgb[3]);
 double					convert_rad(double deg);
 double					convert_deg(double rad);
@@ -257,6 +269,7 @@ t_canva					rotation_z(double radian);
 t_ray					transform_ray(t_ray ray, t_canva matrix);
 double					get_positive_min(double a, double b);
 void					clean_window(t_minirt *minirt);
-int						parse_range2(char *line, double min, double max, int nmemb);
+int						parse_range2(char *line, double min,
+							double max, int nmemb);
 
 #endif
