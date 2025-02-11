@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 16:20:45 by nojia             #+#    #+#             */
-/*   Updated: 2025/01/23 15:42:20 by yrio             ###   ########.fr       */
+/*   Updated: 2025/02/09 18:24:26 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,31 @@ t_tuple	normal_tuple_sphere(t_shape sphere, t_tuple world_point)
 	result_world = vec_sub_vec2(world_point, sphere.xyz);
 	normalized_result_world = vec_normalization(&result_world);
 	return (*normalized_result_world);
+}
+
+void	clean_window(t_minirt *minirt)
+{
+	size_t	i;
+	size_t	j;
+	int		pixel_offset;
+
+	minirt->img = mlx_get_data_addr(minirt->addr_img, &minirt->bits,
+			&minirt->size_line, &minirt->endian);
+	if (!minirt->img)
+	{
+		free_minirt(minirt);
+		exit(1);
+	}
+	i = 0;
+	while (i < HEIGHT)
+	{
+		j = 0;
+		while (j < WIDTH)
+		{
+			pixel_offset = i * minirt->size_line + j * (minirt->bits / 8);
+			*(int *)(minirt->img + pixel_offset) = 0x000000;
+			j++;
+		}
+		i++;
+	}
 }

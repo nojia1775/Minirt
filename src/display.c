@@ -5,12 +5,20 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/15 14:46:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/07 16:07:44 by nadjemia         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/02/11 13:14:43 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../include/minirt.h"
+
+static void	compute_ambient(t_uint8 *color, t_uint8 *mix)
+{
+	color[0] = color[0] * (1 - 0.5) + mix[0] * 0.5;
+	color[1] = color[1] * (1 - 0.5) + mix[1] * 0.5;
+	color[2] = color[2] * (1 - 0.5) + mix[2] * 0.5;
+}
 
 static void	print_image_precision(t_minirt *minirt, t_shape *shape,
 	int x, int y)
@@ -19,6 +27,7 @@ static void	print_image_precision(t_minirt *minirt, t_shape *shape,
 	int		pixel_offset;
 	t_uint8	rgb[3];
 
+	compute_ambient(&shape->rgb[0], minirt->ambient->rgb);
 	rgb[0] = shape->rgb[0] * (minirt->color / 3);
 	rgb[1] = shape->rgb[1] * (minirt->color / 3);
 	rgb[2] = shape->rgb[2] * (minirt->color / 3);
@@ -39,16 +48,16 @@ void	compute_pixel(t_minirt *minirt, t_ray rayon, t_shape shape,
 {
 	t_tuple	point;
 	t_tuple	normalv;
+	t_tuple	vpoint;
 
-	point = vec_multiplication2(rayon.direction, shape.distance);
+	vpoint = vec_multiplication2(rayon.direction, shape.distance);
+	point = apply_vec_to_nbr(vpoint, minirt->camera->xyz);
 	if (shape.type == CYLINDER && shape.close == 1)
 		normalv = normal_tuple_cylindre(shape, point);
 	else
 		normalv = normal_tuple_sphere(shape, point);
 	minirt->color = lighting(minirt, point, negate_tuple(rayon.direction),
-				normalv);
-	if (shape.type == PLAN)
-		minirt->color = minirt->light->luminosity * 3;
+			normalv);
 	print_image_precision(minirt, &shape, coor[0], coor[1]);
 }
 

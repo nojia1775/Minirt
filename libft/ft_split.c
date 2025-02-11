@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 14:31:20 by nojia             #+#    #+#             */
-/*   Updated: 2024/11/13 15:29:19 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/07 11:07:10 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	get_strings(char **result, char *str, size_t size)
 	size_t	i;
 	size_t	word;
 	size_t	tmp;
-	
+
 	word = 0;
 	i = 0;
 	tmp = 0;
@@ -43,7 +43,7 @@ static size_t	count_words(char *str, size_t size)
 {
 	size_t	i;
 	size_t	count;
-	
+
 	count = 0;
 	i = 0;
 	while (i < size)

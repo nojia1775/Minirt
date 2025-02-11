@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector_operation2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:31:57 by yrio              #+#    #+#             */
-/*   Updated: 2025/01/23 15:33:36 by yrio             ###   ########.fr       */
+/*   Updated: 2025/02/09 18:53:08 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ double	vec_magnitude2(t_tuple vec)
 	double	v3;
 	double	total;
 
-	if (!vec.coor[0] || !vec.coor[1] || !vec.coor[2])
-		return (0);
 	total = 0;
 	v1 = pow(vec.coor[0], 2);
 	if (v1 != 0)

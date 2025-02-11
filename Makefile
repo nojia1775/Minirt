@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g -MMD
+CFLAGS = -Wall -Wextra -Werror -g -MMD -O3
 
 OBJS_DIR = obj
 
@@ -28,7 +28,9 @@ SRCS =	src/main.c \
 	src/utils4.c \
 	src/canva.c \
 	src/matrix_transformation.c \
-	src/matrix_utils.c
+	src/matrix_utils.c \
+	src/cam_movement.c \
+	src/utils5.c
 
 DEPS = $(OBJS:.o=.d)
 

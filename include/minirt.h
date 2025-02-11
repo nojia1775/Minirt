@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/07 16:06:37 by nadjemia         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/02/11 13:14:17 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINIRT_H
 
@@ -17,8 +18,8 @@
 # define WIDTH 500
 # define HEIGHT 500
 
-# define AZERTY 0
-# define QWERTY 1
+# define AZERTY 1
+# define QWERTY 0
 
 # define ESC 65307
 
@@ -43,6 +44,13 @@ typedef enum e_type
 	PLAN,
 	CYLINDER
 }						t_type;
+
+typedef enum s_components_light
+{
+	AMBIENT,
+	DIFFUSE,
+	SPECULAR
+}	t_components_light;
 
 typedef struct s_tuple
 {
@@ -106,6 +114,12 @@ typedef struct s_shape
 	t_canva				transform;
 }						t_shape;
 
+typedef struct s_shadow
+{
+	t_shape	*shape1;
+	t_shape	*shape2;
+}	t_shadow;
+
 typedef struct s_minirt
 {
 	void				*mlx;
@@ -134,12 +148,12 @@ typedef struct s_file_rt
 t_tuple					*create_tuple(double x, double y, double z, int w);
 
 //intersection2
-int intersect_caps(t_shape cy, t_ray rayon);
-t_tuple normal_tuple_cylindre(t_shape cy, t_tuple point);
+int						intersect_caps(t_shape cy, t_ray rayon);
+t_tuple					normal_tuple_cylindre(t_shape cy, t_tuple point);
 
 //intersection2
-int intersect_caps(t_shape cy, t_ray rayon);
-t_tuple normal_tuple_cylindre(t_shape cy, t_tuple point);
+int						intersect_caps(t_shape cy, t_ray rayon);
+t_tuple					normal_tuple_cylindre(t_shape cy, t_tuple point);
 
 // tuple_operation
 t_tuple					*vec_add_nbr(t_tuple *vec, double nbr);
@@ -157,7 +171,8 @@ t_canva					create_canva(void);
 t_canva					create_matrix_identity(void);
 
 // display
-t_shape					*closest_shape(t_minirt* minirt, t_tuple source, t_ray rayon);
+t_shape					*closest_shape(t_minirt *minirt, t_tuple source,
+							t_ray rayon);
 
 // color
 double					lighting(t_minirt *minirt, t_tuple point, t_tuple eyev,
@@ -241,5 +256,7 @@ t_canva					rotation_y(double radian);
 t_canva					rotation_z(double radian);
 t_ray					transform_ray(t_ray ray, t_canva matrix);
 double					get_positive_min(double a, double b);
+void					clean_window(t_minirt *minirt);
+int						parse_range2(char *line, double min, double max, int nmemb);
 
 #endif

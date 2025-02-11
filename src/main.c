@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 12:01:57 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/07 16:07:04 by nadjemia         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/02/11 13:15:01 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../include/minirt.h"
 
@@ -22,13 +23,43 @@ static int	close_win(void *param)
 	return (1);
 }
 
+static void	direction(t_minirt *minirt, int key)
+{
+	if (key == A_RIGHT)
+		cam_go_leftright(minirt, 1);
+	else if (key == A_LEFT)
+		cam_go_leftright(minirt, -1);
+	else if (key == A_UP)
+		cam_go_frontback(minirt, 1);
+	else if (key == A_DOWN)
+		cam_go_frontback(minirt, -1);
+}
+
 static int	key_pressed(int key, void *param)
 {
 	t_minirt	*minirt;
 
 	minirt = (t_minirt *)param;
+	direction(minirt, key);
 	if (key == ESC)
 		close_win(minirt);
+	else if (key == UP)
+		cam_look_updown(minirt, -PI / 8.0);
+	else if (key == DOWN)
+		cam_look_updown(minirt, PI / 8.0);
+	else if (key == LEFT)
+		cam_look_leftright(minirt, -PI / 8.0);
+	else if (key == RIGHT)
+		cam_look_leftright(minirt, PI / 8.0);
+	else if (key == TAB)
+		cam_go_updown(minirt, -1);
+	else if (key == SPACE)
+		cam_go_updown(minirt, 1);
+	else if (key == P)
+	{
+		mlx_clear_window(minirt->mlx, minirt->win);
+		display_precision(minirt);
+	}
 	return (1);
 }
 

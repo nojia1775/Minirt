@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tuple_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:06:21 by yrio              #+#    #+#             */
-/*   Updated: 2025/01/09 21:02:11 by nojia            ###   ########.fr       */
+/*   Updated: 2025/01/17 17:34:22 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,9 @@ t_tuple	get_pixel_tuple(t_minirt *minirt, t_tuple pixel, int x, int y)
 	double	x_y_screen[2];
 
 	normal_v_cam = vec_normalization2(minirt->camera->tuple_xyz);
-	if (normal_v_cam.coor[1] == 0.0)
-		transform = rotation_y(PI / 2);
-	else
-		transform = rotation_x(PI / 2);
+	transform = rotation_y(PI / 2);
 	u = vec_normalization2(multiplying_matrix_tuple(transform, normal_v_cam));
+	u.coor[1] = 0;
 	v = vec_normalization2(vec_cross(normal_v_cam, u));
 	x_y_screen[0] = ((double)x / WIDTH - 0.5) * WIDTH;
 	x_y_screen[1] = (0.5 - (double)y / HEIGHT) * HEIGHT;

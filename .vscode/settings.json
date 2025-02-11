@@ -1,6 +1,7 @@
 {
 	"files.associations": {
 		"cmath": "c",
-		"matrix_utils.C": "cpp"
+		"matrix_utils.C": "cpp",
+		"minirt.h": "c"
 	}
 }

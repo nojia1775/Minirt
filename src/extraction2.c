@@ -3,19 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   extraction2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 16:04:38 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/01/30 17:22:36 by yrio             ###   ########.fr       */
+/*   Updated: 2025/02/09 20:15:36 by nojia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-int	get_cylinder(char **datas, t_minirt *minirt)
+static int	add_bases(t_minirt *minirt)
 {
-	t_shape	*cur;
+	t_shape	*cy;
+	t_shape	*plan;
 
+	cy = minirt->cylinder;
+	while (cy->next)
+		cy = cy->next;
+	plan = minirt->plan;
+	add_list_shape(&minirt->plan);
+	while (plan->next)
+		plan = plan->next;
+	plan->diameter = cy->diameter;
+	plan->xyz = cy->xyz;
+	ft_memcpy(&plan->rgb, &cy->rgb, sizeof(plan->rgb));
+	plan->tuple_xyz = cy->tuple_xyz;
+	plan->type = PLAN;
+	add_list_shape(&minirt->plan);
+	plan = plan->next;
+	plan->diameter = cy->diameter;
+	plan->xyz = apply_vec_to_nbr(vec_multiplication2(
+				cy->tuple_xyz, cy->height), cy->xyz);
+	ft_memcpy(&plan->rgb, &cy->rgb, sizeof(plan->rgb));
+	plan->tuple_xyz = cy->tuple_xyz;
+	plan->type = PLAN;
+	return (1);
+}
+
+static int	check_cylinder(char **datas)
+{
 	if (size_double_tab(datas) != 6
 		|| !parse_range(datas[1], -DBL_MAX, DBL_MAX, 3))
 		return (printf("Error : cylinder : number or coordinates\n"), 0);
@@ -27,6 +53,15 @@ int	get_cylinder(char **datas, t_minirt *minirt)
 		return (printf("Error : cylinder : in height\n"), 0);
 	if (!parse_rgb(datas[5]))
 		return (printf("Error : cylinder : in color\n"), 0);
+	return (1);
+}
+
+int	get_cylinder(char **datas, t_minirt *minirt)
+{
+	t_shape	*cur;
+
+	if (!check_cylinder(datas))
+		return (0);
 	add_list_shape(&minirt->cylinder);
 	if (minirt->cylinder == NULL)
 		return (printf("Error : cylinder : alloc failed\n"), 0);
@@ -38,7 +73,8 @@ int	get_cylinder(char **datas, t_minirt *minirt)
 	get_three_double(cur->tuple_xyz.coor, datas[2]);
 	cur->diameter = atod(datas[3]);
 	cur->height = atod(datas[4]);
-	cur->close = 0;
-	// cur->caps_dist = -1;
-	return (get_three_int(cur->rgb, datas[5]), 1);
+	get_three_int(cur->rgb, datas[5]);
+	if (!add_bases(minirt))
+		return (0);
+	return (1);
 }
