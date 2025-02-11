@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:05:18 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/04 17:26:47 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/11 13:39:10 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,16 @@ int	extract_file(char *file, t_file_rt **data)
 	return (1);
 }
 
-static int	parse_datas(t_file_rt *data, t_minirt *minirt)
+static int	parse_datas(t_file_rt *data, t_minirt *minirt, int success)
 {
 	t_file_rt	*cur;
-	int			success;
 
 	cur = data;
 	if (!cur)
 		return (0);
 	while (cur)
 	{
+		success = 0;
 		if (!ft_strncmp(cur->line[0], "A", 2))
 			success = get_ambient(cur->line, minirt);
 		else if (!ft_strncmp(cur->line[0], "C", 2))
@@ -102,7 +102,9 @@ static int	parse_datas(t_file_rt *data, t_minirt *minirt)
 int	parsing(int argc, char **argv, char **env, t_minirt *minirt)
 {
 	t_file_rt	*data;
+	int			success;
 
+	success = 0;
 	data = NULL;
 	if (argc != 2 || !env[0])
 		return (printf("Error : need env and 1 argument\n"), 0);
@@ -110,8 +112,11 @@ int	parsing(int argc, char **argv, char **env, t_minirt *minirt)
 		return (printf("Error : invalid file\n"), 0);
 	if (!extract_file(argv[1], &data))
 		return (0);
-	if (!parse_datas(data, minirt))
-		return (free_list_data(&data), 0);
+	if (!parse_datas(data, minirt, success))
+	{
+		return (free_list_data(&data),
+			printf("Error : wrong character in file\n"), 0);
+	}
 	if (!minirt->camera || !minirt->ambient || !minirt->light)
 		return (printf("Error : need camera, ambient and light\n"),
 			free_list_data(&data), 0);
