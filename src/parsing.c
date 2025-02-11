@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:05:18 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/11 13:39:10 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:46:03 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static int	parse_datas(t_file_rt *data, t_minirt *minirt, int success)
 		return (0);
 	while (cur)
 	{
-		success = 0;
+		success = -1;
 		if (!ft_strncmp(cur->line[0], "A", 2))
 			success = get_ambient(cur->line, minirt);
 		else if (!ft_strncmp(cur->line[0], "C", 2))
@@ -92,8 +92,8 @@ static int	parse_datas(t_file_rt *data, t_minirt *minirt, int success)
 			success = get_plan(cur->line, minirt);
 		else if (!ft_strncmp(cur->line[0], "cy", 3))
 			success = get_cylinder(cur->line, minirt);
-		if (!success)
-			return (free_minirt(minirt), 0);
+		if (success <= 0)
+			return (free_minirt(minirt), success);
 		cur = cur->next;
 	}
 	return (1);
@@ -112,11 +112,11 @@ int	parsing(int argc, char **argv, char **env, t_minirt *minirt)
 		return (printf("Error : invalid file\n"), 0);
 	if (!extract_file(argv[1], &data))
 		return (0);
-	if (!parse_datas(data, minirt, success))
-	{
-		return (free_list_data(&data),
-			printf("Error : wrong character in file\n"), 0);
-	}
+	success = parse_datas(data, minirt, success);
+	if (success == -1)
+		printf("Error : wrong character in file\n");
+	if (success <= 0)
+		return (free_list_data(&data), 0);
 	if (!minirt->camera || !minirt->ambient || !minirt->light)
 		return (printf("Error : need camera, ambient and light\n"),
 			free_list_data(&data), 0);

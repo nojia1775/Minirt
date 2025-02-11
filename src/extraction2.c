@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extraction2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 16:04:38 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/09 20:15:36 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/11 16:49:56 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static int	add_bases(t_minirt *minirt)
 	cy = minirt->cylinder;
 	while (cy->next)
 		cy = cy->next;
-	plan = minirt->plan;
 	add_list_shape(&minirt->plan);
+	plan = minirt->plan;
 	while (plan->next)
 		plan = plan->next;
 	plan->diameter = cy->diameter;
@@ -30,10 +30,11 @@ static int	add_bases(t_minirt *minirt)
 	plan->tuple_xyz = cy->tuple_xyz;
 	plan->type = PLAN;
 	add_list_shape(&minirt->plan);
+	cy->tuple_xyz = vec_normalization2(cy->tuple_xyz);
 	plan = plan->next;
 	plan->diameter = cy->diameter;
 	plan->xyz = apply_vec_to_nbr(vec_multiplication2(
-				cy->tuple_xyz, cy->height), cy->xyz);
+				vec_normalization2(cy->tuple_xyz), cy->height), cy->xyz);
 	ft_memcpy(&plan->rgb, &cy->rgb, sizeof(plan->rgb));
 	plan->tuple_xyz = cy->tuple_xyz;
 	plan->type = PLAN;
@@ -46,7 +47,7 @@ static int	check_cylinder(char **datas)
 		|| !parse_range(datas[1], -DBL_MAX, DBL_MAX, 3))
 		return (printf("Error : cylinder : number or coordinates\n"), 0);
 	if (parse_range(datas[2], -1.0, 1.0, 3) < 1)
-		return (printf("Error : cylinder : in tuples\n"), 0);
+		return (printf("Error : cylinder : in vectors\n"), 0);
 	if (!parse_range(datas[3], 0, DBL_MAX, 1))
 		return (printf("Error : cylinder : in diameter\n"), 0);
 	if (!parse_range(datas[4], 0, DBL_MAX, 1))

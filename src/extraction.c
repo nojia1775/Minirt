@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extraction.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nojia <nojia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:12:37 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/08 21:21:15 by nojia            ###   ########.fr       */
+/*   Updated: 2025/02/11 16:49:49 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	get_camera(char **datas, t_minirt *minirt)
 	if (!parse_range(datas[1], -DBL_MAX, DBL_MAX, 3))
 		return (printf("Error : camera : in coordinates\n"), 0);
 	if (!parse_range(datas[2], -1.0, 1.0, 3))
-		return (printf("Error : camera : in tuples\n"), 0);
+		return (printf("Error : camera : in vector\n"), 0);
 	if (!parse_range(datas[3], 0.0, 180.0, 1))
 		return (printf("Error : camera : in FOV\n"), 0);
 	minirt->camera = (t_camera *)ft_calloc(1, sizeof(t_camera));
@@ -116,7 +116,7 @@ int	get_plan(char **datas, t_minirt *minirt)
 	if (!parse_range(datas[1], -DBL_MAX, DBL_MAX, 3))
 		return (printf("Error : plan : in coordinates\n"), 0);
 	if (parse_range(datas[2], -1.0, 1.0, 3) < 1)
-		return (printf("Error : plan : in tuples\n"), 0);
+		return (printf("Error : plan : in vector\n"), 0);
 	if (!parse_rgb(datas[3]))
 		return (printf("Error : plan : in color\n"), 0);
 	add_list_shape(&minirt->plan);
