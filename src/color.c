@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:18:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/11 16:33:34 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/04/04 18:47:22 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ double	lighting(t_minirt *minirt, t_tuple point, t_tuple eyev, t_tuple normalv)
 	components[AMBIENT] = minirt->light->luminosity * components[AMBIENT];
 	light_dot_normal = dot_product2(lightv, normalv) + 0.5;
 	shapes = compute_shadow(minirt, point);
-	if (light_dot_normal < 0 || shapes.shape1 != shapes.shape2)
+	if (light_dot_normal < 0 || (/*!shapes.shape1->mirror && */shapes.shape1 != shapes.shape2))
 	{
 		components[DIFFUSE] = 0;
 		components[SPECULAR] = 0;

@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:18:56 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/11 13:18:57 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/04/04 19:14:50 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,17 @@ void	compute_pixel(t_minirt *minirt, t_ray rayon, t_shape shape,
 		normalv = normal_tuple_cylindre(shape, point);
 	else
 		normalv = normal_tuple_sphere(shape, point);
+	if (shape.mirror)
+	{
+		t_ray reflect_ray = {
+			.origin = point,
+			.direction = (negate_tuple(rayon.direction), normalv)
+		};
+		t_shape *reflect_shape = closest_shape(minirt, reflect_ray.origin, reflect_ray);
+		if (reflect_shape)
+			compute_pixel(minirt, reflect_ray, *reflect_shape, coor);
+		return;
+	}
 	minirt->color = lighting(minirt, point, negate_tuple(rayon.direction),
 			normalv);
 	print_image_precision(minirt, &shape, coor[0], coor[1]);
@@ -68,6 +79,8 @@ void	display_precision(t_minirt *minirt)
 	int		coor[2];
 
 	coor[1] = 0;
+	minirt->sphere->mirror = 1;
+	minirt->sphere->next->mirror = 1;
 	while (coor[1] < HEIGHT)
 	{
 		coor[0] = 0;

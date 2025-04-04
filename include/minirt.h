@@ -6,7 +6,7 @@
 /*   By: nadjemia <nadjemia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:02:16 by nadjemia          #+#    #+#             */
-/*   Updated: 2025/02/11 13:27:00 by nadjemia         ###   ########.fr       */
+/*   Updated: 2025/04/04 18:19:10 by nadjemia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ typedef struct s_shape
 	double				caps_dist;
 	double				distance;
 	t_canva				transform;
+	int				mirror;
 }						t_shape;
 
 typedef struct s_shadow
